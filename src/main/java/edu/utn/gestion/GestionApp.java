@@ -1,6 +1,7 @@
 package edu.utn.gestion;
 
 import edu.utn.gestion.config.HibernateUtil;
+import edu.utn.gestion.ui.MainFrame;
 import org.apache.log4j.Logger;
 
 public class GestionApp {
@@ -11,5 +12,6 @@ public class GestionApp {
         */
     public static void main(String[] args) {
         HibernateUtil.init();
+        MainFrame.getInstance().execute(args);
     }
 }
