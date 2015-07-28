@@ -31,7 +31,9 @@
         <!-- Drop and re-create the database schema on startup -->
         <property name="hibernate.hbm2ddl.auto">update</property>
         
-        <!-- Mapped classes -->        
+        <!-- Mapped classes -->
+        <mapping class="edu.utn.gestion.model.Book" />
+        <mapping class="edu.utn.gestion.model.Category" />
 
     </session-factory>
 
