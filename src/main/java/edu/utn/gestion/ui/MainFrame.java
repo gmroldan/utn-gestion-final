@@ -1,5 +1,6 @@
 package edu.utn.gestion.ui;
 
+import edu.utn.gestion.ui.dialog.book.BookManagerDialog;
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
@@ -40,6 +41,7 @@ public class MainFrame extends JFrame {
         jMenu1 = new javax.swing.JMenu();
         optionExit = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
+        jMenuItem2 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
 
@@ -54,6 +56,15 @@ public class MainFrame extends JFrame {
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Edit");
+
+        jMenuItem2.setText("Books");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem2);
+
         jMenuBar1.add(jMenu2);
 
         jMenu3.setText("Help");
@@ -80,18 +91,22 @@ public class MainFrame extends JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        new BookManagerDialog(this, true).setVisible(true);
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
     /**
-        *  Executes the UI.
-        * 
-        * @param args 
-        */
+    *  Executes the UI.
+    * 
+    * @param args 
+    */
     public void execute(String args[]) {
         this.main(args);
     }
     
     /**
-        * @param args the command line arguments
-        */
+    * @param args the command line arguments
+    */
     private void main(String args[]) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -101,8 +116,8 @@ public class MainFrame extends JFrame {
     }
     
     /**
-        *  Sets the default look and feel for the application.
-        */
+    *  Sets the default look and feel for the application.
+    */
     private void initLookAndFeel() {
         try {
             for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
@@ -122,6 +137,7 @@ public class MainFrame extends JFrame {
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem optionExit;
     // End of variables declaration//GEN-END:variables
 }
