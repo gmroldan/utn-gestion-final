@@ -2,6 +2,7 @@ package edu.utn.gestion.ui.dialog.book;
 
 import edu.utn.gestion.ui.controller.BookController;
 import edu.utn.gestion.exception.GestionAppException;
+import edu.utn.gestion.model.Book;
 import java.awt.Frame;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
@@ -48,6 +49,11 @@ public class BookManagerDialog extends JDialog {
         });
 
         tableBooks.setModel(this.bookTableModel);
+        tableBooks.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableBooksMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tableBooks);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -77,6 +83,22 @@ public class BookManagerDialog extends JDialog {
             JOptionPane.showMessageDialog(this, ex, null, JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_formWindowOpened
+
+    private void tableBooksMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableBooksMouseClicked
+        int rowIndex = this.tableBooks.getSelectedRow();
+        int columnIndex = this.tableBooks.getSelectedColumn();
+        
+        if (columnIndex == 0 && rowIndex >= 0) {
+            Long id = (Long) this.bookTableModel.getValueAt(rowIndex, columnIndex);
+        
+            try {
+                Book book = this.controller.findOne(id);
+                new EditBookDialog(this, true, book).setVisible(true);
+            } catch (GestionAppException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(), null, JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_tableBooksMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     protected javax.swing.JScrollPane jScrollPane1;

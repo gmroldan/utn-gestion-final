@@ -2,6 +2,7 @@ package edu.utn.gestion.ui.controller;
 
 import edu.utn.gestion.exception.GestionAppException;
 import edu.utn.gestion.model.Book;
+import edu.utn.gestion.model.Category;
 import edu.utn.gestion.service.BookService;
 import java.util.List;
 
@@ -20,5 +21,9 @@ public class BookController {
     
     public List<Book> findAll() throws GestionAppException {
         return BookService.getInstance().findAll();
+    }
+    
+    public List<Category> findAllCategories() throws GestionAppException {
+        return BookService.getInstance().findAllCategories();
     }
 }

@@ -13,7 +13,7 @@ public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private long id;    
 
     @Column(nullable = false, unique = true, length = 20)
     private String name;
@@ -49,5 +49,15 @@ public class Category {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return name.equals(((Category) obj).getName());
+    }   
+    
+    @Override
+    public String toString() {
+        return name;
     }
 }
