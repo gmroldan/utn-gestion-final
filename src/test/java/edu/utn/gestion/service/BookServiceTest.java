@@ -13,6 +13,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.anyLong;
 import static org.mockito.internal.util.reflection.Whitebox.setInternalState;
 
@@ -29,6 +30,23 @@ public class BookServiceTest {
     
     @After
     public void tearDown() {
+    }
+    
+    @Test
+    public void saveBookTest() throws Exception {
+        Long expectedId = 2L;
+        Book book = new Book(2L, "TestTitle", "TestDescription", "12345", 20, 30, new Category(), "TestAuthor", "TestEditorial");
+        when(this.bookDAOMock.save(book)).thenReturn(expectedId);
+        
+        Long result = this.bookService.saveBook(book);
+        
+        assertEquals(expectedId, result);
+    }
+    
+    @Test (expected = GestionAppException.class)
+    public void saveBookTestThrowsException() throws Exception {
+        when(this.bookDAOMock.save(any(Book.class))).thenThrow(DataAccessException.class);
+        this.bookService.saveBook(new Book());
     }
 
     @Test
@@ -64,5 +82,5 @@ public class BookServiceTest {
     public void findAllTestThrowsException() throws Exception {
         when(this.bookDAOMock.findAll()).thenThrow(DataAccessException.class);
         this.bookService.findAll();
-    }    
+    }
 }

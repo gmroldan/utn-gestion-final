@@ -26,6 +26,14 @@ public class BookService {
         return INSTANCE;
     }
     
+    public Long saveBook(Book book) throws GestionAppException {
+        try {
+            return this.bookDAO.save(book);
+        } catch (DataAccessException ex) {
+            throw new GestionAppException(ex.getMessage(), ex);
+        }
+    }
+    
     public Book findOne(long id) throws GestionAppException {
         try {
             return this.bookDAO.findOne(id);

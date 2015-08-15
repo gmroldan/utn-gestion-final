@@ -71,14 +71,14 @@ public abstract class GenericDAO<T, I> {
      * @return An instance of the object that was saved.
      * @throws edu.utn.gestion.exception.DataAccessException when something goes wrong.
      */
-    public T save(T object) throws DataAccessException {
+    public I save(T object) throws DataAccessException {
         this.validateNotNull(object);
         
-        T result = null;
+        I result = null;
         
         try {
             this.startOperation();
-            result = (T) this.session.save(object);
+            result = (I) this.session.save(object);
             this.finishOperation();
         } catch (Exception ex) {
             this.handleException(ex);
