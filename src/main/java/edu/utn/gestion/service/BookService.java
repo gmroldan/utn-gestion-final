@@ -34,6 +34,14 @@ public class BookService {
         }
     }
     
+    public Book updateBook(Book book) throws GestionAppException {
+        try {
+            return this.bookDAO.update(book);
+        } catch (DataAccessException ex) {
+            throw new GestionAppException(ex.getMessage(), ex);
+        }
+    }
+    
     public Book findOne(long id) throws GestionAppException {
         try {
             return this.bookDAO.findOne(id);

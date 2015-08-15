@@ -11,6 +11,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
+import org.junit.Ignore;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.any;
@@ -47,6 +48,22 @@ public class BookServiceTest {
     public void saveBookTestThrowsException() throws Exception {
         when(this.bookDAOMock.save(any(Book.class))).thenThrow(DataAccessException.class);
         this.bookService.saveBook(new Book());
+    }
+    
+    @Test
+    public void updateBookTest() throws Exception {
+        Book book = new Book(2L, "TestTitle", "TestDescription", "12345", 20, 30, new Category(), "TestAuthor", "TestEditorial");
+        when(this.bookDAOMock.update(book)).thenReturn(book);
+        
+        Book result = this.bookService.updateBook(book);
+        
+        assertEquals(book, result);
+    }
+    
+    @Test (expected = GestionAppException.class)
+    public void updateBookTestThrowsException() throws Exception {
+        when(this.bookDAOMock.update(any(Book.class))).thenThrow(DataAccessException.class);
+        this.bookService.updateBook(new Book());
     }
 
     @Test
