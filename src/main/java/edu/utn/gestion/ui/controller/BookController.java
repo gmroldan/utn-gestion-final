@@ -15,6 +15,10 @@ public class BookController {
         return INSTANCE;
     }
     
+    public Long saveBook(Book book) throws GestionAppException {
+        return BookService.getInstance().saveBook(book);
+    }
+    
     public Book findOne(long id) throws GestionAppException {
         return BookService.getInstance().findOne(id);
     }

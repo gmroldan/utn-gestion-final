@@ -14,7 +14,7 @@ import org.apache.commons.collections4.CollectionUtils;
 
 public abstract class AbstractBookDialog extends JDialog {
     protected final BookController controller = BookController.getInstance();
-    protected final Book currentBook;
+    protected Book currentBook;
     protected DefaultComboBoxModel comboBoxModel;
 
     /**
@@ -202,6 +202,8 @@ public abstract class AbstractBookDialog extends JDialog {
             this.txtStock.setText("" + this.currentBook.getStock());
             this.txtDescription.setText(this.currentBook.getDescription());
             this.cmbCategory.setSelectedItem(this.currentBook.getCategory());
+        } else {
+            this.currentBook = new Book();
         }
     }//GEN-LAST:event_formWindowOpened
     

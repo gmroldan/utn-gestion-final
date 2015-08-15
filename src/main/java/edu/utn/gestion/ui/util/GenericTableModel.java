@@ -30,6 +30,7 @@ public abstract class GenericTableModel<T> extends AbstractTableModel {
     public void setObjectList(List<T> objectList) {
         this.objectList.clear();
         this.objectList.addAll(objectList);
+        this.fireTableDataChanged();
     }
 
     @Override
