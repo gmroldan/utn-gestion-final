@@ -11,6 +11,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 
 public abstract class AbstractBookDialog extends JDialog {
     protected final BookController controller = BookController.getInstance();
@@ -220,6 +221,36 @@ public abstract class AbstractBookDialog extends JDialog {
         if (CollectionUtils.isNotEmpty(categories)) {
             this.comboBoxModel = new DefaultComboBoxModel(categories.toArray());
         }
+    }
+    
+    protected void setBookData() throws GestionAppException {
+        this.currentBook.setIsbn(this.txtIsbn.getText());
+        this.currentBook.setTitle(this.txtTitle.getText());
+        this.currentBook.setAuthor(this.txtIsbn.getText());
+        this.currentBook.setCategory((Category) this.cmbCategory.getSelectedItem());
+        this.currentBook.setDescription(this.txtDescription.getText());
+        this.currentBook.setEditorial(this.txtIsbn.getText());
+        
+        
+        String priceString = this.txtPrice.getText();
+        String stockString = this.txtStock.getText();
+        
+        
+        if (StringUtils.isNotEmpty(priceString)) {
+            this.currentBook.setPrice(Double.parseDouble(priceString));
+        } else {
+            throw new GestionAppException("Please review the price value.");
+        }
+        
+        if (StringUtils.isNotEmpty(stockString)) {
+            this.currentBook.setStock(Integer.parseInt(stockString));
+        } else {
+            throw new GestionAppException("Please review the stock value.");
+        }
+    }
+    
+    protected void showErrorMessage(String message) {
+        JOptionPane.showMessageDialog(this, message, null, JOptionPane.ERROR_MESSAGE);
     }
     
     protected abstract void btnAcceptActionPerformed(ActionEvent event);

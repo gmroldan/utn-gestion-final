@@ -1,5 +1,6 @@
 package edu.utn.gestion.ui.dialog.book;
 
+import edu.utn.gestion.exception.GestionAppException;
 import edu.utn.gestion.model.Book;
 import java.awt.event.ActionEvent;
 import javax.swing.JDialog;
@@ -12,7 +13,13 @@ public class EditBookDialog extends AbstractBookDialog {
 
     @Override
     protected void btnAcceptActionPerformed(ActionEvent event) {
-        throw new UnsupportedOperationException("Not supported.");
+        try {
+            this.setBookData();
+            this.controller.updateBook(this.currentBook);
+            this.dispose();
+        } catch (GestionAppException ex) {
+            this.showErrorMessage(ex.getMessage());
+        }
     }
 
     @Override
