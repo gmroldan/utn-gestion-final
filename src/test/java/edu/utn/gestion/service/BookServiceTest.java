@@ -4,14 +4,16 @@ import edu.utn.gestion.dao.BookDAO;
 import edu.utn.gestion.exception.DataAccessException;
 import edu.utn.gestion.exception.GestionAppException;
 import edu.utn.gestion.model.Book;
-import edu.utn.gestion.model.Category;
+import edu.utn.gestion.util.BookFactory;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
-import org.junit.Ignore;
+import org.mockito.Mockito;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.any;
@@ -34,9 +36,9 @@ public class BookServiceTest {
     }
     
     @Test
-    public void saveBookTest() throws Exception {
-        Long expectedId = 2L;
-        Book book = new Book(2L, "TestTitle", "TestDescription", "12345", 20, 30, new Category(), "TestAuthor", "TestEditorial");
+    public void saveBookTest() throws Exception {        
+        Book book = BookFactory.createBook();
+        Long expectedId = book.getId();
         when(this.bookDAOMock.save(book)).thenReturn(expectedId);
         
         Long result = this.bookService.saveBook(book);
@@ -52,7 +54,7 @@ public class BookServiceTest {
     
     @Test
     public void updateBookTest() throws Exception {
-        Book book = new Book(2L, "TestTitle", "TestDescription", "12345", 20, 30, new Category(), "TestAuthor", "TestEditorial");
+        Book book = BookFactory.createBook();
         when(this.bookDAOMock.update(book)).thenReturn(book);
         
         Book result = this.bookService.updateBook(book);
@@ -65,10 +67,19 @@ public class BookServiceTest {
         when(this.bookDAOMock.update(any(Book.class))).thenThrow(DataAccessException.class);
         this.bookService.updateBook(new Book());
     }
+    
+    @Test
+    public void deleteBookTest() throws Exception {
+        Book book = BookFactory.createBook();
+        
+        this.bookService.deleteBook(book);
+        
+        verify(bookDAOMock, times(1)).delete(book);
+    }
 
     @Test
     public void findOneTest() throws Exception {
-        Book book = new Book(2L, "TestTitle", "TestDescription", "12345", 20, 30, new Category(), "TestAuthor", "TestEditorial");
+        Book book = BookFactory.createBook();
         when(this.bookDAOMock.findOne(anyLong())).thenReturn(book);
         
         Book result = this.bookService.findOne(2L);
@@ -84,8 +95,8 @@ public class BookServiceTest {
 
     @Test
     public void findAllTest() throws Exception {
-        Book book1 = new Book(1L, "TestTitle1", "TestDescription1", "12355", 20, 30, new Category(), "TestAuthor", "TestEditorial");
-        Book book2 = new Book(2L, "TestTitle2", "TestDescription2", "12345", 20, 30, new Category(), "TestAuthor", "TestEditorial");
+        Book book1 = BookFactory.createBook();
+        Book book2 = BookFactory.createBook();
         List<Book> bookList = Arrays.asList(book1, book2);
         
         when(this.bookDAOMock.findAll()).thenReturn(bookList);

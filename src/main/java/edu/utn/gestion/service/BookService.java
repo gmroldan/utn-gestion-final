@@ -42,6 +42,14 @@ public class BookService {
         }
     }
     
+    public void deleteBook(Book book) throws GestionAppException {
+        try {
+            this.bookDAO.delete(book);
+        } catch (DataAccessException ex) {
+            throw new GestionAppException(ex.getMessage(), ex);
+        }
+    }
+    
     public Book findOne(long id) throws GestionAppException {
         try {
             return this.bookDAO.findOne(id);
