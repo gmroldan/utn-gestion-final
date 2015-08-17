@@ -3,10 +3,10 @@ package edu.utn.gestion.ui.dialog.book;
 import edu.utn.gestion.ui.controller.BookController;
 import edu.utn.gestion.exception.GestionAppException;
 import edu.utn.gestion.model.Book;
+import edu.utn.gestion.ui.util.PopUpFactory;
 import java.awt.Frame;
 import java.util.Set;
 import javax.swing.JDialog;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -147,7 +147,7 @@ public class BookManagerDialog extends JDialog {
         try {
              this.model.setObjectList(this.controller.findAll());
         } catch (GestionAppException ex) {
-            JOptionPane.showMessageDialog(this, ex, null, JOptionPane.ERROR_MESSAGE);
+            PopUpFactory.showErrorMessage(this, ex.getMessage());
         }
     }
     
@@ -158,7 +158,7 @@ public class BookManagerDialog extends JDialog {
             Book book = this.controller.findOne(id);
             new EditBookDialog(this, true, book).setVisible(true);
         } catch (GestionAppException ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage(), null, JOptionPane.ERROR_MESSAGE);
+            PopUpFactory.showErrorMessage(this, ex.getMessage());
         }
     }
     
@@ -175,7 +175,7 @@ public class BookManagerDialog extends JDialog {
             try {
                 this.controller.deleteBook(book);
             } catch (GestionAppException ex) {
-                JOptionPane.showMessageDialog(this, ex.getMessage(), null, JOptionPane.ERROR_MESSAGE);
+                PopUpFactory.showErrorMessage(this, ex.getMessage());
             }
         }
     }

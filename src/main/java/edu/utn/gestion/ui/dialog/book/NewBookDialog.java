@@ -1,6 +1,7 @@
 package edu.utn.gestion.ui.dialog.book;
 
 import edu.utn.gestion.exception.GestionAppException;
+import edu.utn.gestion.ui.util.PopUpFactory;
 import java.awt.event.ActionEvent;
 import javax.swing.JDialog;
 
@@ -17,7 +18,7 @@ public class NewBookDialog extends AbstractBookDialog {
             this.controller.saveBook(this.currentBook);
             this.dispose();
         } catch (GestionAppException ex) {
-            this.showErrorMessage(ex.getMessage());
+            PopUpFactory.showErrorMessage(this, ex.getMessage());
         }
     }
 

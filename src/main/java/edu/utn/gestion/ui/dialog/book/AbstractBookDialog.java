@@ -4,12 +4,12 @@ import edu.utn.gestion.exception.GestionAppException;
 import edu.utn.gestion.model.Book;
 import edu.utn.gestion.model.Category;
 import edu.utn.gestion.ui.controller.BookController;
+import edu.utn.gestion.ui.util.PopUpFactory;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JDialog;
-import javax.swing.JOptionPane;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -214,7 +214,7 @@ public abstract class AbstractBookDialog extends JDialog {
         try {
             categories = this.controller.findAllCategories();
         } catch (GestionAppException ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage(), null, JOptionPane.ERROR_MESSAGE);
+            PopUpFactory.showErrorMessage(this, ex.getMessage());
             this.dispose();
         }
         
@@ -247,10 +247,6 @@ public abstract class AbstractBookDialog extends JDialog {
         } else {
             throw new GestionAppException("Please review the stock value.");
         }
-    }
-    
-    protected void showErrorMessage(String message) {
-        JOptionPane.showMessageDialog(this, message, null, JOptionPane.ERROR_MESSAGE);
     }
     
     protected abstract void btnAcceptActionPerformed(ActionEvent event);
