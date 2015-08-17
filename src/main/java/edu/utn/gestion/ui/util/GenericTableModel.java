@@ -1,12 +1,15 @@
 package edu.utn.gestion.ui.util;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.swing.table.AbstractTableModel;
 
 public abstract class GenericTableModel<T> extends AbstractTableModel {
     private final String[] columnNames;
     protected final List<T> objectList = new ArrayList<T>();
+    protected final Set<T> selectedObjects = new HashSet<T>();
 
     public GenericTableModel(String[] columnNames) {
         this.columnNames = columnNames;
@@ -27,7 +30,20 @@ public abstract class GenericTableModel<T> extends AbstractTableModel {
         return this.objectList.get(rowIndex);
     }
     
+    public void refreshSelectedObjects(int[] selectedRows) {
+        this.selectedObjects.clear();
+        
+        for (int index : selectedRows) {
+            this.selectedObjects.add(this.getObject(index));
+        }
+    }
+    
+    public Set<T> getSelectedObjects() {
+        return this.selectedObjects;
+    }
+    
     public void setObjectList(List<T> objectList) {
+        this.selectedObjects.clear();
         this.objectList.clear();
         this.objectList.addAll(objectList);
         this.fireTableDataChanged();

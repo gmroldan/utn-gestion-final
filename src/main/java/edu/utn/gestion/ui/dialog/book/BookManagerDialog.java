@@ -4,6 +4,7 @@ import edu.utn.gestion.ui.controller.BookController;
 import edu.utn.gestion.exception.GestionAppException;
 import edu.utn.gestion.model.Book;
 import java.awt.Frame;
+import java.util.Set;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
@@ -13,7 +14,7 @@ import javax.swing.JOptionPane;
  */
 public class BookManagerDialog extends JDialog {
     private final BookController controller = BookController.getInstance();
-    private final BookTableModel bookTableModel = new BookTableModel();
+    private final BookTableModel model = new BookTableModel();
 
     /**
      * Creates new form BookManagerDialog
@@ -39,6 +40,7 @@ public class BookManagerDialog extends JDialog {
         jScrollPane1 = new javax.swing.JScrollPane();
         tableBooks = new javax.swing.JTable();
         btnNew = new javax.swing.JButton();
+        btnDelete = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Books");
@@ -56,7 +58,7 @@ public class BookManagerDialog extends JDialog {
             }
         });
 
-        tableBooks.setModel(this.bookTableModel);
+        tableBooks.setModel(this.model);
         tableBooks.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tableBooksMouseClicked(evt);
@@ -71,6 +73,13 @@ public class BookManagerDialog extends JDialog {
             }
         });
 
+        btnDelete.setText("Delete");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -81,14 +90,21 @@ public class BookManagerDialog extends JDialog {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 883, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnNew)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnDelete)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
+
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnDelete, btnNew});
+
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(btnNew)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnNew)
+                    .addComponent(btnDelete))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -105,14 +121,11 @@ public class BookManagerDialog extends JDialog {
         int rowIndex = this.tableBooks.getSelectedRow();
         int columnIndex = this.tableBooks.getSelectedColumn();
         
-        if (columnIndex == 0 && rowIndex >= 0) {
-            Long id = (Long) this.bookTableModel.getValueAt(rowIndex, columnIndex);
-        
-            try {
-                Book book = this.controller.findOne(id);
-                new EditBookDialog(this, true, book).setVisible(true);
-            } catch (GestionAppException ex) {
-                JOptionPane.showMessageDialog(this, ex.getMessage(), null, JOptionPane.ERROR_MESSAGE);
+        if (rowIndex >= 0) {
+            if (columnIndex == 0) {
+                this.editSelectedObject(rowIndex, columnIndex);
+            } else {
+                this.refreshSelectedObjects();
             }
         }
     }//GEN-LAST:event_tableBooksMouseClicked
@@ -125,15 +138,50 @@ public class BookManagerDialog extends JDialog {
         this.updateBookList();
     }//GEN-LAST:event_formWindowGainedFocus
 
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        this.deleteSelectedObjects();        
+        this.updateBookList();
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
     private void updateBookList() {
         try {
-             this.bookTableModel.setObjectList(this.controller.findAll());
+             this.model.setObjectList(this.controller.findAll());
         } catch (GestionAppException ex) {
             JOptionPane.showMessageDialog(this, ex, null, JOptionPane.ERROR_MESSAGE);
         }
     }
     
+    private void editSelectedObject(int rowIndex, int columnIndex) {
+        Long id = (Long) this.model.getValueAt(rowIndex, columnIndex);
+
+        try {
+            Book book = this.controller.findOne(id);
+            new EditBookDialog(this, true, book).setVisible(true);
+        } catch (GestionAppException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), null, JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    private void refreshSelectedObjects() {
+        int[] selectedRows = this.tableBooks.getSelectedRows();
+        this.model.refreshSelectedObjects(selectedRows);
+    }
+    
+    // TODO: this method should be optimized.
+    private void deleteSelectedObjects() {
+        Set<Book> selectedBooks = this.model.getSelectedObjects();
+        
+        for (Book book : selectedBooks) {
+            try {
+                this.controller.deleteBook(book);
+            } catch (GestionAppException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(), null, JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    protected javax.swing.JButton btnDelete;
     protected javax.swing.JButton btnNew;
     protected javax.swing.JScrollPane jScrollPane1;
     protected javax.swing.JTable tableBooks;

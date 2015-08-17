@@ -23,6 +23,10 @@ public class BookController {
         return BookService.getInstance().updateBook(book);
     }
     
+    public void deleteBook(Book book) throws GestionAppException {
+        BookService.getInstance().deleteBook(book);
+    }
+    
     public Book findOne(long id) throws GestionAppException {
         return BookService.getInstance().findOne(id);
     }
