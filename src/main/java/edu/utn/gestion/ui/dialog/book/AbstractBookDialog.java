@@ -11,12 +11,11 @@ import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JDialog;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 
 public abstract class AbstractBookDialog extends JDialog {
     protected final BookController controller = BookController.getInstance();
     protected Book currentBook;
-    protected DefaultComboBoxModel comboBoxModel;
+    protected DefaultComboBoxModel categoriesModel;
 
     /**
      * Creates new form AbstractBookDialog
@@ -43,7 +42,6 @@ public abstract class AbstractBookDialog extends JDialog {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        txtIsbn = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         txtTitle = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
@@ -53,9 +51,7 @@ public abstract class AbstractBookDialog extends JDialog {
         jLabel5 = new javax.swing.JLabel();
         txtEditorial = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        txtPrice = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
-        txtStock = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtDescription = new javax.swing.JTextArea();
@@ -71,6 +67,9 @@ public abstract class AbstractBookDialog extends JDialog {
                 btnAcceptActionPerformed(event);
             }
         });
+        txtPrice = new javax.swing.JFormattedTextField();
+        txtStock = new javax.swing.JSpinner();
+        txtIsbn = new javax.swing.JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -86,7 +85,7 @@ public abstract class AbstractBookDialog extends JDialog {
 
         jLabel3.setText("Category");
 
-        cmbCategory.setModel(this.comboBoxModel);
+        cmbCategory.setModel(this.categoriesModel);
 
         jLabel4.setText("Author");
 
@@ -106,6 +105,10 @@ public abstract class AbstractBookDialog extends JDialog {
 
         btnAccept.setText("Accept");
 
+        txtPrice.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00"))));
+
+        txtIsbn.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("0"))));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -114,35 +117,26 @@ public abstract class AbstractBookDialog extends JDialog {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtIsbn, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cmbCategory, 0, 217, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtTitle))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(jLabel6)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabel7)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtStock))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel4)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtAuthor, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabel5)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtEditorial))
+                                .addComponent(txtAuthor, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel6)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtPrice)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtEditorial))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel7)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtStock, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 101, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel8)
                         .addGap(0, 0, Short.MAX_VALUE))
@@ -151,7 +145,20 @@ public abstract class AbstractBookDialog extends JDialog {
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnAccept)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnCancel)))
+                        .addComponent(btnCancel))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel1))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(txtIsbn)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cmbCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtTitle))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -160,9 +167,9 @@ public abstract class AbstractBookDialog extends JDialog {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(txtIsbn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3)
-                    .addComponent(cmbCategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbCategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtIsbn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
@@ -174,12 +181,13 @@ public abstract class AbstractBookDialog extends JDialog {
                     .addComponent(jLabel5)
                     .addComponent(txtEditorial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(txtPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7)
-                    .addComponent(txtStock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel6)
+                        .addComponent(jLabel7)
+                        .addComponent(txtStock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtPrice, javax.swing.GroupLayout.DEFAULT_SIZE, 24, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel8)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -199,8 +207,8 @@ public abstract class AbstractBookDialog extends JDialog {
             this.txtTitle.setText(this.currentBook.getTitle());
             this.txtAuthor.setText(this.currentBook.getAuthor());
             this.txtEditorial.setText(this.currentBook.getEditorial());
-            this.txtPrice.setText("" + this.currentBook.getPrice());
-            this.txtStock.setText("" + this.currentBook.getStock());
+            this.txtPrice.setValue(this.currentBook.getPrice());
+            this.txtStock.setValue(this.currentBook.getStock());
             this.txtDescription.setText(this.currentBook.getDescription());
             this.cmbCategory.setSelectedItem(this.currentBook.getCategory());
         } else {
@@ -219,34 +227,19 @@ public abstract class AbstractBookDialog extends JDialog {
         }
         
         if (CollectionUtils.isNotEmpty(categories)) {
-            this.comboBoxModel = new DefaultComboBoxModel(categories.toArray());
+            this.categoriesModel = new DefaultComboBoxModel(categories.toArray());
         }
     }
     
     protected void setBookData() throws GestionAppException {
         this.currentBook.setIsbn(this.txtIsbn.getText());
         this.currentBook.setTitle(this.txtTitle.getText());
-        this.currentBook.setAuthor(this.txtIsbn.getText());
+        this.currentBook.setAuthor(this.txtAuthor.getText());
         this.currentBook.setCategory((Category) this.cmbCategory.getSelectedItem());
         this.currentBook.setDescription(this.txtDescription.getText());
-        this.currentBook.setEditorial(this.txtIsbn.getText());
-        
-        
-        String priceString = this.txtPrice.getText();
-        String stockString = this.txtStock.getText();
-        
-        
-        if (StringUtils.isNotEmpty(priceString)) {
-            this.currentBook.setPrice(Double.parseDouble(priceString));
-        } else {
-            throw new GestionAppException("Please review the price value.");
-        }
-        
-        if (StringUtils.isNotEmpty(stockString)) {
-            this.currentBook.setStock(Integer.parseInt(stockString));
-        } else {
-            throw new GestionAppException("Please review the stock value.");
-        }
+        this.currentBook.setEditorial(this.txtEditorial.getText());
+        this.currentBook.setPrice(((Number) this.txtPrice.getValue()).doubleValue());
+        this.currentBook.setStock(((Number) this.txtStock.getValue()).intValue());
     }
     
     protected abstract void btnAcceptActionPerformed(ActionEvent event);
@@ -268,9 +261,9 @@ public abstract class AbstractBookDialog extends JDialog {
     protected javax.swing.JTextField txtAuthor;
     protected javax.swing.JTextArea txtDescription;
     protected javax.swing.JTextField txtEditorial;
-    protected javax.swing.JTextField txtIsbn;
-    protected javax.swing.JTextField txtPrice;
-    protected javax.swing.JTextField txtStock;
+    protected javax.swing.JFormattedTextField txtIsbn;
+    protected javax.swing.JFormattedTextField txtPrice;
+    protected javax.swing.JSpinner txtStock;
     protected javax.swing.JTextField txtTitle;
     // End of variables declaration//GEN-END:variables
 }
