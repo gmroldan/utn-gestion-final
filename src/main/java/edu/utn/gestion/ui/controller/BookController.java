@@ -16,15 +16,15 @@ public class BookController {
     }
     
     public String saveBook(Book book) throws GestionAppException {
-        return BookService.getInstance().saveBook(book);
+        return BookService.getInstance().save(book);
     }
     
     public Book updateBook(Book book) throws GestionAppException {
-        return BookService.getInstance().updateBook(book);
+        return BookService.getInstance().update(book);
     }
     
     public void deleteBook(Book book) throws GestionAppException {
-        BookService.getInstance().deleteBook(book);
+        BookService.getInstance().delete(book);
     }
     
     public Book findOne(String id) throws GestionAppException {

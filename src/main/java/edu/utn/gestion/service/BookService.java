@@ -6,69 +6,32 @@ import edu.utn.gestion.exception.DataAccessException;
 import edu.utn.gestion.exception.GestionAppException;
 import edu.utn.gestion.model.Book;
 import edu.utn.gestion.model.Category;
+import edu.utn.gestion.service.generic.GenericService;
 import java.util.List;
 
 /**
  *
  * @author martin
  */
-public class BookService {
+public class BookService extends GenericService<Book, String> {
     private static final BookService INSTANCE = new BookService();
-    private final BookDAO bookDAO = BookDAO.getInstance();
+    private final BookDAO bookDAO;
 
     /**
      * Class constructor.
      */
     private BookService() {
+        super(BookDAO.getInstance());
+        this.bookDAO = (BookDAO) this.genericDAO;
     }
 
     public static BookService getInstance() {
         return INSTANCE;
     }
     
-    public String saveBook(Book book) throws GestionAppException {
-        try {
-            return this.bookDAO.save(book);
-        } catch (DataAccessException ex) {
-            throw new GestionAppException(ex.getMessage(), ex);
-        }
-    }
-    
-    public Book updateBook(Book book) throws GestionAppException {
-        try {
-            return this.bookDAO.update(book);
-        } catch (DataAccessException ex) {
-            throw new GestionAppException(ex.getMessage(), ex);
-        }
-    }
-    
-    public void deleteBook(Book book) throws GestionAppException {
-        try {
-            this.bookDAO.delete(book);
-        } catch (DataAccessException ex) {
-            throw new GestionAppException(ex.getMessage(), ex);
-        }
-    }
-    
-    public Book findOne(String id) throws GestionAppException {
-        try {
-            return this.bookDAO.findOne(id);
-        } catch (DataAccessException ex) {
-            throw new GestionAppException(ex.getMessage(), ex);
-        }
-    }
-    
     public List<Book> findBooksBySearch(String searchString) throws GestionAppException {
         try {
             return this.bookDAO.findBooksBySearch(searchString);
-        } catch (DataAccessException ex) {
-            throw new GestionAppException(ex.getMessage(), ex);
-        }
-    }
-    
-    public List<Book> findAll() throws GestionAppException {
-        try {
-            return this.bookDAO.findAll();
         } catch (DataAccessException ex) {
             throw new GestionAppException(ex.getMessage(), ex);
         }
