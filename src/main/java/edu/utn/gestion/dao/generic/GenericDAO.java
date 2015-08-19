@@ -2,6 +2,7 @@ package edu.utn.gestion.dao.generic;
 
 import edu.utn.gestion.config.HibernateUtil;
 import edu.utn.gestion.exception.DataAccessException;
+import edu.utn.gestion.model.Book;
 import java.io.Serializable;
 import java.util.List;
 import org.apache.commons.collections4.CollectionUtils;
@@ -183,5 +184,7 @@ public abstract class GenericDAO<T, I> {
         }
         
         return result;
-    }       
+    }
+    
+    public abstract List<T> findBooksBySearch(String searchString) throws DataAccessException;
 }

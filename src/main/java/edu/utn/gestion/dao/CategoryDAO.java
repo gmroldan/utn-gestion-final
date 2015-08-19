@@ -1,7 +1,9 @@
 package edu.utn.gestion.dao;
 
 import edu.utn.gestion.dao.generic.GenericDAO;
+import edu.utn.gestion.exception.DataAccessException;
 import edu.utn.gestion.model.Category;
+import java.util.List;
 
 /**
  *
@@ -16,6 +18,11 @@ public class CategoryDAO extends GenericDAO<Category, Long> {
     
     public static CategoryDAO getInstance() {
         return INSTANCE;
+    }
+
+    @Override
+    public List<Category> findBooksBySearch(String searchString) throws DataAccessException {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
     
 }

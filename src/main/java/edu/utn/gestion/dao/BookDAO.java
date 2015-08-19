@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package edu.utn.gestion.dao;
 
 import edu.utn.gestion.dao.generic.GenericDAO;
@@ -27,6 +22,7 @@ public class BookDAO extends GenericDAO<Book, String> {
         return INSTANCE;
     }
     
+    @Override
     public List<Book> findBooksBySearch(String searchString) throws DataAccessException {        
         List<Book> result = null;
         

@@ -37,5 +37,9 @@ public abstract class GenericController<E, I> {
     
     public List<E> findAll() throws GestionAppException {
         return this.genericService.findAll();
-    }    
+    }
+    
+    public List<E> findBooksBySearch(String searchString) throws GestionAppException {
+        return this.genericService.findBooksBySearch(searchString);
+    }
 }

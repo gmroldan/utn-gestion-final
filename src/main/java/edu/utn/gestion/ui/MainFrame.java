@@ -1,6 +1,7 @@
 package edu.utn.gestion.ui;
 
-import edu.utn.gestion.ui.dialog.book.BookManagerDialog;
+import edu.utn.gestion.ui.dialog.book.BooksManagementDialog;
+import edu.utn.gestion.ui.util.GenericManagementDialog;
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
@@ -92,7 +93,7 @@ public class MainFrame extends JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        new BookManagerDialog(this, true).setVisible(true);
+        new BooksManagementDialog(this, true).setVisible(true);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     /**

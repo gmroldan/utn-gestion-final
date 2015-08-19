@@ -1,8 +1,10 @@
-package edu.utn.gestion.ui.dialog.book;
+package edu.utn.gestion.ui.util;
 
-import edu.utn.gestion.ui.controller.BookController;
 import edu.utn.gestion.exception.GestionAppException;
 import edu.utn.gestion.model.Book;
+import edu.utn.gestion.ui.controller.generic.GenericController;
+import edu.utn.gestion.ui.dialog.book.NewBookDialog;
+import edu.utn.gestion.ui.util.GenericTableModel;
 import edu.utn.gestion.ui.util.PopUpFactory;
 import java.awt.Frame;
 import java.awt.event.KeyEvent;
@@ -15,18 +17,22 @@ import org.apache.commons.collections4.CollectionUtils;
  *
  * @author Gerardo Martín Roldán
  */
-public class BookManagerDialog extends JDialog {
-    private final BookController controller = BookController.getInstance();
-    private final BookTableModel model = new BookTableModel();
+public abstract class GenericManagementDialog<E, I> extends JDialog {
+    protected final GenericController<E, I> controller;
+    protected final GenericTableModel model;
 
     /**
      * Creates new form BookManagerDialog
      * 
      * @param parent
      * @param modal
+     * @param controller
+     * @parm model
      */
-    public BookManagerDialog(Frame parent, boolean modal) {
+    public GenericManagementDialog(Frame parent, boolean modal, GenericController controller, GenericTableModel model) {
         super(parent, modal);
+        this.controller = controller;
+        this.model = model;
         this.initComponents();
         this.setLocationRelativeTo(parent);
     }
@@ -159,7 +165,7 @@ public class BookManagerDialog extends JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        this.updateBookList();
+        this.updateObjectList();
     }//GEN-LAST:event_formWindowOpened
 
     private void tableBooksMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableBooksMouseClicked
@@ -176,29 +182,29 @@ public class BookManagerDialog extends JDialog {
     }//GEN-LAST:event_tableBooksMouseClicked
 
     private void btnNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewActionPerformed
-        new NewBookDialog(this, true).setVisible(true);
+        this.showNewObjectDialog();
     }//GEN-LAST:event_btnNewActionPerformed
 
     private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
-        this.updateBookList();
+        this.updateObjectList();
     }//GEN-LAST:event_formWindowGainedFocus
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         this.deleteSelectedObjects();        
-        this.updateBookList();
+        this.updateObjectList();
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-        this.searchBooks();
+        this.search();
     }//GEN-LAST:event_btnSearchActionPerformed
 
     private void txtSearchKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            this.searchBooks();
+            this.search();
         }
     }//GEN-LAST:event_txtSearchKeyPressed
 
-    private void updateBookList() {
+    private void updateObjectList() {
         try {
              this.model.setObjectList(this.controller.findAll());
         } catch (GestionAppException ex) {
@@ -207,11 +213,11 @@ public class BookManagerDialog extends JDialog {
     }
     
     private void editSelectedObject(int rowIndex, int columnIndex) {
-        String id = (String) this.model.getValueAt(rowIndex, columnIndex);
+        I id = (I) this.model.getValueAt(rowIndex, columnIndex);
 
         try {
-            Book book = this.controller.findOne(id);
-            new EditBookDialog(this, true, book).setVisible(true);
+            E object = this.controller.findOne(id);
+            this.showEditObjectDialog(object);            
         } catch (GestionAppException ex) {
             PopUpFactory.showErrorMessage(this, ex.getMessage());
         }
@@ -224,19 +230,19 @@ public class BookManagerDialog extends JDialog {
     
     // TODO: this method should be optimized.
     private void deleteSelectedObjects() {
-        Set<Book> selectedBooks = this.model.getSelectedObjects();
+        Set<E> selectedBooks = this.model.getSelectedObjects();
         
-        for (Book book : selectedBooks) {
+        for (E object : selectedBooks) {
             try {
-                this.controller.delete(book);
+                this.controller.delete(object);
             } catch (GestionAppException ex) {
                 PopUpFactory.showErrorMessage(this, ex.getMessage());
             }
         }
     }
     
-    private void searchBooks() {
-        List<Book> searchResult = null;
+    private void search() {
+        List<E> searchResult = null;
         
         try {
             searchResult = this.controller.findBooksBySearch(this.txtSearch.getText());
@@ -248,6 +254,9 @@ public class BookManagerDialog extends JDialog {
             this.model.setObjectList(searchResult);
         }
     }
+    
+    protected abstract void showEditObjectDialog(E object);
+    protected abstract void showNewObjectDialog();
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     protected javax.swing.JButton btnDelete;
