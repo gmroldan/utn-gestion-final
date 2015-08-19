@@ -5,12 +5,15 @@ import edu.utn.gestion.exception.GestionAppException;
 import edu.utn.gestion.model.Book;
 import edu.utn.gestion.ui.util.PopUpFactory;
 import java.awt.Frame;
+import java.awt.event.KeyEvent;
+import java.util.List;
 import java.util.Set;
 import javax.swing.JDialog;
+import org.apache.commons.collections4.CollectionUtils;
 
 /**
  *
- * @author gerardo
+ * @author Gerardo Martín Roldán
  */
 public class BookManagerDialog extends JDialog {
     private final BookController controller = BookController.getInstance();
@@ -41,6 +44,9 @@ public class BookManagerDialog extends JDialog {
         tableBooks = new javax.swing.JTable();
         btnNew = new javax.swing.JButton();
         btnDelete = new javax.swing.JButton();
+        searchPanel = new javax.swing.JPanel();
+        txtSearch = new javax.swing.JTextField();
+        btnSearch = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Books");
@@ -80,6 +86,42 @@ public class BookManagerDialog extends JDialog {
             }
         });
 
+        searchPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Search"));
+
+        txtSearch.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtSearchKeyPressed(evt);
+            }
+        });
+
+        btnSearch.setText("Search");
+        btnSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout searchPanelLayout = new javax.swing.GroupLayout(searchPanel);
+        searchPanel.setLayout(searchPanelLayout);
+        searchPanelLayout.setHorizontalGroup(
+            searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(searchPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(txtSearch)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnSearch)
+                .addContainerGap())
+        );
+        searchPanelLayout.setVerticalGroup(
+            searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(searchPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSearch))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -90,9 +132,10 @@ public class BookManagerDialog extends JDialog {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 883, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnNew)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnDelete)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(searchPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -102,12 +145,14 @@ public class BookManagerDialog extends JDialog {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnNew)
-                    .addComponent(btnDelete))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(searchPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnDelete)
+                    .addComponent(btnNew))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -142,6 +187,16 @@ public class BookManagerDialog extends JDialog {
         this.deleteSelectedObjects();        
         this.updateBookList();
     }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+        this.searchBooks();
+    }//GEN-LAST:event_btnSearchActionPerformed
+
+    private void txtSearchKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            this.searchBooks();
+        }
+    }//GEN-LAST:event_txtSearchKeyPressed
 
     private void updateBookList() {
         try {
@@ -180,10 +235,27 @@ public class BookManagerDialog extends JDialog {
         }
     }
     
+    private void searchBooks() {
+        List<Book> searchResult = null;
+        
+        try {
+            searchResult = this.controller.findBooksBySearch(this.txtSearch.getText());
+        } catch (GestionAppException ex) {
+            PopUpFactory.showErrorMessage(this, ex.getMessage());
+        }
+        
+        if (CollectionUtils.isNotEmpty(searchResult)) {
+            this.model.setObjectList(searchResult);
+        }
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     protected javax.swing.JButton btnDelete;
     protected javax.swing.JButton btnNew;
+    protected javax.swing.JButton btnSearch;
     protected javax.swing.JScrollPane jScrollPane1;
+    protected javax.swing.JPanel searchPanel;
     protected javax.swing.JTable tableBooks;
+    protected javax.swing.JTextField txtSearch;
     // End of variables declaration//GEN-END:variables
 }

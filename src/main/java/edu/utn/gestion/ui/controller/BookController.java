@@ -38,4 +38,8 @@ public class BookController {
     public List<Category> findAllCategories() throws GestionAppException {
         return BookService.getInstance().findAllCategories();
     }
+
+    public List<Book> findBooksBySearch(String searchString) throws GestionAppException {
+        return BookService.getInstance().findBooksBySearch(searchString);
+    }
 }
