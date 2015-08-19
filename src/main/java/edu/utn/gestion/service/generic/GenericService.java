@@ -5,6 +5,14 @@ import edu.utn.gestion.exception.DataAccessException;
 import edu.utn.gestion.exception.GestionAppException;
 import java.util.List;
 
+/**
+ * Generic behavior for service layer.
+ * 
+ * @author Gerardo Martín Roldán
+ * 
+ * @param <E> Entity class.
+ * @param <I> Entity class's id.
+ */
 public abstract class GenericService<E, I> {
     protected final GenericDAO<E, I> genericDAO;
 
