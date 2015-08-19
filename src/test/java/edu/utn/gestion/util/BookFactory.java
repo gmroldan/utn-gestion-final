@@ -7,10 +7,9 @@ public class BookFactory {
     private static long counter = 1L;
     
     public static Book createBook() {
-        Book book = new Book(counter
+        Book book = new Book("12345" + counter
                 , "TestTitle" + counter
                 , "TestDescription" + counter
-                , "12345"
                 , 20, 30
                 , new Category()
                 , "TestAuthor" + counter

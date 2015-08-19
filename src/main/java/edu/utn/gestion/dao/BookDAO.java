@@ -15,7 +15,7 @@ import org.hibernate.Query;
  *
  * @author gerardo
  */
-public class BookDAO extends GenericDAO<Book, Long> {
+public class BookDAO extends GenericDAO<Book, String> {
     private static final BookDAO INSTANCE = new BookDAO();
     private final String QUERY_FIND_BOOKS_BY_SEARCH = "from Book where author like :parm or title like :parm or isbn like :parm or editorial like :parm";
 

@@ -207,7 +207,7 @@ public class BookManagerDialog extends JDialog {
     }
     
     private void editSelectedObject(int rowIndex, int columnIndex) {
-        Long id = (Long) this.model.getValueAt(rowIndex, columnIndex);
+        String id = (String) this.model.getValueAt(rowIndex, columnIndex);
 
         try {
             Book book = this.controller.findOne(id);

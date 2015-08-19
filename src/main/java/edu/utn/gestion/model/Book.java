@@ -2,8 +2,6 @@ package edu.utn.gestion.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -14,17 +12,14 @@ import javax.persistence.Table;
 public class Book {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    @Column(nullable = false, length = 12)
+    private String isbn;
 
     @Column(nullable = false, unique = true, length = 30)
     private String title;
 
     @Column(nullable = false, length = 150)
     private String description;
-
-    @Column(nullable = false, length = 12)
-    private String isbn;
 
     @Column(nullable = false)
     private double price;
@@ -51,7 +46,6 @@ public class Book {
     /**
      * Class constructor.
      *
-     * @param id
      * @param title
      * @param description
      * @param isbn
@@ -61,9 +55,8 @@ public class Book {
      * @param author
      * @param editorial
      */
-    public Book(long id, String title, String description, String isbn,
-            double price, int stock, Category category, String author, String editorial) {
-        this.id = id;
+    public Book(String isbn, String title, String description, double price
+            , int stock, Category category, String author, String editorial) {
         this.title = title;
         this.description = description;
         this.isbn = isbn;
@@ -72,14 +65,6 @@ public class Book {
         this.category = category;
         this.author = author;
         this.editorial = editorial;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getTitle() {

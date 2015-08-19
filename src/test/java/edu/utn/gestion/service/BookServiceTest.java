@@ -11,13 +11,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
-import org.mockito.Mockito;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.anyLong;
+import static org.mockito.Mockito.anyString;
 import static org.mockito.internal.util.reflection.Whitebox.setInternalState;
 
 public class BookServiceTest {
@@ -38,10 +37,10 @@ public class BookServiceTest {
     @Test
     public void saveBookTest() throws Exception {        
         Book book = BookFactory.createBook();
-        Long expectedId = book.getId();
+        String expectedId = book.getIsbn();
         when(this.bookDAOMock.save(book)).thenReturn(expectedId);
         
-        Long result = this.bookService.saveBook(book);
+        String result = this.bookService.saveBook(book);
         
         assertEquals(expectedId, result);
     }
@@ -80,17 +79,17 @@ public class BookServiceTest {
     @Test
     public void findOneTest() throws Exception {
         Book book = BookFactory.createBook();
-        when(this.bookDAOMock.findOne(anyLong())).thenReturn(book);
+        when(this.bookDAOMock.findOne(anyString())).thenReturn(book);
         
-        Book result = this.bookService.findOne(2L);
+        Book result = this.bookService.findOne("123456789");
         
         assertEquals(book, result);
     }
     
     @Test (expected = GestionAppException.class)
     public void findOneTestThrowsException() throws Exception {
-        when(this.bookDAOMock.findOne(anyLong())).thenThrow(DataAccessException.class);
-        this.bookService.findOne(2L);
+        when(this.bookDAOMock.findOne(anyString())).thenThrow(DataAccessException.class);
+        this.bookService.findOne("123456789");
     }
 
     @Test
