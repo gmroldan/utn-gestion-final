@@ -4,6 +4,7 @@ import edu.utn.gestion.config.HibernateUtil;
 import edu.utn.gestion.exception.DataAccessException;
 import edu.utn.gestion.model.Book;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
@@ -174,13 +175,6 @@ public abstract class GenericDAO<T, I> {
             this.finishOperation();
         } catch (Exception ex) {
             this.handleException(ex);
-        }
-        
-        if (CollectionUtils.isEmpty(result)) {
-            throw new DataAccessException(new StringBuilder()
-                    .append("There are not data for ")
-                    .append(this.clazz.getSimpleName())
-                    .toString());
         }
         
         return result;
