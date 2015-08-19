@@ -1,7 +1,7 @@
 package edu.utn.gestion.ui;
 
 import edu.utn.gestion.ui.dialog.book.BooksManagementDialog;
-import edu.utn.gestion.ui.util.GenericManagementDialog;
+import edu.utn.gestion.ui.dialog.customer.CustomersManagementDialog;
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
@@ -42,7 +42,8 @@ public class MainFrame extends JFrame {
         jMenu1 = new javax.swing.JMenu();
         optionExit = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
-        jMenuItem2 = new javax.swing.JMenuItem();
+        menuItemBooks = new javax.swing.JMenuItem();
+        menuItemCustomers = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
 
@@ -58,13 +59,21 @@ public class MainFrame extends JFrame {
 
         jMenu2.setText("Edit");
 
-        jMenuItem2.setText("Books");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+        menuItemBooks.setText("Books");
+        menuItemBooks.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
+                menuItemBooksActionPerformed(evt);
             }
         });
-        jMenu2.add(jMenuItem2);
+        jMenu2.add(menuItemBooks);
+
+        menuItemCustomers.setText("Customers");
+        menuItemCustomers.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemCustomersActionPerformed(evt);
+            }
+        });
+        jMenu2.add(menuItemCustomers);
 
         jMenuBar1.add(jMenu2);
 
@@ -92,9 +101,13 @@ public class MainFrame extends JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+    private void menuItemBooksActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemBooksActionPerformed
         new BooksManagementDialog(this, true).setVisible(true);
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
+    }//GEN-LAST:event_menuItemBooksActionPerformed
+
+    private void menuItemCustomersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemCustomersActionPerformed
+        new CustomersManagementDialog(this, true).setVisible(true);
+    }//GEN-LAST:event_menuItemCustomersActionPerformed
 
     /**
     *  Executes the UI.
@@ -138,7 +151,8 @@ public class MainFrame extends JFrame {
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem menuItemBooks;
+    private javax.swing.JMenuItem menuItemCustomers;
     private javax.swing.JMenuItem optionExit;
     // End of variables declaration//GEN-END:variables
 }

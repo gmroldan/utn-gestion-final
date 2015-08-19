@@ -13,6 +13,7 @@ public class BooksManagementDialog extends GenericManagementDialog<Book, String>
         super(parent, modal, BookController.getInstance(), new BookTableModel());
         this.bookController = (BookController) this.controller;
         this.bookTableModel = (BookTableModel) this.model;
+        this.setTitle("Books Management");
     }
     
     @Override
