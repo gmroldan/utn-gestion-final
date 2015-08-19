@@ -21,7 +21,7 @@ public abstract class GenericDAO<T, I> {
     private static final Logger LOGGER = Logger.getLogger(GenericDAO.class);
     private final Class clazz;
     private String findAllQuery;    
-    private Session session;
+    protected Session session;
     private Transaction transaction;
 
     /**
@@ -41,16 +41,16 @@ public abstract class GenericDAO<T, I> {
                 .toString();
     }
     
-    private void startOperation() {
+    protected void startOperation() {
         this.session = HibernateUtil.openSession();
         this.transaction = this.session.beginTransaction();
     }
     
-    private void finishOperation() {
+    protected void finishOperation() {
         this.transaction.commit();
     }
     
-    private void handleException(Exception ex) throws DataAccessException {
+    protected void handleException(Exception ex) throws DataAccessException {
         if (this.transaction != null) {
             this.transaction.rollback();
             LOGGER.error("Transaction rolledback.", ex);

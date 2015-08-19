@@ -58,6 +58,14 @@ public class BookService {
         }
     }
     
+    public List<Book> findBooksBySearch(String searchString) throws GestionAppException {
+        try {
+            return this.bookDAO.findBooksBySearch(searchString);
+        } catch (DataAccessException ex) {
+            throw new GestionAppException(ex.getMessage(), ex);
+        }
+    }
+    
     public List<Book> findAll() throws GestionAppException {
         try {
             return this.bookDAO.findAll();
