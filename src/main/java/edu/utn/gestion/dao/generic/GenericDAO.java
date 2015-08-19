@@ -2,11 +2,8 @@ package edu.utn.gestion.dao.generic;
 
 import edu.utn.gestion.config.HibernateUtil;
 import edu.utn.gestion.exception.DataAccessException;
-import edu.utn.gestion.model.Book;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -163,7 +160,7 @@ public abstract class GenericDAO<T, I> {
      * Retrieves a list of objects.
      * 
      * @return 
-     * @throws edu.utn.gestion.exception.DataAccessException When something goes wrong. Or if the register doesn't exist.
+     * @throws edu.utn.gestion.exception.DataAccessException When something goes wrong.
      */
     public List<T> findAll() throws DataAccessException {
         List<T> result = null;
