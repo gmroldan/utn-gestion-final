@@ -15,7 +15,7 @@ public class NewBookDialog extends AbstractBookDialog {
     protected void btnAcceptActionPerformed(ActionEvent event) {
         try {
             this.setBookData();
-            this.controller.saveBook(this.currentBook);
+            this.controller.save(this.currentBook);
             this.dispose();
         } catch (GestionAppException ex) {
             PopUpFactory.showErrorMessage(this, ex.getMessage());

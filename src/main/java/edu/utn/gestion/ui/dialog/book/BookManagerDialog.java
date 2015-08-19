@@ -228,7 +228,7 @@ public class BookManagerDialog extends JDialog {
         
         for (Book book : selectedBooks) {
             try {
-                this.controller.deleteBook(book);
+                this.controller.delete(book);
             } catch (GestionAppException ex) {
                 PopUpFactory.showErrorMessage(this, ex.getMessage());
             }
