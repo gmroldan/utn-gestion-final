@@ -177,5 +177,21 @@ public abstract class GenericDAO<T, I> {
         return result;
     }
     
-    public abstract List<T> findBooksBySearch(String searchString) throws DataAccessException;
+    public abstract List<T> findObjectsBySearch(String searchString) throws DataAccessException;
+    
+    protected List<T> findObjectsBySearch(String queryString, String searchString) throws DataAccessException {
+        List<T> result = null;
+        
+        try {
+            this.startOperation();
+            Query query = this.session.createQuery(queryString)
+                    .setString("parm", "%" + searchString + "%");
+            result = query.list();
+            this.finishOperation();
+        } catch (Exception ex) {
+            this.handleException(ex);
+        }
+        
+        return result;
+    }
 }

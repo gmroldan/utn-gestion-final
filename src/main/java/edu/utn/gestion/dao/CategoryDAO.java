@@ -21,7 +21,7 @@ public class CategoryDAO extends GenericDAO<Category, Long> {
     }
 
     @Override
-    public List<Category> findBooksBySearch(String searchString) throws DataAccessException {
+    public List<Category> findObjectsBySearch(String searchString) throws DataAccessException {
         throw new UnsupportedOperationException("Not supported yet.");
     }
     

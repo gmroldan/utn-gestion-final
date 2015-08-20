@@ -23,19 +23,7 @@ public class BookDAO extends GenericDAO<Book, String> {
     }
     
     @Override
-    public List<Book> findBooksBySearch(String searchString) throws DataAccessException {        
-        List<Book> result = null;
-        
-        try {
-            this.startOperation();
-            Query query = this.session.createQuery(QUERY_FIND_BOOKS_BY_SEARCH)
-                    .setString("parm", "%" + searchString + "%");
-            result = query.list();
-            this.finishOperation();
-        } catch (Exception ex) {
-            this.handleException(ex);
-        }
-        
-        return result;
+    public List<Book> findObjectsBySearch(String searchString) throws DataAccessException {
+        return this.findObjectsBySearch(QUERY_FIND_BOOKS_BY_SEARCH, searchString);
     }
 }

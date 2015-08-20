@@ -32,7 +32,7 @@ public class BookService extends GenericService<Book, String> {
     @Override
     public List<Book> findBooksBySearch(String searchString) throws GestionAppException {
         try {
-            return this.bookDAO.findBooksBySearch(searchString);
+            return this.bookDAO.findObjectsBySearch(searchString);
         } catch (DataAccessException ex) {
             throw new GestionAppException(ex.getMessage(), ex);
         }

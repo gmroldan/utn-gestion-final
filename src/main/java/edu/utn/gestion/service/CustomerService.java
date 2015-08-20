@@ -1,6 +1,7 @@
 package edu.utn.gestion.service;
 
 import edu.utn.gestion.dao.CustomerDAO;
+import edu.utn.gestion.exception.DataAccessException;
 import edu.utn.gestion.exception.GestionAppException;
 import edu.utn.gestion.model.Customer;
 import edu.utn.gestion.service.generic.GenericService;
@@ -21,6 +22,10 @@ public class CustomerService extends GenericService<Customer, Long> {
 
     @Override
     public List<Customer> findBooksBySearch(String searchString) throws GestionAppException {
-        throw new UnsupportedOperationException("Not supported yet.");
+        try {
+            return this.customerDAO.findObjectsBySearch(searchString);
+        } catch (DataAccessException ex) {
+            throw new GestionAppException(ex.getMessage());
+        }
     }
 }

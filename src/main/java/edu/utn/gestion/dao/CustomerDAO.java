@@ -7,6 +7,7 @@ import java.util.List;
 
 public class CustomerDAO extends GenericDAO<Customer, Long> {
     private static final CustomerDAO INSTANCE = new CustomerDAO();
+    private final String QUERY_FIND_CUSTOMERS_BY_SEARCH = "from Customer where name like :parm or cuit like :parm";
     
     private CustomerDAO() {
         super(Customer.class);
@@ -17,7 +18,7 @@ public class CustomerDAO extends GenericDAO<Customer, Long> {
     }
 
     @Override
-    public List<Customer> findBooksBySearch(String searchString) throws DataAccessException {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public List<Customer> findObjectsBySearch(String searchString) throws DataAccessException {        
+        return this.findObjectsBySearch(QUERY_FIND_CUSTOMERS_BY_SEARCH, searchString);
     }
 }
