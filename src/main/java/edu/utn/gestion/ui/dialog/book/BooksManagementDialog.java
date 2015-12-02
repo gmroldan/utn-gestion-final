@@ -6,23 +6,19 @@ import edu.utn.gestion.ui.util.GenericManagementDialog;
 import java.awt.Frame;
 
 public class BooksManagementDialog extends GenericManagementDialog<Book, String> {
-    private final BookController bookController;
-    private final BookTableModel bookTableModel;
 
     public BooksManagementDialog(Frame parent, boolean modal) {
-        super(parent, modal, BookController.getInstance(), new BookTableModel());
-        this.bookController = (BookController) this.controller;
-        this.bookTableModel = (BookTableModel) this.model;
+        super(parent, modal, new BookController(), new BookTableModel());
         this.setTitle("Books Management");
     }
     
     @Override
     protected void showNewObjectDialog() {
-        new NewBookDialog(this, true).setVisible(true);
+        new NewBookDialog(this, true, (BookController) this.controller).setVisible(true);
     }
 
     @Override
     protected void showEditObjectDialog(Book book) {
-        new EditBookDialog(this, true, book).setVisible(true);
+        new EditBookDialog(this, true, (BookController) this.controller, book).setVisible(true);
     }
 }

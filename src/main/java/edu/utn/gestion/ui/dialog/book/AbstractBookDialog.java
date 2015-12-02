@@ -13,7 +13,7 @@ import javax.swing.JDialog;
 import org.apache.commons.collections4.CollectionUtils;
 
 public abstract class AbstractBookDialog extends JDialog {
-    protected final BookController controller = BookController.getInstance();
+    protected final BookController controller;
     protected Book currentBook;
     protected DefaultComboBoxModel categoriesModel;
 
@@ -24,8 +24,9 @@ public abstract class AbstractBookDialog extends JDialog {
      * @param modal
      * @param book
      */
-    public AbstractBookDialog(JDialog parent, boolean modal, Book book) {
+    public AbstractBookDialog(JDialog parent, boolean modal, BookController controller, Book book) {
         super(parent, modal);
+        this.controller = controller;
         this.currentBook = book;
         this.initModel();
         this.initComponents();

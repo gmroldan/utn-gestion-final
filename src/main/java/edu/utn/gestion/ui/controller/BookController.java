@@ -8,18 +8,13 @@ import edu.utn.gestion.ui.controller.generic.GenericController;
 import java.util.List;
 
 public class BookController extends GenericController<Book, String> {
-    private static final BookController INSTANCE = new BookController();
     private final BookService bookService;
     
-    private BookController() {
+    public BookController() {
         super(BookService.getInstance());
         this.bookService = (BookService) this.genericService;
     }
-    
-    public static BookController getInstance() {
-        return INSTANCE;
-    }
-    
+
     public List<Category> findAllCategories() throws GestionAppException {
         return BookService.getInstance().findAllCategories();
     }

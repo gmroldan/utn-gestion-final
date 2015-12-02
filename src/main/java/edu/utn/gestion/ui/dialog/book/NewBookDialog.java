@@ -1,14 +1,15 @@
 package edu.utn.gestion.ui.dialog.book;
 
 import edu.utn.gestion.exception.GestionAppException;
+import edu.utn.gestion.ui.controller.BookController;
 import edu.utn.gestion.ui.util.PopUpFactory;
 import java.awt.event.ActionEvent;
 import javax.swing.JDialog;
 
 public class NewBookDialog extends AbstractBookDialog {
 
-    public NewBookDialog(JDialog parent, boolean modal) {
-        super(parent, modal, null);
+    public NewBookDialog(JDialog parent, boolean modal, BookController controller) {
+        super(parent, modal, controller, null);
     }
 
     @Override
