@@ -7,12 +7,51 @@ import edu.utn.gestion.ui.controller.BookController;
 import edu.utn.gestion.ui.util.PopUpFactory;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.text.DecimalFormat;
 import java.util.List;
-import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.JFormattedTextField;
+import javax.swing.JTextArea;
+import javax.swing.JSpinner;
+import javax.swing.JPanel;
+import javax.swing.WindowConstants;
+import javax.swing.GroupLayout;
+import javax.swing.LayoutStyle;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.text.DefaultFormatterFactory;
+import javax.swing.text.NumberFormatter;
+
 import org.apache.commons.collections4.CollectionUtils;
 
 public abstract class AbstractBookDialog extends JDialog {
+    protected JButton btnAccept;
+    protected JButton btnCancel;
+    protected JComboBox cmbCategory;
+    protected JLabel lblISBN;
+    protected JLabel lblTitle;
+    protected JLabel lblCategory;
+    protected JLabel lblAuthor;
+    protected JLabel lblEditorial;
+    protected JLabel lblPrice;
+    protected JLabel lblStock;
+    protected JLabel lblDescription;
+    protected JScrollPane jScrollPane1;
+    protected JTextField txtAuthor;
+    protected JTextArea txtDescription;
+    protected JTextField txtEditorial;
+    protected JFormattedTextField txtIsbn;
+    protected JFormattedTextField txtPrice;
+    protected JSpinner txtStock;
+    protected JTextField txtTitle;
+    protected JPanel bookPanel;
+
     protected final BookController controller;
     protected Book currentBook;
     protected DefaultComboBoxModel categoriesModel;
@@ -41,166 +80,167 @@ public abstract class AbstractBookDialog extends JDialog {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        this.lblISBN = new JLabel();
+        this.lblTitle = new JLabel();
+        this.txtTitle = new JTextField();
+        this.lblCategory = new JLabel();
+        this.cmbCategory = new JComboBox();
+        this.lblAuthor = new JLabel();
+        this.txtAuthor = new JTextField();
+        this.lblEditorial = new JLabel();
+        this.txtEditorial = new JTextField();
+        this.lblPrice = new JLabel();
+        this.lblStock = new JLabel();
+        this.lblDescription = new JLabel();
+        this.jScrollPane1 = new JScrollPane();
+        this.txtDescription = new JTextArea();
 
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        txtTitle = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
-        cmbCategory = new javax.swing.JComboBox();
-        jLabel4 = new javax.swing.JLabel();
-        txtAuthor = new javax.swing.JTextField();
-        jLabel5 = new javax.swing.JLabel();
-        txtEditorial = new javax.swing.JTextField();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        txtDescription = new javax.swing.JTextArea();
-        btnCancel = new javax.swing.JButton();
-        btnCancel.addActionListener(new ActionListener() {
+        this.btnCancel = new JButton();
+        this.btnCancel.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
                 btnCancelActionPerformed(event);
             }
         });
-        btnAccept = new javax.swing.JButton();
-        btnAccept.addActionListener(new ActionListener() {
+
+        this.btnAccept = new JButton();
+        this.btnAccept.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
                 btnAcceptActionPerformed(event);
             }
         });
-        txtPrice = new javax.swing.JFormattedTextField();
-        txtStock = new javax.swing.JSpinner();
-        txtIsbn = new javax.swing.JFormattedTextField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setResizable(false);
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowOpened(java.awt.event.WindowEvent evt) {
+        this.txtPrice = new JFormattedTextField();
+        this.txtStock = new JSpinner();
+        this.txtIsbn = new JFormattedTextField();
+        this.bookPanel = new JPanel();
+
+        this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        this.setResizable(false);
+
+        this.addWindowListener(new WindowAdapter() {
+            public void windowOpened(WindowEvent evt) {
                 formWindowOpened(evt);
             }
         });
 
-        jLabel1.setText("ISBN");
+        this.lblISBN.setText("ISBN");
+        this.lblTitle.setText("Title");
+        this.lblCategory.setText("Category");
+        this.cmbCategory.setModel(this.categoriesModel);
+        this.lblAuthor.setText("Author");
+        this.lblEditorial.setText("Editorial");
+        this.lblPrice.setText("Price");
+        this.lblStock.setText("Stock");
+        this.lblDescription.setText("Description");
 
-        jLabel2.setText("Title");
+        this.txtDescription.setColumns(20);
+        this.txtDescription.setRows(5);
 
-        jLabel3.setText("Category");
+        this.jScrollPane1.setViewportView(txtDescription);
 
-        cmbCategory.setModel(this.categoriesModel);
+        this.btnCancel.setText("Cancel");
+        this.btnAccept.setText("Accept");
 
-        jLabel4.setText("Author");
+        this.txtPrice.setFormatterFactory(new DefaultFormatterFactory(new NumberFormatter(new DecimalFormat("#,##0.00"))));
+        this.txtIsbn.setFormatterFactory(new DefaultFormatterFactory(new NumberFormatter(new DecimalFormat("0"))));
 
-        jLabel5.setText("Editorial");
+        this.createMainPanel();
 
-        jLabel6.setText("Price");
-
-        jLabel7.setText("Stock");
-
-        jLabel8.setText("Description");
-
-        txtDescription.setColumns(20);
-        txtDescription.setRows(5);
-        jScrollPane1.setViewportView(txtDescription);
-
-        btnCancel.setText("Cancel");
-
-        btnAccept.setText("Accept");
-
-        txtPrice.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00"))));
-
-        txtIsbn.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("0"))));
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtAuthor, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel6)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtPrice)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtEditorial))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel7)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtStock, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 101, Short.MAX_VALUE))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel8)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnAccept)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnCancel))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel1))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(txtIsbn)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cmbCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(txtTitle))))
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel3)
-                    .addComponent(cmbCategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtIsbn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(txtTitle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(txtAuthor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5)
-                    .addComponent(txtEditorial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel6)
-                        .addComponent(jLabel7)
-                        .addComponent(txtStock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(txtPrice, javax.swing.GroupLayout.DEFAULT_SIZE, 24, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel8)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnCancel)
-                    .addComponent(btnAccept))
-                .addContainerGap())
-        );
-
+        getContentPane().add(this.bookPanel);
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void createMainPanel() {
+        GroupLayout layout = new GroupLayout(this.bookPanel);
+        this.bookPanel.setLayout(layout);
+
+        layout.setHorizontalGroup(
+                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
+                                                        .addGroup(layout.createSequentialGroup()
+                                                                .addComponent(this.lblAuthor)
+                                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                                                .addComponent(this.txtAuthor, GroupLayout.PREFERRED_SIZE, 167, GroupLayout.PREFERRED_SIZE))
+                                                        .addGroup(layout.createSequentialGroup()
+                                                                .addComponent(this.lblPrice)
+                                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                                                .addComponent(this.txtPrice)))
+                                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                                        .addGroup(layout.createSequentialGroup()
+                                                                .addComponent(this.lblEditorial)
+                                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                                                .addComponent(this.txtEditorial))
+                                                        .addGroup(layout.createSequentialGroup()
+                                                                .addComponent(this.lblStock)
+                                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                                                .addComponent(this.txtStock, GroupLayout.PREFERRED_SIZE, 82, GroupLayout.PREFERRED_SIZE)
+                                                                .addGap(0, 101, Short.MAX_VALUE))))
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addComponent(this.lblDescription)
+                                                .addGap(0, 0, Short.MAX_VALUE))
+                                        .addComponent(this.jScrollPane1)
+                                        .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                .addGap(0, 0, Short.MAX_VALUE)
+                                                .addComponent(this.btnAccept)
+                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(this.btnCancel))
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                                        .addComponent(this.lblTitle)
+                                                        .addComponent(this.lblISBN))
+                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                                        .addGroup(layout.createSequentialGroup()
+                                                                .addComponent(this.txtIsbn)
+                                                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                                                                .addComponent(this.lblCategory)
+                                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                                                .addComponent(this.cmbCategory, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE))
+                                                        .addComponent(txtTitle))))
+                                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                        .addComponent(this.lblISBN)
+                                        .addComponent(this.lblCategory)
+                                        .addComponent(this.cmbCategory, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(this.txtIsbn, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                        .addComponent(this.lblTitle)
+                                        .addComponent(this.txtTitle, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                        .addComponent(this.lblAuthor)
+                                        .addComponent(this.txtAuthor, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(this.lblEditorial)
+                                        .addComponent(this.txtEditorial, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
+                                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                                .addComponent(this.lblPrice)
+                                                .addComponent(this.lblStock)
+                                                .addComponent(this.txtStock, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(this.txtPrice, GroupLayout.DEFAULT_SIZE, 24, Short.MAX_VALUE))
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(this.lblDescription)
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(this.jScrollPane1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                        .addComponent(this.btnCancel)
+                                        .addComponent(this.btnAccept))
+                                .addContainerGap())
+        );
+    }
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         if (this.currentBook != null) {
@@ -245,26 +285,4 @@ public abstract class AbstractBookDialog extends JDialog {
     
     protected abstract void btnAcceptActionPerformed(ActionEvent event);
     protected abstract void btnCancelActionPerformed(ActionEvent event);
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    protected javax.swing.JButton btnAccept;
-    protected javax.swing.JButton btnCancel;
-    protected javax.swing.JComboBox cmbCategory;
-    protected javax.swing.JLabel jLabel1;
-    protected javax.swing.JLabel jLabel2;
-    protected javax.swing.JLabel jLabel3;
-    protected javax.swing.JLabel jLabel4;
-    protected javax.swing.JLabel jLabel5;
-    protected javax.swing.JLabel jLabel6;
-    protected javax.swing.JLabel jLabel7;
-    protected javax.swing.JLabel jLabel8;
-    protected javax.swing.JScrollPane jScrollPane1;
-    protected javax.swing.JTextField txtAuthor;
-    protected javax.swing.JTextArea txtDescription;
-    protected javax.swing.JTextField txtEditorial;
-    protected javax.swing.JFormattedTextField txtIsbn;
-    protected javax.swing.JFormattedTextField txtPrice;
-    protected javax.swing.JSpinner txtStock;
-    protected javax.swing.JTextField txtTitle;
-    // End of variables declaration//GEN-END:variables
 }
