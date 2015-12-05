@@ -16,7 +16,7 @@ public class EditBookDialog extends AbstractBookDialog {
     @Override
     protected void btnAcceptActionPerformed(ActionEvent event) {
         try {
-            this.setBookData();
+            this.setObjectData();
             this.controller.update(this.currentBook);
             this.dispose();
         } catch (GestionAppException ex) {
