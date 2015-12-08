@@ -1,13 +1,17 @@
 package edu.utn.gestion.model;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * Created by martin on 08/12/15.
  */
+@Entity
+@Table(name = "employee")
 public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
