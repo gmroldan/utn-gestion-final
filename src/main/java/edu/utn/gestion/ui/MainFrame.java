@@ -16,6 +16,7 @@ import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.WindowConstants;
 
+import edu.utn.gestion.ui.dialog.employee.EmployeesManagementDialog;
 import org.apache.log4j.Logger;
 
 /**
@@ -34,7 +35,7 @@ public class MainFrame extends JFrame {
     private JMenuItem menuItemAbout;
     private JMenuItem menuItemBooks;
     private JMenuItem menuItemCustomers;
-    private JMenuItem menuItemEmployee;
+    private JMenuItem menuItemEmployees;
     private JMenuItem menuItemExit;
 
     /**
@@ -64,6 +65,7 @@ public class MainFrame extends JFrame {
         this.menuEdit = new JMenu("Edit");
         this.menuItemBooks = new JMenuItem("Books");
         this.menuItemCustomers = new JMenuItem("Customers");
+        this.menuItemEmployees = new JMenuItem("Employees");
         this.menuHelp = new JMenu("Help");
         this.menuItemAbout = new JMenuItem("About");
 
@@ -73,6 +75,7 @@ public class MainFrame extends JFrame {
         this.menuFile.add(this.menuItemExit);
         this.menuEdit.add(this.menuItemBooks);
         this.menuEdit.add(this.menuItemCustomers);
+        this.menuEdit.add(this.menuItemEmployees);
         this.menuHelp.add(this.menuItemAbout);
 
         this.menuBarGestionApp.add(this.menuFile);
@@ -91,6 +94,12 @@ public class MainFrame extends JFrame {
         this.menuItemCustomers.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
                 menuItemCustomersActionPerformed(event);
+            }
+        });
+
+        this.menuItemEmployees.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                menuItemEmployeesActionPerformed(event);
             }
         });
 
@@ -116,6 +125,10 @@ public class MainFrame extends JFrame {
 
     private void menuItemCustomersActionPerformed(ActionEvent event) {
         new CustomersManagementDialog(this, true).setVisible(true);
+    }
+
+    private void menuItemEmployeesActionPerformed(ActionEvent event) {
+        new EmployeesManagementDialog(this, true).setVisible(true);
     }
 
     /**
