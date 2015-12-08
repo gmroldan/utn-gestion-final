@@ -5,6 +5,7 @@ import edu.utn.gestion.model.Book;
 import edu.utn.gestion.model.Category;
 import edu.utn.gestion.ui.controller.BookController;
 import edu.utn.gestion.ui.dialog.generic.GenericDialog;
+import edu.utn.gestion.ui.util.IFormat;
 import edu.utn.gestion.ui.util.PopUpFactory;
 import java.awt.event.WindowEvent;
 import java.text.DecimalFormat;
@@ -27,9 +28,6 @@ import javax.swing.text.NumberFormatter;
 import org.apache.commons.collections4.CollectionUtils;
 
 public abstract class AbstractBookDialog extends GenericDialog {
-    private static final String ISBN_FORMAT = "0";
-    private static final String PRICE_FORMAT = "#,##0.00";
-
     protected JComboBox cmbCategory;
     protected JLabel lblISBN;
     protected JLabel lblTitle;
@@ -104,8 +102,8 @@ public abstract class AbstractBookDialog extends GenericDialog {
 
         this.jScrollPane1.setViewportView(this.txtDescription);
 
-        this.txtPrice.setFormatterFactory(new DefaultFormatterFactory(new NumberFormatter(new DecimalFormat(PRICE_FORMAT))));
-        this.txtIsbn.setFormatterFactory(new DefaultFormatterFactory(new NumberFormatter(new DecimalFormat(ISBN_FORMAT))));
+        this.txtPrice.setFormatterFactory(new DefaultFormatterFactory(new NumberFormatter(new DecimalFormat(IFormat.PRICE_FORMAT))));
+        this.txtIsbn.setFormatterFactory(new DefaultFormatterFactory(new NumberFormatter(new DecimalFormat(IFormat.NUMERIC_FORMAT))));
 
         this.createFormPanel();
 
