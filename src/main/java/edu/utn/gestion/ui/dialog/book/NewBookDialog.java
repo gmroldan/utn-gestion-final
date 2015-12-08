@@ -10,6 +10,7 @@ public class NewBookDialog extends AbstractBookDialog {
 
     public NewBookDialog(JDialog parent, boolean modal, BookController controller) {
         super(parent, modal, controller, null);
+        this.setTitle("New Book");
     }
 
     @Override

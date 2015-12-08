@@ -11,6 +11,7 @@ public class EditBookDialog extends AbstractBookDialog {
 
     public EditBookDialog(JDialog parent, boolean modal, BookController controller, Book book) {
         super(parent, modal, controller, book);
+        this.setTitle("Edit Book");
     }
 
     @Override
