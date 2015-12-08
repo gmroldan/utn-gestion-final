@@ -2,6 +2,8 @@ package edu.utn.gestion.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -32,7 +34,7 @@ public class Employee {
     @Column(nullable = false, unique = false, length = 30)
     private String address;
 
-    @Column(nullable = false, unique = false, length = 1)
+    @Enumerated(EnumType.STRING)
     private GenderEnum gender;
 
     public long getId() {
