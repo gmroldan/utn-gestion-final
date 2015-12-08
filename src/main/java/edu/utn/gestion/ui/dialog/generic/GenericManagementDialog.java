@@ -205,6 +205,7 @@ public abstract class GenericManagementDialog<E, I> extends JDialog {
              this.model.setObjectList(this.controller.findAll());
         } catch (GestionAppException ex) {
             PopUpFactory.showErrorMessage(this, ex.getMessage());
+            this.dispose();
         }
     }
     
