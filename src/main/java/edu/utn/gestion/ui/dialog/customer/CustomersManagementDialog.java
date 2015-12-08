@@ -13,8 +13,8 @@ public class CustomersManagementDialog extends GenericManagementDialog<Customer,
     }
 
     @Override
-    protected void showEditObjectDialog(Customer object) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    protected void showEditObjectDialog(Customer customer) {
+        new EditCustomerDialog(this, true, (CustomerController) this.controller, customer).setVisible(true);
     }
 
     @Override

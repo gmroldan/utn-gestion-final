@@ -43,7 +43,10 @@ public abstract class AbstractCustomerDialog extends GenericDialog {
     @Override
     protected void formWindowOpened(WindowEvent event) {
         if (this.currentCustomer != null) {
-            // TODO: show customer data on text fields.
+            this.txtName.setText(this.currentCustomer.getName());
+            this.txtEmail.setText(this.currentCustomer.getEmail());
+            this.txtCuit.setText(this.currentCustomer.getCuit());
+            this.txtPhoneNumber.setText(this.currentCustomer.getPhoneNumber());
         } else {
             this.currentCustomer = new Customer();
         }
