@@ -1,10 +1,7 @@
-package edu.utn.gestion.ui.util;
+package edu.utn.gestion.ui.dialog.generic;
 
 import edu.utn.gestion.exception.GestionAppException;
-import edu.utn.gestion.model.Book;
 import edu.utn.gestion.ui.controller.generic.GenericController;
-import edu.utn.gestion.ui.dialog.book.NewBookDialog;
-import edu.utn.gestion.ui.util.GenericTableModel;
 import edu.utn.gestion.ui.util.PopUpFactory;
 import java.awt.Frame;
 import java.awt.event.KeyEvent;

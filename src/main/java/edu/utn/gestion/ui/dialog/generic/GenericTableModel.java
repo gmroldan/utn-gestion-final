@@ -1,4 +1,4 @@
-package edu.utn.gestion.ui.util;
+package edu.utn.gestion.ui.dialog.generic;
 
 import java.util.ArrayList;
 import java.util.HashSet;

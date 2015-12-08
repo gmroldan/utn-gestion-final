@@ -2,7 +2,7 @@ package edu.utn.gestion.ui.dialog.book;
 
 import edu.utn.gestion.model.Book;
 import edu.utn.gestion.ui.controller.BookController;
-import edu.utn.gestion.ui.util.GenericManagementDialog;
+import edu.utn.gestion.ui.dialog.generic.GenericManagementDialog;
 import java.awt.Frame;
 
 public class BooksManagementDialog extends GenericManagementDialog<Book, String> {

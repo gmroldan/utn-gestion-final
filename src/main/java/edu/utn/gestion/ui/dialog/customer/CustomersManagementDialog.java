@@ -2,7 +2,7 @@ package edu.utn.gestion.ui.dialog.customer;
 
 import edu.utn.gestion.model.Customer;
 import edu.utn.gestion.ui.controller.CustomerController;
-import edu.utn.gestion.ui.util.GenericManagementDialog;
+import edu.utn.gestion.ui.dialog.generic.GenericManagementDialog;
 import java.awt.Frame;
 
 public class CustomersManagementDialog extends GenericManagementDialog<Customer, Long> {
@@ -19,7 +19,7 @@ public class CustomersManagementDialog extends GenericManagementDialog<Customer,
 
     @Override
     protected void showNewObjectDialog() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        new NewCustomerDialog(this, true, (CustomerController) this.controller, null).setVisible(true);
     }
     
 }

@@ -1,9 +1,14 @@
-package edu.utn.gestion.ui.util;
+package edu.utn.gestion.ui.dialog.generic;
 
+import edu.utn.gestion.exception.GestionAppException;
+
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -13,7 +18,8 @@ import java.awt.event.WindowEvent;
  * Created by martin on 05/12/15.
  */
 public abstract class GenericDialog extends JDialog {
-    protected JPanel panel;
+    protected JPanel formPanel;
+    protected JPanel buttonPanel;
     protected JButton btnAccept;
     protected JButton btnCancel;
 
@@ -55,13 +61,27 @@ public abstract class GenericDialog extends JDialog {
             }
         });
 
+        this.buttonPanel = new JPanel();
+        this.buttonPanel.add(this.btnAccept);
+        this.buttonPanel.add(this.btnCancel);
+
         this.initComponents();
+
+        Container contentPane = this.getContentPane();
+        contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
+        contentPane.add(this.formPanel);
+        this.formPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        contentPane.add(this.buttonPanel);
+        this.buttonPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        this.pack();
     }
 
     protected abstract void formWindowOpened(WindowEvent event);
     protected abstract void initComponents();
-    protected abstract void createMainPanel();
+    protected abstract void createFormPanel();
     protected abstract void initModel();
+    protected abstract void setObjectData() throws GestionAppException;
     protected abstract void btnAcceptActionPerformed(ActionEvent event);
     protected abstract void btnCancelActionPerformed(ActionEvent event);
 }

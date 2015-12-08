@@ -4,7 +4,7 @@ import edu.utn.gestion.exception.GestionAppException;
 import edu.utn.gestion.model.Book;
 import edu.utn.gestion.model.Category;
 import edu.utn.gestion.ui.controller.BookController;
-import edu.utn.gestion.ui.util.GenericDialog;
+import edu.utn.gestion.ui.dialog.generic.GenericDialog;
 import edu.utn.gestion.ui.util.PopUpFactory;
 import java.awt.event.WindowEvent;
 import java.text.DecimalFormat;
@@ -88,7 +88,7 @@ public abstract class AbstractBookDialog extends GenericDialog {
         this.txtPrice = new JFormattedTextField();
         this.txtStock = new JSpinner();
         this.txtIsbn = new JFormattedTextField();
-        this.panel = new JPanel();
+        this.formPanel = new JPanel();
 
         this.lblISBN.setText("ISBN");
         this.lblTitle.setText("Title");
@@ -107,17 +107,17 @@ public abstract class AbstractBookDialog extends GenericDialog {
         this.txtPrice.setFormatterFactory(new DefaultFormatterFactory(new NumberFormatter(new DecimalFormat(PRICE_FORMAT))));
         this.txtIsbn.setFormatterFactory(new DefaultFormatterFactory(new NumberFormatter(new DecimalFormat(ISBN_FORMAT))));
 
-        this.createMainPanel();
+        this.createFormPanel();
 
-        getContentPane().add(this.panel);
+        getContentPane().add(this.formPanel);
         pack();
     }
 
     // TODO: Improve this method.
     @Override
-    protected void createMainPanel() {
-        GroupLayout layout = new GroupLayout(this.panel);
-        this.panel.setLayout(layout);
+    protected void createFormPanel() {
+        GroupLayout layout = new GroupLayout(this.formPanel);
+        this.formPanel.setLayout(layout);
 
         layout.setHorizontalGroup(
                 layout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -239,7 +239,8 @@ public abstract class AbstractBookDialog extends GenericDialog {
             this.cmbCategory.setModel(this.categoriesModel);
         }
     }
-    
+
+    @Override
     protected void setObjectData() throws GestionAppException {
         this.currentBook.setIsbn(this.txtIsbn.getText());
         this.currentBook.setTitle(this.txtTitle.getText());

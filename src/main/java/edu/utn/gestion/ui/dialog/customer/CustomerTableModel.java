@@ -1,7 +1,7 @@
 package edu.utn.gestion.ui.dialog.customer;
 
 import edu.utn.gestion.model.Customer;
-import edu.utn.gestion.ui.util.GenericTableModel;
+import edu.utn.gestion.ui.dialog.generic.GenericTableModel;
 
 public class CustomerTableModel extends GenericTableModel<Customer> {
     private static final String[] COLUMN_NAMES = {"Id", "Name", "CUIT", "Phone", "Email"};

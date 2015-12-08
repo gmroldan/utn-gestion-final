@@ -1,7 +1,7 @@
 package edu.utn.gestion.ui.dialog.book;
 
 import edu.utn.gestion.model.Book;
-import edu.utn.gestion.ui.util.GenericTableModel;
+import edu.utn.gestion.ui.dialog.generic.GenericTableModel;
 
 public class BookTableModel extends GenericTableModel<Book> {
     private static final String[] COLUMN_NAMES = {"ISBN", "Title", "Author", "Editorial", "Price", "Stock"};
