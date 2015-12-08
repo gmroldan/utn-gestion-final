@@ -49,7 +49,12 @@ public abstract class AbstractEmployeeDialog extends GenericDialog {
     @Override
     protected void formWindowOpened(WindowEvent event) {
         if (this.currentEmployee != null) {
-            // TODO: set data to fields.
+            this.txtName.setText(this.currentEmployee.getName());
+            this.txtEmail.setText(this.currentEmployee.getEmail());
+            this.txtCuit.setText(this.currentEmployee.getCuit());
+            this.txtPhoneNumber.setText(this.currentEmployee.getPhoneNumber());
+            this.txtAddress.setText(this.currentEmployee.getAddress());
+            this.cmbGender.setSelectedItem(this.currentEmployee.getGender());
         } else {
             this.currentEmployee = new Employee();
         }

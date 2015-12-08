@@ -17,7 +17,7 @@ public class EmployeesManagementDialog extends GenericManagementDialog<Employee,
 
     @Override
     protected void showEditObjectDialog(Employee employee) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        new EditEmployeeDialog(this, true, (EmployeeController) this.controller, employee).setVisible(true);
     }
 
     @Override
