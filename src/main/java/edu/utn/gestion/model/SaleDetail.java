@@ -1,11 +1,32 @@
 package edu.utn.gestion.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 /**
  * Created by martin on 08/12/15.
  */
+@Entity
+@Table(name = "sale_detail")
 public class SaleDetail {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+
+    @ManyToOne
+    @JoinColumn(name = "book_id", nullable = false)
     private Book book;
+
+    @Column(nullable = false)
     private int quantity;
+
+    @Column(nullable = false)
     private double amount;
 
     /**

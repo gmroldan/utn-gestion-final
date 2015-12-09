@@ -1,5 +1,18 @@
 package edu.utn.gestion.model;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -9,14 +22,34 @@ import java.util.Map;
 /**
  * Created by martin on 08/12/15.
  */
+@Entity
+@Table(name = "sale")
 public class Sale {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+
+    @Column(nullable = false)
+    @Temporal(TemporalType.DATE)
     private Date date;
+
+    @ManyToOne
+    @JoinColumn(name = "customer_id", nullable = false)
     private Customer customer;
+
+    @ManyToOne
+    @JoinColumn(name = "employee_id", nullable = false)
     private Employee employee;
+
+    @Column(nullable = false)
     private double totalAmount;
-    private final Map<String, SaleDetail> saleDetailMap = new HashMap<String, SaleDetail>();
+
+    @OneToMany(targetEntity = SaleDetail.class, cascade = CascadeType.ALL)
+    @JoinColumn(name = "sale_detail_id", referencedColumnName = "id", nullable = false)
     private final List<SaleDetail> saleDetails = new ArrayList<SaleDetail>();
+
+    @Transient
+    private final Map<String, SaleDetail> saleDetailMap = new HashMap<String, SaleDetail>();
 
     /**
      * No-args constructor. Returns an instance of Sale.

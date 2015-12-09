@@ -36,6 +36,8 @@
         <mapping class="edu.utn.gestion.model.Category" />
         <mapping class="edu.utn.gestion.model.Customer" />
         <mapping class="edu.utn.gestion.model.Employee" />
+        <mapping class="edu.utn.gestion.model.Sale" />
+        <mapping class="edu.utn.gestion.model.SaleDetail" />
 
     </session-factory>
 
