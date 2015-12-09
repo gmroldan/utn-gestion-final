@@ -43,7 +43,7 @@ public class SaleService extends GenericService<Sale, Long> {
     }
 
     @Override
-    public List<Sale> findBooksBySearch(String searchString) throws GestionAppException {
+    public List<Sale> findBySearch(String searchString) throws GestionAppException {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 }

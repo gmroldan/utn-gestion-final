@@ -242,7 +242,7 @@ public abstract class GenericManagementDialog<E, I> extends JDialog {
         List<E> searchResult = null;
         
         try {
-            searchResult = this.controller.findBooksBySearch(this.txtSearch.getText());
+            searchResult = this.controller.findBySearch(this.txtSearch.getText());
         } catch (GestionAppException ex) {
             PopUpFactory.showErrorMessage(this, ex.getMessage());
         }

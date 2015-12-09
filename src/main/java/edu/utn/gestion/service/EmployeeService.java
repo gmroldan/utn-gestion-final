@@ -25,7 +25,7 @@ public class EmployeeService extends GenericService<Employee, Long> {
     }
 
     @Override
-    public List<Employee> findBooksBySearch(String searchString) throws GestionAppException {
+    public List<Employee> findBySearch(String searchString) throws GestionAppException {
         try {
             return this.employeeDAO.findObjectsBySearch(searchString);
         } catch (DataAccessException e) {

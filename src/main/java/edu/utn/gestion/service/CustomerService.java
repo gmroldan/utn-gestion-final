@@ -21,7 +21,7 @@ public class CustomerService extends GenericService<Customer, Long> {
     }
 
     @Override
-    public List<Customer> findBooksBySearch(String searchString) throws GestionAppException {
+    public List<Customer> findBySearch(String searchString) throws GestionAppException {
         try {
             return this.customerDAO.findObjectsBySearch(searchString);
         } catch (DataAccessException ex) {

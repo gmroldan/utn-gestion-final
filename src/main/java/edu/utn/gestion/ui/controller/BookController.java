@@ -19,7 +19,7 @@ public class BookController extends GenericController<Book, String> {
         return BookService.getInstance().findAllCategories();
     }
 
-    public List<Book> findBooksBySearch(String searchString) throws GestionAppException {
-        return BookService.getInstance().findBooksBySearch(searchString);
+    public List<Book> findBySearch(String searchString) throws GestionAppException {
+        return BookService.getInstance().findBySearch(searchString);
     }
 }

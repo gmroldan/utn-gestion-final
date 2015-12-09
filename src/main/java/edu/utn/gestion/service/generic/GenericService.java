@@ -60,5 +60,5 @@ public abstract class GenericService<E, I> {
         }
     }
     
-    public abstract List<E> findBooksBySearch(String searchString) throws GestionAppException;
+    public abstract List<E> findBySearch(String searchString) throws GestionAppException;
 }
