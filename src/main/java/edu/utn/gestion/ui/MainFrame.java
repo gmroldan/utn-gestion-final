@@ -7,7 +7,7 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.GroupLayout;
+import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -17,6 +17,7 @@ import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.WindowConstants;
 
 import edu.utn.gestion.ui.dialog.employee.EmployeesManagementDialog;
+import edu.utn.gestion.ui.internal.NewSaleInternalFrame;
 import org.apache.log4j.Logger;
 
 /**
@@ -31,12 +32,16 @@ public class MainFrame extends JFrame {
     private JMenu menuFile;
     private JMenu menuEdit;
     private JMenu menuHelp;
+    private JMenu menuSales;
     private JMenuBar menuBarGestionApp;
     private JMenuItem menuItemAbout;
     private JMenuItem menuItemBooks;
     private JMenuItem menuItemCustomers;
     private JMenuItem menuItemEmployees;
     private JMenuItem menuItemExit;
+    private JMenuItem menuItemNewSale;
+    private JDesktopPane desktopPane;
+    private NewSaleInternalFrame internalFrameNewSale;
 
     /**
     * Creates new form MainFrame
@@ -63,27 +68,39 @@ public class MainFrame extends JFrame {
         this.menuFile = new JMenu("File");
         this.menuItemExit = new JMenuItem("Exit");
         this.menuEdit = new JMenu("Edit");
+        this.menuSales = new JMenu("Sales");
+        this.menuItemNewSale = new JMenuItem("New Sale");
         this.menuItemBooks = new JMenuItem("Books");
         this.menuItemCustomers = new JMenuItem("Customers");
         this.menuItemEmployees = new JMenuItem("Employees");
         this.menuHelp = new JMenu("Help");
         this.menuItemAbout = new JMenuItem("About");
+        this.desktopPane = new JDesktopPane();
 
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setTitle("GestionApp");
 
         this.menuFile.add(this.menuItemExit);
+        this.menuSales.add(this.menuItemNewSale);
         this.menuEdit.add(this.menuItemBooks);
         this.menuEdit.add(this.menuItemCustomers);
         this.menuEdit.add(this.menuItemEmployees);
         this.menuHelp.add(this.menuItemAbout);
 
         this.menuBarGestionApp.add(this.menuFile);
+        this.menuBarGestionApp.add(this.menuSales);
         this.menuBarGestionApp.add(this.menuEdit);
         this.menuBarGestionApp.add(this.menuHelp);
 
         this.setJMenuBar(this.menuBarGestionApp);
+        this.setContentPane(this.desktopPane);
 
+
+        this.menuItemNewSale.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                menuItemNewSaleActionPerformed(event);
+            }
+        });
 
         this.menuItemBooks.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
@@ -104,20 +121,17 @@ public class MainFrame extends JFrame {
         });
 
 
-        GroupLayout layout = new GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGap(0, 707, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGap(0, 481, Short.MAX_VALUE)
-        );
-
         this.setSize(new Dimension(717, 532));
         this.setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void menuItemNewSaleActionPerformed(ActionEvent event) {
+        if (this.internalFrameNewSale == null) {
+            this.internalFrameNewSale = new NewSaleInternalFrame();
+            this.desktopPane.add(this.internalFrameNewSale);
+            this.internalFrameNewSale.setVisible(true);
+        }
+    }
 
     private void menuItemBooksActionPerformed(ActionEvent event) {
         new BooksManagementDialog(this, true).setVisible(true);
