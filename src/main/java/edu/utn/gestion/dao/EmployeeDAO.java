@@ -11,6 +11,7 @@ import java.util.List;
  */
 public class EmployeeDAO extends GenericDAO<Employee, Long> {
     private static final  EmployeeDAO INSTANCE = new EmployeeDAO();
+    private final String QUERY_FIND_EMPLOYEES_BY_SEARCH = "from Employee where name like :parm or cuit like :parm";
 
     private EmployeeDAO() {
         super(Employee.class);
@@ -22,6 +23,6 @@ public class EmployeeDAO extends GenericDAO<Employee, Long> {
 
     @Override
     public List<Employee> findObjectsBySearch(String searchString) throws DataAccessException {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return this.findObjectsBySearch(QUERY_FIND_EMPLOYEES_BY_SEARCH, searchString);
     }
 }
