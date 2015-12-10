@@ -4,9 +4,12 @@ import edu.utn.gestion.exception.GestionAppException;
 import edu.utn.gestion.ui.controller.generic.GenericController;
 import edu.utn.gestion.ui.util.PopUpFactory;
 import java.awt.Frame;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.List;
 import java.util.Set;
+import javax.swing.JButton;
 import javax.swing.JDialog;
 import org.apache.commons.collections4.CollectionUtils;
 
@@ -47,6 +50,7 @@ public abstract class GenericManagementDialog<E, I> extends JDialog {
         tableBooks = new javax.swing.JTable();
         btnNew = new javax.swing.JButton();
         btnDelete = new javax.swing.JButton();
+        this.btnExport = new JButton("Export");
         searchPanel = new javax.swing.JPanel();
         txtSearch = new javax.swing.JTextField();
         btnSearch = new javax.swing.JButton();
@@ -85,6 +89,12 @@ public abstract class GenericManagementDialog<E, I> extends JDialog {
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDeleteActionPerformed(evt);
+            }
+        });
+
+        this.btnExport.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                btnExportActionPerformed(event);
             }
         });
 
@@ -136,6 +146,8 @@ public abstract class GenericManagementDialog<E, I> extends JDialog {
                         .addComponent(btnNew)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnDelete)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(this.btnExport)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(searchPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -151,7 +163,8 @@ public abstract class GenericManagementDialog<E, I> extends JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnDelete)
-                    .addComponent(btnNew))
+                    .addComponent(btnNew)
+                    .addComponent(this.btnExport))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -159,6 +172,14 @@ public abstract class GenericManagementDialog<E, I> extends JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnExportActionPerformed(ActionEvent event) {
+        try {
+            this.controller.exportData(this.model);
+        } catch (GestionAppException ex) {
+            PopUpFactory.showErrorMessage(this, ex.getMessage());
+        }
+    }
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         this.updateObjectList();
@@ -257,6 +278,7 @@ public abstract class GenericManagementDialog<E, I> extends JDialog {
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     protected javax.swing.JButton btnDelete;
+    protected JButton btnExport;
     protected javax.swing.JButton btnNew;
     protected javax.swing.JButton btnSearch;
     protected javax.swing.JScrollPane jScrollPane1;

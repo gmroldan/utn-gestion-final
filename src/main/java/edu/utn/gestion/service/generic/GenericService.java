@@ -2,7 +2,12 @@ package edu.utn.gestion.service.generic;
 
 import edu.utn.gestion.dao.generic.GenericDAO;
 import edu.utn.gestion.exception.DataAccessException;
+import edu.utn.gestion.exception.FileGenerationException;
 import edu.utn.gestion.exception.GestionAppException;
+import edu.utn.gestion.service.util.ODFFactory;
+import edu.utn.gestion.ui.dialog.generic.GenericTableModel;
+
+import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
 /**
@@ -57,6 +62,16 @@ public abstract class GenericService<E, I> {
             return this.genericDAO.findAll();
         } catch (DataAccessException ex) {
             throw new GestionAppException(ex.getMessage(), ex);
+        }
+    }
+
+    public void exportData(GenericTableModel tableModel) throws GestionAppException {
+        try {
+            String fileName = ((Class<E>) ((ParameterizedType) getClass()
+                    .getGenericSuperclass()).getActualTypeArguments()[0]).getSimpleName();
+            ODFFactory.doExport(fileName, tableModel);
+        } catch (FileGenerationException ex) {
+            throw new GestionAppException(ex);
         }
     }
     

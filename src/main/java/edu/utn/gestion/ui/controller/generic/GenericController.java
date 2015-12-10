@@ -2,6 +2,8 @@ package edu.utn.gestion.ui.controller.generic;
 
 import edu.utn.gestion.exception.GestionAppException;
 import edu.utn.gestion.service.generic.GenericService;
+import edu.utn.gestion.ui.dialog.generic.GenericTableModel;
+
 import java.util.List;
 
 /**
@@ -41,5 +43,9 @@ public abstract class GenericController<E, I> {
     
     public List<E> findBySearch(String searchString) throws GestionAppException {
         return this.genericService.findBySearch(searchString);
+    }
+
+    public void exportData(GenericTableModel tableModel) throws GestionAppException {
+        this.genericService.exportData(tableModel);
     }
 }
