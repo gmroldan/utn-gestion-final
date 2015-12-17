@@ -5,8 +5,11 @@ import edu.utn.gestion.model.Book;
 import edu.utn.gestion.model.Category;
 import edu.utn.gestion.ui.controller.BookController;
 import edu.utn.gestion.ui.dialog.generic.GenericDialog;
+import edu.utn.gestion.ui.util.FormUtils;
 import edu.utn.gestion.ui.util.IFormat;
 import edu.utn.gestion.ui.util.PopUpFactory;
+
+import java.awt.GridBagLayout;
 import java.awt.event.WindowEvent;
 import java.text.DecimalFormat;
 import java.util.List;
@@ -69,33 +72,33 @@ public abstract class AbstractBookDialog extends GenericDialog {
      */
     @Override
     protected void initComponents() {
-        this.lblISBN = new JLabel();
-        this.lblTitle = new JLabel();
+        this.lblISBN = new JLabel("ISBN");
+        this.lblTitle = new JLabel("Title");
+        this.lblCategory = new JLabel("Category");
+        this.lblAuthor = new JLabel("Author");
+        this.lblEditorial = new JLabel("Editorial");
+        this.lblPrice = new JLabel("Price");
+        this.lblStock = new JLabel("Stock");
+        this.lblDescription = new JLabel("Description");
+
         this.txtTitle = new JTextField();
-        this.lblCategory = new JLabel();
         this.cmbCategory = new JComboBox();
-        this.lblAuthor = new JLabel();
         this.txtAuthor = new JTextField();
-        this.lblEditorial = new JLabel();
         this.txtEditorial = new JTextField();
-        this.lblPrice = new JLabel();
-        this.lblStock = new JLabel();
-        this.lblDescription = new JLabel();
         this.jScrollPane1 = new JScrollPane();
         this.txtDescription = new JTextArea();
         this.txtPrice = new JFormattedTextField();
         this.txtStock = new JSpinner();
         this.txtIsbn = new JFormattedTextField();
-        this.formPanel = new JPanel();
 
-        this.lblISBN.setText("ISBN");
-        this.lblTitle.setText("Title");
-        this.lblCategory.setText("Category");
-        this.lblAuthor.setText("Author");
-        this.lblEditorial.setText("Editorial");
-        this.lblPrice.setText("Price");
-        this.lblStock.setText("Stock");
-        this.lblDescription.setText("Description");
+        this.lblISBN.setLabelFor(this.txtIsbn);
+        this.lblTitle.setLabelFor(this.txtTitle);
+        this.lblCategory.setLabelFor(this.cmbCategory);
+        this.lblAuthor.setLabelFor(this.txtAuthor);
+        this.lblEditorial.setLabelFor(this.txtEditorial);
+        this.lblPrice.setLabelFor(this.txtPrice);
+        this.lblStock.setLabelFor(this.txtStock);
+        this.lblDescription.setLabelFor(this.txtDescription);
 
         this.txtDescription.setColumns(20);
         this.txtDescription.setRows(5);
@@ -106,103 +109,28 @@ public abstract class AbstractBookDialog extends GenericDialog {
         this.txtIsbn.setFormatterFactory(new DefaultFormatterFactory(new NumberFormatter(new DecimalFormat(IFormat.NUMERIC_FORMAT))));
 
         this.createFormPanel();
-
-        getContentPane().add(this.formPanel);
-        pack();
     }
 
-    // TODO: Improve this method.
     @Override
     protected void createFormPanel() {
-        GroupLayout layout = new GroupLayout(this.formPanel);
-        this.formPanel.setLayout(layout);
+        this.formPanel = new JPanel(new GridBagLayout());
 
-        layout.setHorizontalGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                        .addGroup(layout.createSequentialGroup()
-                                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
-                                                        .addGroup(layout.createSequentialGroup()
-                                                                .addComponent(this.lblAuthor)
-                                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                                                .addComponent(this.txtAuthor, GroupLayout.PREFERRED_SIZE, 167, GroupLayout.PREFERRED_SIZE))
-                                                        .addGroup(layout.createSequentialGroup()
-                                                                .addComponent(this.lblPrice)
-                                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                                                .addComponent(this.txtPrice)))
-                                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                                        .addGroup(layout.createSequentialGroup()
-                                                                .addComponent(this.lblEditorial)
-                                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                                                .addComponent(this.txtEditorial))
-                                                        .addGroup(layout.createSequentialGroup()
-                                                                .addComponent(this.lblStock)
-                                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                                                .addComponent(this.txtStock, GroupLayout.PREFERRED_SIZE, 82, GroupLayout.PREFERRED_SIZE)
-                                                                .addGap(0, 101, Short.MAX_VALUE))))
-                                        .addGroup(layout.createSequentialGroup()
-                                                .addComponent(this.lblDescription)
-                                                .addGap(0, 0, Short.MAX_VALUE))
-                                        .addComponent(this.jScrollPane1)
-                                        .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                                .addGap(0, 0, Short.MAX_VALUE)
-                                                .addComponent(this.btnAccept)
-                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(this.btnCancel))
-                                        .addGroup(layout.createSequentialGroup()
-                                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                                        .addComponent(this.lblTitle)
-                                                        .addComponent(this.lblISBN))
-                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                                        .addGroup(layout.createSequentialGroup()
-                                                                .addComponent(this.txtIsbn)
-                                                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                                                                .addComponent(this.lblCategory)
-                                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                                                .addComponent(this.cmbCategory, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE))
-                                                        .addComponent(txtTitle))))
-                                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                        .addComponent(this.lblISBN)
-                                        .addComponent(this.lblCategory)
-                                        .addComponent(this.cmbCategory, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(this.txtIsbn, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                        .addComponent(this.lblTitle)
-                                        .addComponent(this.txtTitle, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                        .addComponent(this.lblAuthor)
-                                        .addComponent(this.txtAuthor, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(this.lblEditorial)
-                                        .addComponent(this.txtEditorial, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
-                                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                                .addComponent(this.lblPrice)
-                                                .addComponent(this.lblStock)
-                                                .addComponent(this.txtStock, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                                        .addComponent(this.txtPrice, GroupLayout.DEFAULT_SIZE, 24, Short.MAX_VALUE))
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(this.lblDescription)
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(this.jScrollPane1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                        .addComponent(this.btnCancel)
-                                        .addComponent(this.btnAccept))
-                                .addContainerGap())
-        );
+        FormUtils.addLabel(this.lblISBN, this.formPanel);
+        FormUtils.addLastField(this.txtIsbn, this.formPanel);
+        FormUtils.addLabel(this.lblCategory, this.formPanel);
+        FormUtils.addLastField(this.cmbCategory, this.formPanel);
+        FormUtils.addLabel(this.lblTitle, this.formPanel);
+        FormUtils.addLastField(this.txtTitle, this.formPanel);
+        FormUtils.addLabel(this.lblAuthor, this.formPanel);
+        FormUtils.addLastField(this.txtAuthor, this.formPanel);
+        FormUtils.addLabel(this.lblEditorial, this.formPanel);
+        FormUtils.addLastField(this.txtEditorial, this.formPanel);
+        FormUtils.addLabel(this.lblPrice, this.formPanel);
+        FormUtils.addLastField(this.txtPrice, this.formPanel);
+        FormUtils.addLabel(this.lblStock, this.formPanel);
+        FormUtils.addLastField(this.txtStock, this.formPanel);
+        FormUtils.addLabel(this.lblDescription, this.formPanel);
+        FormUtils.addLastField(this.txtDescription, this.formPanel);
     }
 
     @Override
