@@ -65,12 +65,12 @@ public class BookService extends GenericService<Book, String> {
         }
 
         Validate.notNull(book, "Cannot update the stock for a null object.");
-        int currentStock = book.getStock();
+        int currentStock = book.getCurrentStock();
         int newStock = currentStock - quantity;
 
         if (newStock < 0) throw new GestionAppException("Cannot sale this book. Current stock: " + currentStock + ". Required: " + quantity);
 
-        book.setStock(newStock);
+        book.setCurrentStock(newStock);
 
         try {
             this.bookDAO.update(book);

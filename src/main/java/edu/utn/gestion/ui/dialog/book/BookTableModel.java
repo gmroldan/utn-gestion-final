@@ -33,7 +33,7 @@ public class BookTableModel extends GenericTableModel<Book> {
             case 2: return book.getAuthor();
             case 3: return book.getEditorial();
             case 4: return book.getPrice();
-            case 5: return book.getStock();
+            case 5: return book.getCurrentStock();
             default: return null;
         }        
     }        

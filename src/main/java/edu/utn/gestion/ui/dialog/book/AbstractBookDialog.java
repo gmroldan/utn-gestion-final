@@ -22,8 +22,6 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JTextArea;
 import javax.swing.JSpinner;
 import javax.swing.JPanel;
-import javax.swing.GroupLayout;
-import javax.swing.LayoutStyle;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.NumberFormatter;
@@ -40,14 +38,16 @@ public abstract class AbstractBookDialog extends GenericDialog {
     protected JLabel lblPrice;
     protected JLabel lblStock;
     protected JLabel lblDescription;
+    protected JLabel lblMinimumStock;
     protected JScrollPane jScrollPane1;
     protected JTextField txtAuthor;
     protected JTextArea txtDescription;
     protected JTextField txtEditorial;
     protected JFormattedTextField txtIsbn;
     protected JFormattedTextField txtPrice;
-    protected JSpinner txtStock;
+    protected JSpinner txtCurrentStock;
     protected JTextField txtTitle;
+    protected JSpinner txtMinimumStock;
 
     protected final BookController controller;
     protected Book currentBook;
@@ -80,6 +80,7 @@ public abstract class AbstractBookDialog extends GenericDialog {
         this.lblPrice = new JLabel("Price");
         this.lblStock = new JLabel("Stock");
         this.lblDescription = new JLabel("Description");
+        this.lblMinimumStock = new JLabel("Min Stock");
 
         this.txtTitle = new JTextField();
         this.cmbCategory = new JComboBox();
@@ -88,8 +89,9 @@ public abstract class AbstractBookDialog extends GenericDialog {
         this.jScrollPane1 = new JScrollPane();
         this.txtDescription = new JTextArea();
         this.txtPrice = new JFormattedTextField();
-        this.txtStock = new JSpinner();
+        this.txtCurrentStock = new JSpinner();
         this.txtIsbn = new JFormattedTextField();
+        this.txtMinimumStock = new JSpinner();
 
         this.lblISBN.setLabelFor(this.txtIsbn);
         this.lblTitle.setLabelFor(this.txtTitle);
@@ -97,8 +99,9 @@ public abstract class AbstractBookDialog extends GenericDialog {
         this.lblAuthor.setLabelFor(this.txtAuthor);
         this.lblEditorial.setLabelFor(this.txtEditorial);
         this.lblPrice.setLabelFor(this.txtPrice);
-        this.lblStock.setLabelFor(this.txtStock);
+        this.lblStock.setLabelFor(this.txtCurrentStock);
         this.lblDescription.setLabelFor(this.txtDescription);
+        this.lblMinimumStock.setLabelFor(this.txtMinimumStock);
 
         this.txtDescription.setColumns(20);
         this.txtDescription.setRows(5);
@@ -128,7 +131,9 @@ public abstract class AbstractBookDialog extends GenericDialog {
         FormUtils.addLabel(this.lblPrice, this.formPanel);
         FormUtils.addLastField(this.txtPrice, this.formPanel);
         FormUtils.addLabel(this.lblStock, this.formPanel);
-        FormUtils.addLastField(this.txtStock, this.formPanel);
+        FormUtils.addLastField(this.txtCurrentStock, this.formPanel);
+        FormUtils.addLabel(this.lblMinimumStock, this.formPanel);
+        FormUtils.addLastField(this.txtMinimumStock, this.formPanel);
         FormUtils.addLabel(this.lblDescription, this.formPanel);
         FormUtils.addLastField(this.txtDescription, this.formPanel);
     }
@@ -141,7 +146,8 @@ public abstract class AbstractBookDialog extends GenericDialog {
             this.txtAuthor.setText(this.currentBook.getAuthor());
             this.txtEditorial.setText(this.currentBook.getEditorial());
             this.txtPrice.setValue(this.currentBook.getPrice());
-            this.txtStock.setValue(this.currentBook.getStock());
+            this.txtCurrentStock.setValue(this.currentBook.getCurrentStock());
+            this.txtMinimumStock.setValue(this.currentBook.getMinimumStock());
             this.txtDescription.setText(this.currentBook.getDescription());
             this.cmbCategory.setSelectedItem(this.currentBook.getCategory());
         } else {
@@ -175,6 +181,7 @@ public abstract class AbstractBookDialog extends GenericDialog {
         this.currentBook.setDescription(this.txtDescription.getText());
         this.currentBook.setEditorial(this.txtEditorial.getText());
         this.currentBook.setPrice(((Number) this.txtPrice.getValue()).doubleValue());
-        this.currentBook.setStock(((Number) this.txtStock.getValue()).intValue());
+        this.currentBook.setCurrentStock(((Number) this.txtCurrentStock.getValue()).intValue());
+        this.currentBook.setMinimumStock(((Number) this.txtMinimumStock.getValue()).intValue());
     }
 }

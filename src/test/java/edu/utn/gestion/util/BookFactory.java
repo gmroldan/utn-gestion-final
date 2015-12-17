@@ -13,7 +13,8 @@ public class BookFactory {
                 , 20, 30
                 , new Category()
                 , "TestAuthor" + counter
-                , "TestEditorial" + counter);
+                , "TestEditorial" + counter
+                , 3);
         
         counter++;
         

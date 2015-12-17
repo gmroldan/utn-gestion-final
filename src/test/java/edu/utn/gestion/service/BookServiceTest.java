@@ -118,7 +118,7 @@ public class BookServiceTest {
     public void decreaseStockTest() throws GestionAppException, DataAccessException {
         Book book = BookFactory.createBook();
         String isbn = book.getIsbn();
-        book.setStock(10);
+        book.setCurrentStock(10);
 
         when(this.bookDAOMock.findOne(isbn)).thenReturn(book);
 
@@ -126,14 +126,14 @@ public class BookServiceTest {
 
         verify(this.bookDAOMock, times(1)).findOne(isbn);
         verify(this.bookDAOMock, times(1)).update(book);
-        assertEquals(8, book.getStock());
+        assertEquals(8, book.getCurrentStock());
     }
 
     @Test (expected = GestionAppException.class)
     public void decreaseStockCannotUpdateBookTest() throws GestionAppException, DataAccessException {
         Book book = BookFactory.createBook();
         String isbn = book.getIsbn();
-        book.setStock(10);
+        book.setCurrentStock(10);
 
         when(this.bookDAOMock.findOne(isbn)).thenReturn(book);
         when(this.bookDAOMock.update(book)).thenThrow(DataAccessException.class);
@@ -144,7 +144,7 @@ public class BookServiceTest {
     @Test (expected = GestionAppException.class)
     public void decreaseStockIlegalStockTest() throws GestionAppException, DataAccessException {
         Book book = BookFactory.createBook();
-        book.setStock(10);
+        book.setCurrentStock(10);
 
         when(this.bookDAOMock.findOne(anyString())).thenReturn(book);
 

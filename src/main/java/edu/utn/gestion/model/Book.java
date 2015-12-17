@@ -25,7 +25,7 @@ public class Book {
     private double price;
 
     @Column(nullable = false)
-    private int stock;
+    private int currentStock;
 
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
@@ -36,6 +36,9 @@ public class Book {
 
     @Column(nullable = false, length = 30)
     private String editorial;
+
+    @Column(nullable = false)
+    private int minimumStock;
 
     /**
      * No-args Constructor.
@@ -50,21 +53,24 @@ public class Book {
      * @param description
      * @param isbn
      * @param price
-     * @param stock
+     * @param currentStock
      * @param category
      * @param author
      * @param editorial
+     * @param minimumStock
      */
     public Book(String isbn, String title, String description, double price
-            , int stock, Category category, String author, String editorial) {
+            , int currentStock, Category category, String author, String editorial
+            , int minimumStock) {
         this.title = title;
         this.description = description;
         this.isbn = isbn;
         this.price = price;
-        this.stock = stock;
+        this.currentStock = currentStock;
         this.category = category;
         this.author = author;
         this.editorial = editorial;
+        this.minimumStock = minimumStock;
     }
 
     public String getTitle() {
@@ -99,12 +105,12 @@ public class Book {
         this.price = price;
     }
 
-    public int getStock() {
-        return stock;
+    public int getCurrentStock() {
+        return currentStock;
     }
 
-    public void setStock(int stock) {
-        this.stock = stock;
+    public void setCurrentStock(int currentStock) {
+        this.currentStock = currentStock;
     }
 
     public Category getCategory() {
@@ -131,4 +137,11 @@ public class Book {
         this.editorial = editorial;
     }
 
+    public int getMinimumStock() {
+        return minimumStock;
+    }
+
+    public void setMinimumStock(int minimumStock) {
+        this.minimumStock = minimumStock;
+    }
 }
