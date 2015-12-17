@@ -4,8 +4,10 @@ import edu.utn.gestion.dao.SaleDAO;
 import edu.utn.gestion.exception.FileGenerationException;
 import edu.utn.gestion.exception.GestionAppException;
 import edu.utn.gestion.model.Sale;
+import edu.utn.gestion.model.SaleDetail;
 import edu.utn.gestion.service.generic.GenericService;
 import edu.utn.gestion.service.util.InvoiceFactory;
+import org.apache.commons.lang3.Validate;
 
 import java.util.List;
 
@@ -24,8 +26,12 @@ public class SaleService extends GenericService<Sale, Long> {
     }
 
     @Override
-    public Long save(Sale object) throws GestionAppException {
-        Long saleId = super.save(object);
+    public Long save(Sale sale) throws GestionAppException {
+        Validate.notNull(sale, "Cannot save a null sale.");
+
+        this.updateBookStock(sale);
+
+        Long saleId = super.save(sale);
 
         if (saleId != null && saleId > 0) {
             Sale currentSale = this.findOne(saleId);
@@ -40,6 +46,14 @@ public class SaleService extends GenericService<Sale, Long> {
         }
 
         return saleId;
+    }
+
+    private void updateBookStock(Sale sale) throws GestionAppException {
+        List<SaleDetail> details = sale.getSaleDetails();
+
+        for (SaleDetail detail : details) {
+            BookService.getInstance().decreaseStock(detail.getBook().getIsbn(), detail.getQuantity());
+        }
     }
 
     @Override

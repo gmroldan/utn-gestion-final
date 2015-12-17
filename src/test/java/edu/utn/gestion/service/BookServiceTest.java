@@ -12,6 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import org.junit.Ignore;
+
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.mock;
@@ -111,5 +112,54 @@ public class BookServiceTest {
     public void findAllTestThrowsException() throws Exception {
         when(this.bookDAOMock.findAll()).thenThrow(DataAccessException.class);
         this.bookService.findAll();
+    }
+
+    @Test
+    public void decreaseStockTest() throws GestionAppException, DataAccessException {
+        Book book = BookFactory.createBook();
+        String isbn = book.getIsbn();
+        book.setStock(10);
+
+        when(this.bookDAOMock.findOne(isbn)).thenReturn(book);
+
+        this.bookService.decreaseStock(isbn, 2);
+
+        verify(this.bookDAOMock, times(1)).findOne(isbn);
+        verify(this.bookDAOMock, times(1)).update(book);
+        assertEquals(8, book.getStock());
+    }
+
+    @Test (expected = GestionAppException.class)
+    public void decreaseStockCannotUpdateBookTest() throws GestionAppException, DataAccessException {
+        Book book = BookFactory.createBook();
+        String isbn = book.getIsbn();
+        book.setStock(10);
+
+        when(this.bookDAOMock.findOne(isbn)).thenReturn(book);
+        when(this.bookDAOMock.update(book)).thenThrow(DataAccessException.class);
+
+        this.bookService.decreaseStock(isbn, 2);
+    }
+
+    @Test (expected = GestionAppException.class)
+    public void decreaseStockIlegalStockTest() throws GestionAppException, DataAccessException {
+        Book book = BookFactory.createBook();
+        book.setStock(10);
+
+        when(this.bookDAOMock.findOne(anyString())).thenReturn(book);
+
+        this.bookService.decreaseStock(book.getIsbn(), 15);
+    }
+
+    @Test (expected = GestionAppException.class)
+    public void decreaseStockCannotFindBookTest() throws GestionAppException, DataAccessException {
+        when(this.bookDAOMock.findOne(anyString())).thenThrow(DataAccessException.class);
+        this.bookService.decreaseStock("123", 2);
+    }
+
+    @Test (expected = NullPointerException.class)
+    public void decreaseStockNullBookTest() throws GestionAppException, DataAccessException {
+        when(this.bookDAOMock.findOne(anyString())).thenReturn(null);
+        this.bookService.decreaseStock("123", 2);
     }
 }

@@ -7,6 +7,8 @@ import edu.utn.gestion.exception.GestionAppException;
 import edu.utn.gestion.model.Book;
 import edu.utn.gestion.model.Category;
 import edu.utn.gestion.service.generic.GenericService;
+import org.apache.commons.lang3.Validate;
+
 import java.util.List;
 
 /**
@@ -41,6 +43,37 @@ public class BookService extends GenericService<Book, String> {
     public List<Category> findAllCategories() throws GestionAppException {
         try {
             return CategoryDAO.getInstance().findAll();
+        } catch (DataAccessException ex) {
+            throw new GestionAppException(ex.getMessage(), ex);
+        }
+    }
+
+    /**
+     * Decreases the stock of a single book and then updates it into the DB.
+     *
+     * @param bookId
+     * @param quantity
+     * @throws GestionAppException If can't find the book. Or if the new stock is less than 0. Or if there is an issue trying to update the book.
+     */
+    public void decreaseStock(String bookId, int quantity) throws GestionAppException {
+        Book book = null;
+
+        try {
+            book = this.bookDAO.findOne(bookId);
+        } catch (DataAccessException ex) {
+            throw new GestionAppException(ex.getMessage(), ex);
+        }
+
+        Validate.notNull(book, "Cannot update the stock for a null object.");
+        int currentStock = book.getStock();
+        int newStock = currentStock - quantity;
+
+        if (newStock < 0) throw new GestionAppException("Cannot sale this book. Current stock: " + currentStock + ". Required: " + quantity);
+
+        book.setStock(newStock);
+
+        try {
+            this.bookDAO.update(book);
         } catch (DataAccessException ex) {
             throw new GestionAppException(ex.getMessage(), ex);
         }
