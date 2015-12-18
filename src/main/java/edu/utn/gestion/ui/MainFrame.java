@@ -17,6 +17,7 @@ import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.WindowConstants;
 
 import edu.utn.gestion.ui.dialog.employee.EmployeesManagementDialog;
+import edu.utn.gestion.ui.dialog.supplier.SuppliersManagementDialog;
 import edu.utn.gestion.ui.internal.NewSaleInternalFrame;
 import org.apache.log4j.Logger;
 
@@ -38,6 +39,7 @@ public class MainFrame extends JFrame {
     private JMenuItem menuItemBooks;
     private JMenuItem menuItemCustomers;
     private JMenuItem menuItemEmployees;
+    private JMenuItem menuItemSuppliers;
     private JMenuItem menuItemExit;
     private JMenuItem menuItemNewSale;
     private JDesktopPane desktopPane;
@@ -73,6 +75,7 @@ public class MainFrame extends JFrame {
         this.menuItemBooks = new JMenuItem("Books");
         this.menuItemCustomers = new JMenuItem("Customers");
         this.menuItemEmployees = new JMenuItem("Employees");
+        this.menuItemSuppliers = new JMenuItem("Suppliers");
         this.menuHelp = new JMenu("Help");
         this.menuItemAbout = new JMenuItem("About");
         this.desktopPane = new JDesktopPane();
@@ -85,6 +88,7 @@ public class MainFrame extends JFrame {
         this.menuEdit.add(this.menuItemBooks);
         this.menuEdit.add(this.menuItemCustomers);
         this.menuEdit.add(this.menuItemEmployees);
+        this.menuEdit.add(this.menuItemSuppliers);
         this.menuHelp.add(this.menuItemAbout);
 
         this.menuBarGestionApp.add(this.menuFile);
@@ -120,6 +124,13 @@ public class MainFrame extends JFrame {
             }
         });
 
+        this.menuItemSuppliers.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent event) {
+                menuItemSuppliersActionPerformed(event);
+            }
+        });
+
 
         this.setSize(new Dimension(717, 532));
         this.setLocationRelativeTo(null);
@@ -143,6 +154,10 @@ public class MainFrame extends JFrame {
 
     private void menuItemEmployeesActionPerformed(ActionEvent event) {
         new EmployeesManagementDialog(this, true).setVisible(true);
+    }
+
+    private void menuItemSuppliersActionPerformed(ActionEvent event) {
+        new SuppliersManagementDialog(this, true).setVisible(true);
     }
 
     /**
