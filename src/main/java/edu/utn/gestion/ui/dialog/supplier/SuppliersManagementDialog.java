@@ -18,6 +18,7 @@ public class SuppliersManagementDialog extends GenericManagementDialog<Supplier,
      */
     public SuppliersManagementDialog(Frame parent, boolean modal) {
         super(parent, modal, new SupplierController(), new SupplierTableModel());
+        this.setTitle("Suppliers Management");
     }
 
     @Override
