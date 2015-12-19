@@ -27,6 +27,6 @@ public class SuppliersManagementDialog extends GenericManagementDialog<Supplier,
 
     @Override
     protected void showNewObjectDialog() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        new NewSupplierDialog(this, true, (SupplierController) this.controller, null);
     }
 }
