@@ -48,18 +48,10 @@ public abstract class GenericDialog extends JDialog {
      */
     private void initGUIComponents() {
         this.btnCancel = new JButton("Cancel");
-        this.btnCancel.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
-                btnCancelActionPerformed(event);
-            }
-        });
+        this.btnCancel.addActionListener(event -> btnCancelActionPerformed(event));
 
         this.btnAccept = new JButton("Accept");
-        this.btnAccept.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
-                btnAcceptActionPerformed(event);
-            }
-        });
+        this.btnAccept.addActionListener(event -> btnAcceptActionPerformed(event));
 
         this.buttonPanel = new JPanel();
         this.buttonPanel.add(this.btnAccept);

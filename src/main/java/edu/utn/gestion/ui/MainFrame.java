@@ -6,7 +6,6 @@ import edu.utn.gestion.ui.dialog.customer.CustomersManagementDialog;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -28,6 +27,7 @@ import org.apache.log4j.Logger;
 public class MainFrame extends JFrame {
     private static final Logger LOGGER = Logger.getLogger(MainFrame.class);
     private static final String LOOK_AND_FEEL_DEFAULT_VALUE = "Nimbus";
+    private static final String WINDOW_TITLE = "GestionApp";
     private static final MainFrame INSTANCE = new MainFrame();
 
     private JMenu menuFile;
@@ -65,7 +65,6 @@ public class MainFrame extends JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-
         this.menuBarGestionApp = new JMenuBar();
         this.menuFile = new JMenu("File");
         this.menuItemExit = new JMenuItem("Exit");
@@ -81,7 +80,7 @@ public class MainFrame extends JFrame {
         this.desktopPane = new JDesktopPane();
 
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        this.setTitle("GestionApp");
+        this.setTitle(WINDOW_TITLE);
 
         this.menuFile.add(this.menuItemExit);
         this.menuSales.add(this.menuItemNewSale);
@@ -100,36 +99,11 @@ public class MainFrame extends JFrame {
         this.setContentPane(this.desktopPane);
 
 
-        this.menuItemNewSale.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
-                menuItemNewSaleActionPerformed(event);
-            }
-        });
-
-        this.menuItemBooks.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
-                menuItemBooksActionPerformed(event);
-            }
-        });
-
-        this.menuItemCustomers.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
-                menuItemCustomersActionPerformed(event);
-            }
-        });
-
-        this.menuItemEmployees.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
-                menuItemEmployeesActionPerformed(event);
-            }
-        });
-
-        this.menuItemSuppliers.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent event) {
-                menuItemSuppliersActionPerformed(event);
-            }
-        });
+        this.menuItemNewSale.addActionListener(event -> this.menuItemNewSaleActionPerformed(event));
+        this.menuItemBooks.addActionListener(event -> this.menuItemBooksActionPerformed(event));
+        this.menuItemCustomers.addActionListener(event -> this.menuItemCustomersActionPerformed(event));
+        this.menuItemEmployees.addActionListener(event -> this.menuItemEmployeesActionPerformed(event));
+        this.menuItemSuppliers.addActionListener(event -> this.menuItemSuppliersActionPerformed(event));
 
 
         this.setSize(new Dimension(717, 532));

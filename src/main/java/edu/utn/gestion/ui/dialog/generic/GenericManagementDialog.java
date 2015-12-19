@@ -3,14 +3,31 @@ package edu.utn.gestion.ui.dialog.generic;
 import edu.utn.gestion.exception.GestionAppException;
 import edu.utn.gestion.ui.controller.generic.GenericController;
 import edu.utn.gestion.ui.util.PopUpFactory;
+
+import java.awt.Component;
 import java.awt.Frame;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
 import java.util.List;
 import java.util.Set;
+import javax.swing.BorderFactory;
+import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.LayoutStyle;
+import javax.swing.SwingConstants;
+import javax.swing.WindowConstants;
+
 import org.apache.commons.collections4.CollectionUtils;
 
 /**
@@ -20,6 +37,14 @@ import org.apache.commons.collections4.CollectionUtils;
 public abstract class GenericManagementDialog<E, I> extends JDialog {
     protected final GenericController<E, I> controller;
     protected final GenericTableModel model;
+    protected JButton btnDelete;
+    protected JButton btnExport;
+    protected JButton btnNew;
+    protected JButton btnSearch;
+    protected JScrollPane jScrollPane1;
+    protected JPanel searchPanel;
+    protected JTable tableBooks;
+    protected JTextField txtSearch;
 
     /**
      * Creates new form BookManagerDialog
@@ -45,135 +70,114 @@ public abstract class GenericManagementDialog<E, I> extends JDialog {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tableBooks = new javax.swing.JTable();
-        btnNew = new javax.swing.JButton();
-        btnDelete = new javax.swing.JButton();
+        this.jScrollPane1 = new JScrollPane();
+        this.tableBooks = new JTable();
+        this.btnNew = new JButton("New");
+        this.btnDelete = new JButton("Delete");
         this.btnExport = new JButton("Export");
-        searchPanel = new javax.swing.JPanel();
-        txtSearch = new javax.swing.JTextField();
-        btnSearch = new javax.swing.JButton();
+        this.btnSearch = new JButton("Search");
+        this.searchPanel = new JPanel();
+        this.txtSearch = new JTextField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setResizable(false);
-        addWindowFocusListener(new java.awt.event.WindowFocusListener() {
-            public void windowGainedFocus(java.awt.event.WindowEvent evt) {
+        this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        this.setResizable(false);
+
+        this.addWindowFocusListener(new WindowFocusListener() {
+            public void windowGainedFocus(WindowEvent evt) {
                 formWindowGainedFocus(evt);
             }
-            public void windowLostFocus(java.awt.event.WindowEvent evt) {
+            public void windowLostFocus(WindowEvent evt) {
             }
         });
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowOpened(java.awt.event.WindowEvent evt) {
+
+        this.addWindowListener(new WindowAdapter() {
+            public void windowOpened(WindowEvent evt) {
                 formWindowOpened(evt);
             }
         });
 
-        tableBooks.setModel(this.model);
-        tableBooks.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+        this.tableBooks.setModel(this.model);
+        this.tableBooks.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent evt) {
                 tableBooksMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(tableBooks);
+        this.jScrollPane1.setViewportView(this.tableBooks);
 
-        btnNew.setText("New");
-        btnNew.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnNewActionPerformed(evt);
-            }
-        });
+        this.btnNew.addActionListener(event -> this.btnNewActionPerformed());
+        this.btnDelete.addActionListener(event -> this.btnDeleteActionPerformed());
+        this.btnExport.addActionListener(event -> this.btnExportActionPerformed());
+        this.btnSearch.addActionListener(event -> this.btnSearchActionPerformed());
 
-        btnDelete.setText("Delete");
-        btnDelete.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDeleteActionPerformed(evt);
-            }
-        });
+        this.searchPanel.setBorder(BorderFactory.createTitledBorder("Search"));
 
-        this.btnExport.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
-                btnExportActionPerformed(event);
-            }
-        });
-
-        searchPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Search"));
-
-        txtSearch.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
+        this.txtSearch.addKeyListener(new KeyAdapter() {
+            public void keyPressed(KeyEvent evt) {
                 txtSearchKeyPressed(evt);
             }
         });
 
-        btnSearch.setText("Search");
-        btnSearch.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSearchActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout searchPanelLayout = new javax.swing.GroupLayout(searchPanel);
-        searchPanel.setLayout(searchPanelLayout);
+        GroupLayout searchPanelLayout = new GroupLayout(this.searchPanel);
+        this.searchPanel.setLayout(searchPanelLayout);
         searchPanelLayout.setHorizontalGroup(
-            searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            searchPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(searchPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(txtSearch)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnSearch)
+                .addComponent(this.txtSearch)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(this.btnSearch)
                 .addContainerGap())
         );
         searchPanelLayout.setVerticalGroup(
-            searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            searchPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(searchPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnSearch))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(searchPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                    .addComponent(this.txtSearch, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(this.btnSearch))
+                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 883, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                    .addComponent(this.jScrollPane1, GroupLayout.DEFAULT_SIZE, 883, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnNew)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnDelete)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(this.btnNew)
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(this.btnDelete)
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(this.btnExport)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(searchPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(this.searchPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnDelete, btnNew});
+        layout.linkSize(SwingConstants.HORIZONTAL, new Component[] {this.btnDelete, this.btnNew});
 
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(searchPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnDelete)
-                    .addComponent(btnNew)
+                .addComponent(this.searchPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                    .addComponent(this.btnDelete)
+                    .addComponent(this.btnNew)
                     .addComponent(this.btnExport))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(this.jScrollPane1, GroupLayout.PREFERRED_SIZE, 237, GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnExportActionPerformed(ActionEvent event) {
+    private void btnExportActionPerformed() {
         try {
             this.controller.exportData(this.model);
         } catch (GestionAppException ex) {
@@ -181,11 +185,11 @@ public abstract class GenericManagementDialog<E, I> extends JDialog {
         }
     }
 
-    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+    private void formWindowOpened(WindowEvent event) {
         this.updateObjectList();
-    }//GEN-LAST:event_formWindowOpened
+    }
 
-    private void tableBooksMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableBooksMouseClicked
+    private void tableBooksMouseClicked(MouseEvent event) {
         int rowIndex = this.tableBooks.getSelectedRow();
         int columnIndex = this.tableBooks.getSelectedColumn();
         
@@ -196,30 +200,30 @@ public abstract class GenericManagementDialog<E, I> extends JDialog {
                 this.refreshSelectedObjects();
             }
         }
-    }//GEN-LAST:event_tableBooksMouseClicked
+    }
 
-    private void btnNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewActionPerformed
+    private void btnNewActionPerformed() {
         this.showNewObjectDialog();
-    }//GEN-LAST:event_btnNewActionPerformed
+    }
 
-    private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
+    private void formWindowGainedFocus(WindowEvent event) {
         this.updateObjectList();
-    }//GEN-LAST:event_formWindowGainedFocus
+    }
 
-    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+    private void btnDeleteActionPerformed() {
         this.deleteSelectedObjects();        
         this.updateObjectList();
-    }//GEN-LAST:event_btnDeleteActionPerformed
+    }
 
-    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+    private void btnSearchActionPerformed() {
         this.search();
-    }//GEN-LAST:event_btnSearchActionPerformed
+    }
 
-    private void txtSearchKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyPressed
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+    private void txtSearchKeyPressed(KeyEvent event) {
+        if (event.getKeyCode() == KeyEvent.VK_ENTER) {
             this.search();
         }
-    }//GEN-LAST:event_txtSearchKeyPressed
+    }
 
     private void updateObjectList() {
         try {
@@ -275,15 +279,4 @@ public abstract class GenericManagementDialog<E, I> extends JDialog {
     
     protected abstract void showEditObjectDialog(E object);
     protected abstract void showNewObjectDialog();
-    
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    protected javax.swing.JButton btnDelete;
-    protected JButton btnExport;
-    protected javax.swing.JButton btnNew;
-    protected javax.swing.JButton btnSearch;
-    protected javax.swing.JScrollPane jScrollPane1;
-    protected javax.swing.JPanel searchPanel;
-    protected javax.swing.JTable tableBooks;
-    protected javax.swing.JTextField txtSearch;
-    // End of variables declaration//GEN-END:variables
 }

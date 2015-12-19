@@ -16,8 +16,6 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.awt.GridBagLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Date;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
@@ -87,12 +85,6 @@ public class NewSaleInternalFrame extends JInternalFrame {
         this.tblSaleDetail.setModel(this.tableModel);
         this.jScrollPane1.setViewportView(tblSaleDetail);
 
-        this.btnAddSaleDetail.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                btnAddSaleDetailActionPerformed(evt);
-            }
-        });
-
         this.txtSaleTotal.setEditable(false);
 
         GroupLayout jPanel3Layout = new GroupLayout(this.panelSaleDetail);
@@ -137,17 +129,9 @@ public class NewSaleInternalFrame extends JInternalFrame {
                                 .addContainerGap())
         );
 
-        this.btnCancelSale.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                btnCancelSaleActionPerformed(evt);
-            }
-        });
-
-        this.btnSaveSale.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                btnSaveSaleActionPerformed(evt);
-            }
-        });
+        this.btnAddSaleDetail.addActionListener(event -> this.btnAddSaleDetailActionPerformed());
+        this.btnCancelSale.addActionListener(event -> this.btnCancelSaleActionPerformed());
+        this.btnSaveSale.addActionListener(event -> this.btnSaveSaleActionPerformed());
 
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -245,7 +229,7 @@ public class NewSaleInternalFrame extends JInternalFrame {
         }
     }
 
-    private void btnAddSaleDetailActionPerformed(ActionEvent evt) {
+    private void btnAddSaleDetailActionPerformed() {
         Book book = (Book) this.cmbBooks.getSelectedItem();
 
         String quantityText = this.txtSaleQuantity.getText();
@@ -262,7 +246,7 @@ public class NewSaleInternalFrame extends JInternalFrame {
         this.updateObjectList();
     }
 
-    private void btnSaveSaleActionPerformed(ActionEvent evt) {
+    private void btnSaveSaleActionPerformed() {
         try {
             Customer customer = (Customer) this.cmbCustomers.getSelectedItem();
             Employee employee = (Employee) this.cmbEmployees.getSelectedItem();
@@ -277,7 +261,7 @@ public class NewSaleInternalFrame extends JInternalFrame {
         }
     }
 
-    private void btnCancelSaleActionPerformed(ActionEvent evt) {
+    private void btnCancelSaleActionPerformed() {
         this.dispose();
     }
 
