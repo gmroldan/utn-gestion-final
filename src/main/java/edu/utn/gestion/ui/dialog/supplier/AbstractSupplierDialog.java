@@ -36,7 +36,8 @@ public abstract class AbstractSupplierDialog extends GenericDialog {
     @Override
     protected void formWindowOpened(WindowEvent event) {
         if (this.currentSupplier != null) {
-            // TODO: add implementation if needed.
+            this.txtName.setText(this.currentSupplier.getName());
+            this.txtEmail.setText(this.currentSupplier.getEmail());
         } else {
             this.currentSupplier = new Supplier();
         }
