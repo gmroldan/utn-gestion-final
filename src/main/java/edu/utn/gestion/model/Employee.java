@@ -1,5 +1,7 @@
 package edu.utn.gestion.model;
 
+import edu.utn.gestion.model.util.IConstants;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -91,5 +93,14 @@ public class Employee {
 
     public void setGender(GenderEnum gender) {
         this.gender = gender;
+    }
+
+    @Override
+    public String toString() {
+        return new StringBuilder()
+                .append(this.id)
+                .append(IConstants.SCORE)
+                .append(this.name)
+                .toString();
     }
 }

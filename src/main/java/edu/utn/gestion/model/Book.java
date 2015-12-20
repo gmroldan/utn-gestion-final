@@ -1,5 +1,7 @@
 package edu.utn.gestion.model;
 
+import edu.utn.gestion.model.util.IConstants;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -10,7 +12,6 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "book")
 public class Book {
-
     @Id
     @Column(nullable = false, length = 12)
     private String isbn;
@@ -143,5 +144,18 @@ public class Book {
 
     public void setMinimumStock(int minimumStock) {
         this.minimumStock = minimumStock;
+    }
+
+    @Override
+    public String toString() {
+        return new StringBuilder()
+                .append(this.isbn)
+                .append(IConstants.SCORE)
+                .append(this.title)
+                .append(IConstants.SCORE)
+                .append(this.author)
+                .append(IConstants.SCORE)
+                .append(this.price)
+                .toString();
     }
 }

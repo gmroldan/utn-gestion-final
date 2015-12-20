@@ -176,7 +176,7 @@ public class NewSaleInternalFrame extends JInternalFrame {
         this.setClosable(true);
         this.setResizable(true);
         this.setLocation(0, 0);
-        this.setSize(500, 500);
+        this.setSize(600, 500);
     }
 
     /**
