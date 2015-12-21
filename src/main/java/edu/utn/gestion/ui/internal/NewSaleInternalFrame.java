@@ -11,6 +11,7 @@ import edu.utn.gestion.ui.controller.CustomerController;
 import edu.utn.gestion.ui.controller.EmployeeController;
 import edu.utn.gestion.ui.controller.SaleController;
 import edu.utn.gestion.ui.util.FormUtils;
+import edu.utn.gestion.ui.util.InternalFrameManager;
 import edu.utn.gestion.ui.util.PopUpFactory;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -30,11 +31,14 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle;
 import javax.swing.SwingConstants;
+import javax.swing.event.InternalFrameAdapter;
+import javax.swing.event.InternalFrameEvent;
 
 /**
  * Created by martin on 08/12/15.
  */
 public class NewSaleInternalFrame extends JInternalFrame {
+    private static final String WINDOW_TITLE = "New Sale";
     private JButton btnAddSaleDetail;
     private JButton btnCancelSale;
     private JButton btnSaveSale;
@@ -63,6 +67,7 @@ public class NewSaleInternalFrame extends JInternalFrame {
         this.controller = new SaleController();
         this.currentSale = new Sale();
         this.updateObjectList();
+        this.setVisible(true);
     }
 
     @SuppressWarnings("unchecked")
@@ -129,6 +134,14 @@ public class NewSaleInternalFrame extends JInternalFrame {
                                 .addContainerGap())
         );
 
+        this.addInternalFrameListener(new InternalFrameAdapter() {
+            @Override
+            public void internalFrameClosed(InternalFrameEvent event) {
+                super.internalFrameClosed(event);
+                InternalFrameManager.removeInternalFrame(event.getInternalFrame());
+            }
+        });
+
         this.btnAddSaleDetail.addActionListener(event -> this.btnAddSaleDetailActionPerformed());
         this.btnCancelSale.addActionListener(event -> this.btnCancelSaleActionPerformed());
         this.btnSaveSale.addActionListener(event -> this.btnSaveSaleActionPerformed());
@@ -172,7 +185,7 @@ public class NewSaleInternalFrame extends JInternalFrame {
 
         this.pack();
 
-        this.setTitle("New Sale");
+        this.setTitle(WINDOW_TITLE);
         this.setClosable(true);
         this.setResizable(true);
         this.setLocation(0, 0);

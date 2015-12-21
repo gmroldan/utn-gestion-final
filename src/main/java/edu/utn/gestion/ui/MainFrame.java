@@ -18,6 +18,7 @@ import javax.swing.WindowConstants;
 import edu.utn.gestion.ui.dialog.employee.EmployeesManagementDialog;
 import edu.utn.gestion.ui.dialog.supplier.SuppliersManagementDialog;
 import edu.utn.gestion.ui.internal.NewSaleInternalFrame;
+import edu.utn.gestion.ui.util.InternalFrameManager;
 import org.apache.log4j.Logger;
 
 /**
@@ -43,7 +44,6 @@ public class MainFrame extends JFrame {
     private JMenuItem menuItemExit;
     private JMenuItem menuItemNewSale;
     private JDesktopPane desktopPane;
-    private NewSaleInternalFrame internalFrameNewSale;
 
     /**
     * Creates new form MainFrame
@@ -73,7 +73,7 @@ public class MainFrame extends JFrame {
         this.menuItemSuppliers = new JMenuItem("Suppliers");
         this.menuHelp = new JMenu("Help");
         this.menuItemAbout = new JMenuItem("About");
-        this.desktopPane = new JDesktopPane();
+        this.desktopPane = InternalFrameManager.getDesktopPane();
 
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setTitle(WINDOW_TITLE);
@@ -107,11 +107,7 @@ public class MainFrame extends JFrame {
     }
 
     private void menuItemNewSaleActionPerformed(ActionEvent event) {
-        if (this.internalFrameNewSale == null) {
-            this.internalFrameNewSale = new NewSaleInternalFrame();
-            this.desktopPane.add(this.internalFrameNewSale);
-            this.internalFrameNewSale.setVisible(true);
-        }
+        InternalFrameManager.addInternalFrame(new NewSaleInternalFrame());
     }
 
     private void menuItemBooksActionPerformed(ActionEvent event) {
