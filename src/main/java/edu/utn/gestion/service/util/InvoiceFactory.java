@@ -82,8 +82,9 @@ public class InvoiceFactory {
         paragraph.setAlignment(Element.ALIGN_CENTER);
         document.add(paragraph);
 
+        StringBuilder stringBuilder = new StringBuilder();
         paragraph = new Paragraph();
-        paragraph.add(new StringBuilder()
+        paragraph.add(stringBuilder
                 .append("GRUPO ILHSA S.A.")
                 .append(NEW_LINE)
                 .append("C.U.I.T: 30654386192")
@@ -104,13 +105,15 @@ public class InvoiceFactory {
                 .toString());
         document.add(paragraph);
 
+        stringBuilder.setLength(0);
         paragraph = new Paragraph();
         paragraph.add("ORIGINAL\n");
         paragraph.setAlignment(Element.ALIGN_CENTER);
         document.add(paragraph);
 
+        stringBuilder.setLength(0);
         paragraph = new Paragraph();
-        paragraph.add(new StringBuilder()
+        paragraph.add(stringBuilder
                 .append("TIQUE ")
                 .append(DEFAULT_INVOICE_TYPE)
                 .append(" Nº 0001-000000")
@@ -123,9 +126,10 @@ public class InvoiceFactory {
                 .toString());
         document.add(paragraph);
 
+        stringBuilder.setLength(0);
         paragraph = new Paragraph();
         Customer customer = sale.getCustomer();
-        paragraph.add(new StringBuilder()
+        paragraph.add(stringBuilder
                 .append(customer.getName())
                 .append(NEW_LINE)
                 .append("C.U.I.T.: ")
@@ -153,8 +157,9 @@ public class InvoiceFactory {
         }
         document.add(table);
 
+        stringBuilder.setLength(0);
         paragraph = new Paragraph();
-        paragraph.add(new StringBuilder()
+        paragraph.add(stringBuilder
                 .append(NEW_LINE)
                 .append("TOTAL ")
                 .append(TABULAR)
