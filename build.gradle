@@ -30,6 +30,7 @@ dependencies {
     compile 'mysql:mysql-connector-java:5.1.6'
     compile 'log4j:log4j:1.2.16'
     compile 'org.mockito:mockito-all:1.9.5'
+    compile 'org.powermock:powermock-mockito-release-full:1.5.4'
     compile 'com.itextpdf:itextpdf:5.4.4'
     compile 'org.jopendocument:jOpenDocument:1.3b1'
     compile group: 'org.hibernate', name: 'hibernate-core', version: '4.3.10.Final'

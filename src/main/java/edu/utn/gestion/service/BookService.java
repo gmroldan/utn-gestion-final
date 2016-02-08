@@ -17,14 +17,12 @@ import java.util.List;
  */
 public class BookService extends GenericService<Book, String> {
     private static final BookService INSTANCE = new BookService();
-    private final BookDAO bookDAO;
 
     /**
      * Class constructor.
      */
     private BookService() {
         super(BookDAO.getInstance());
-        this.bookDAO = (BookDAO) this.genericDAO;
     }
 
     public static BookService getInstance() {
@@ -34,7 +32,15 @@ public class BookService extends GenericService<Book, String> {
     @Override
     public List<Book> findBySearch(String searchString) throws GestionAppException {
         try {
-            return this.bookDAO.findObjectsBySearch(searchString);
+            return this.genericDAO.findObjectsBySearch(searchString);
+        } catch (DataAccessException ex) {
+            throw new GestionAppException(ex.getMessage(), ex);
+        }
+    }
+
+    public List<Book> findBooksWithMinStock() throws GestionAppException {
+        try {
+            return ((BookDAO) this.genericDAO).findBooksWithMinStock();
         } catch (DataAccessException ex) {
             throw new GestionAppException(ex.getMessage(), ex);
         }
@@ -59,7 +65,7 @@ public class BookService extends GenericService<Book, String> {
         Book book = null;
 
         try {
-            book = this.bookDAO.findOne(bookId);
+            book = this.genericDAO.findOne(bookId);
         } catch (DataAccessException ex) {
             throw new GestionAppException(ex.getMessage(), ex);
         }
@@ -73,7 +79,7 @@ public class BookService extends GenericService<Book, String> {
         book.setCurrentStock(newStock);
 
         try {
-            this.bookDAO.update(book);
+            book = this.genericDAO.update(book);
         } catch (DataAccessException ex) {
             throw new GestionAppException(ex.getMessage(), ex);
         }

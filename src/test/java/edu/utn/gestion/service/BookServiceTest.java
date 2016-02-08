@@ -5,23 +5,22 @@ import edu.utn.gestion.exception.DataAccessException;
 import edu.utn.gestion.exception.GestionAppException;
 import edu.utn.gestion.model.Book;
 import edu.utn.gestion.util.BookFactory;
-import java.util.Arrays;
-import java.util.List;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.assertEquals;
-import org.junit.Ignore;
 
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.mockito.internal.util.reflection.Whitebox.setInternalState;
 
-// TODO: Fix some tests.
 public class BookServiceTest {
     private BookService bookService;
     private BookDAO bookDAOMock;
@@ -30,14 +29,14 @@ public class BookServiceTest {
     public void setUp() {
         this.bookService = BookService.getInstance();
         this.bookDAOMock = mock(BookDAO.class);
-        setInternalState(this.bookService, "bookDAO", this.bookDAOMock);
+        setInternalState(this.bookService, "genericDAO", this.bookDAOMock);
     }
     
     @After
     public void tearDown() {
     }
     
-    @Test @Ignore
+    @Test
     public void saveTest() throws Exception {        
         Book book = BookFactory.createBook();
         String expectedId = book.getIsbn();
@@ -54,7 +53,7 @@ public class BookServiceTest {
         this.bookService.save(new Book());
     }
     
-    @Test @Ignore
+    @Test
     public void updateTest() throws Exception {
         Book book = BookFactory.createBook();
         when(this.bookDAOMock.update(book)).thenReturn(book);
@@ -70,16 +69,16 @@ public class BookServiceTest {
         this.bookService.update(new Book());
     }
     
-    @Test @Ignore
+    @Test
     public void deleteTest() throws Exception {
         Book book = BookFactory.createBook();
         
         this.bookService.delete(book);
         
-        verify(bookDAOMock, times(1)).delete(book);
+        verify(this.bookDAOMock, times(1)).delete(book);
     }
 
-    @Test @Ignore
+    @Test
     public void findOneTest() throws Exception {
         Book book = BookFactory.createBook();
         when(this.bookDAOMock.findOne(anyString())).thenReturn(book);
@@ -95,7 +94,7 @@ public class BookServiceTest {
         this.bookService.findOne("123456789");
     }
 
-    @Test @Ignore
+    @Test
     public void findAllTest() throws Exception {
         Book book1 = BookFactory.createBook();
         Book book2 = BookFactory.createBook();
@@ -121,6 +120,7 @@ public class BookServiceTest {
         book.setCurrentStock(10);
 
         when(this.bookDAOMock.findOne(isbn)).thenReturn(book);
+        when(this.bookDAOMock.update(book)).thenReturn(book);
 
         this.bookService.decreaseStock(isbn, 2);
 
