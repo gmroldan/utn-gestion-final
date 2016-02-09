@@ -1,10 +1,10 @@
 package edu.utn.gestion.ui.dialog.generic;
 
+import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import javax.swing.table.AbstractTableModel;
 
 public abstract class GenericTableModel<T> extends AbstractTableModel {
     private final String[] columnNames;
@@ -47,6 +47,10 @@ public abstract class GenericTableModel<T> extends AbstractTableModel {
         this.objectList.clear();
         this.objectList.addAll(objectList);
         this.fireTableDataChanged();
+    }
+
+    public List<T> getObjectList() {
+        return objectList;
     }
 
     @Override

@@ -3,6 +3,7 @@ package edu.utn.gestion.ui.dialog.order;
 import edu.utn.gestion.exception.GestionAppException;
 import edu.utn.gestion.ui.controller.OrderController;
 import edu.utn.gestion.ui.util.PopUpFactory;
+import org.apache.commons.collections4.CollectionUtils;
 
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
@@ -20,7 +21,7 @@ import java.awt.event.WindowFocusListener;
  * Created by martin on 05/02/16.
  */
 public class NewOrderDialog extends JDialog {
-    private final String WINDOW_TITLE = "Send Order";
+    private static final String WINDOW_TITLE = "Send Order";
     private OrderController controller;
     private OrderDetailTableModel model;
     protected JButton btnNew;
@@ -102,7 +103,14 @@ public class NewOrderDialog extends JDialog {
     }
 
     private void btnNewActionPerformed() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        try {
+            long orderId = this.controller.save(this.model.getObjectList());
+            PopUpFactory.showInfoMessage(this, "A new order has been created successfully. Order Id: " + orderId);
+        } catch (GestionAppException ex) {
+            PopUpFactory.showErrorMessage(this, ex.getMessage());
+        } finally {
+            this.updateObjectList();
+        }
     }
 
     private void formWindowGainedFocus(WindowEvent event) {
@@ -116,6 +124,12 @@ public class NewOrderDialog extends JDialog {
     private void updateObjectList() {
         try {
             this.model.setObjectList(this.controller.getBooksForNewOrder());
+
+            if (CollectionUtils.isEmpty(this.model.getObjectList())) {
+                this.btnNew.setEnabled(false);
+            } else {
+                this.btnNew.setEnabled(true);
+            }
         } catch (GestionAppException ex) {
             PopUpFactory.showErrorMessage(this, ex.getMessage());
             this.dispose();

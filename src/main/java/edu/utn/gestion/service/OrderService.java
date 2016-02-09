@@ -6,6 +6,7 @@ import edu.utn.gestion.exception.GestionAppException;
 import edu.utn.gestion.model.Book;
 import edu.utn.gestion.model.Order;
 import edu.utn.gestion.model.OrderDetail;
+import edu.utn.gestion.model.OrderStatusEnum;
 import edu.utn.gestion.service.generic.GenericService;
 import org.apache.commons.collections4.CollectionUtils;
 
@@ -28,6 +29,11 @@ public class OrderService extends GenericService<Order, Long> {
 
     public static OrderService getInstance() {
         return INSTANCE;
+    }
+
+    public long createNewOrder(List<OrderDetail> orderDetailList) throws GestionAppException {
+        Order order = new Order(OrderStatusEnum.NEW_ORDER, orderDetailList);
+        return this.save(order); // TODO: Send the order to the supplier by email.
     }
 
     @Override

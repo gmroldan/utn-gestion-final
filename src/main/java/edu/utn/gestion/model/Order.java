@@ -55,6 +55,17 @@ public class Order {
         this.status = status;
     }
 
+    /**
+     * Creates a new instance of <code>Order</code>.
+     *
+     * @param status
+     * @param orderDetails
+     */
+    public Order(OrderStatusEnum status, List<OrderDetail> orderDetails) {
+        this.status = status;
+        this.orderDetails.addAll(orderDetails);
+    }
+
     public OrderStatusEnum getStatus() {
         return status;
     }
