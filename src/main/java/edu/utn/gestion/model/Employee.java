@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Date;
 
 /**
  * Created by martin on 08/12/15.
@@ -35,6 +36,12 @@ public class Employee {
 
     @Column(nullable = false, unique = false, length = 30)
     private String address;
+
+    @Enumerated(EnumType.STRING)
+    private EmployeeCategoryEnum category;
+
+    @Column(nullable = false, unique = false, length = 25)
+    private Date ingress;
 
     @Enumerated(EnumType.STRING)
     private GenderEnum gender;
@@ -93,6 +100,22 @@ public class Employee {
 
     public void setGender(GenderEnum gender) {
         this.gender = gender;
+    }
+
+    public EmployeeCategoryEnum getCategory() {
+        return category;
+    }
+
+    public void setCategory(EmployeeCategoryEnum category) {
+        this.category = category;
+    }
+
+    public Date getIngress() {
+        return ingress;
+    }
+
+    public void setIngress(Date ingress) {
+        this.ingress = ingress;
     }
 
     @Override
