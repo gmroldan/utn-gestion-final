@@ -2,14 +2,7 @@ package edu.utn.gestion.model;
 
 import edu.utn.gestion.model.util.IConstants;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -40,7 +33,8 @@ public class Employee {
     @Enumerated(EnumType.STRING)
     private EmployeeCategoryEnum category;
 
-    @Column(nullable = false, unique = false, length = 25)
+    @Column(nullable = false)
+    @Temporal(TemporalType.DATE)
     private Date ingress;
 
     @Enumerated(EnumType.STRING)

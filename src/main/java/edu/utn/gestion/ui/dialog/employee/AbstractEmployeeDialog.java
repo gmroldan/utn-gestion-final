@@ -69,7 +69,7 @@ public abstract class AbstractEmployeeDialog extends GenericDialog {
             this.cmbGender.setSelectedItem(this.currentEmployee.getGender());
             this.cmbCategory.setSelectedItem(this.currentEmployee.getCategory());
             Date date = this.currentEmployee.getIngress();
-            this.ingressDatePicker.getModel().setDate(date.getYear()+1900,date.getMonth(),date.getDay());
+            this.ingressDatePicker.getModel().setDate(date.getYear()+1900,date.getMonth(),date.getDate());
         } else {
             this.currentEmployee = new Employee();
         }
