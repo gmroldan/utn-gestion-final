@@ -1,6 +1,7 @@
 package edu.utn.gestion.ui.dialog.generic;
 
 import edu.utn.gestion.exception.GestionAppException;
+import edu.utn.gestion.ui.MainFrame;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -24,6 +25,11 @@ public abstract class GenericDialog extends JDialog {
     protected JButton btnCancel;
 
     public GenericDialog(JDialog parent, boolean modal) {
+        super(parent, modal);
+        this.init();
+    }
+
+    public GenericDialog(MainFrame parent, boolean modal) {
         super(parent, modal);
         this.init();
     }
