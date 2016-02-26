@@ -5,6 +5,7 @@ import edu.utn.gestion.ui.dialog.book.BooksManagementDialog;
 import edu.utn.gestion.ui.dialog.customer.CustomersManagementDialog;
 import edu.utn.gestion.ui.dialog.employee.EmployeesManagementDialog;
 import edu.utn.gestion.ui.dialog.order.NewOrderDialog;
+import edu.utn.gestion.ui.dialog.order.OrdersManagementDialog;
 import edu.utn.gestion.ui.dialog.supplier.SuppliersManagementDialog;
 import edu.utn.gestion.ui.internal.NewSaleInternalFrame;
 import edu.utn.gestion.ui.util.InternalFrameManager;
@@ -43,6 +44,7 @@ public class MainFrame extends JFrame {
     private JMenuItem menuItemCustomers;
     private JMenuItem menuItemEmployees;
     private JMenuItem menuItemSuppliers;
+    private JMenuItem menuItemOrders;
     private JMenuItem menuItemNewOrder;
     private JMenuItem menuItemExit;
     private JMenuItem menuItemNewSale;
@@ -75,6 +77,7 @@ public class MainFrame extends JFrame {
         this.menuItemCustomers = new JMenuItem("Customers");
         this.menuItemEmployees = new JMenuItem("Employees");
         this.menuItemSuppliers = new JMenuItem("Suppliers");
+        this.menuItemOrders = new JMenuItem("Orders");
         this.menuItemNewOrder = new JMenuItem("New Order");
         this.menuHelp = new JMenu("Help");
         this.menuItemAbout = new JMenuItem("About");
@@ -91,6 +94,7 @@ public class MainFrame extends JFrame {
         this.menuEdit.add(this.menuItemSuppliers);
         this.menuEdit.add(this.menuOrders);
         this.menuHelp.add(this.menuItemAbout);
+        this.menuOrders.add(this.menuItemOrders);
         this.menuOrders.add(this.menuItemNewOrder);
 
         this.menuBarGestionApp.add(this.menuFile);
@@ -107,11 +111,16 @@ public class MainFrame extends JFrame {
         this.menuItemCustomers.addActionListener(event -> this.menuItemCustomersActionPerformed(event));
         this.menuItemEmployees.addActionListener(event -> this.menuItemEmployeesActionPerformed(event));
         this.menuItemSuppliers.addActionListener(event -> this.menuItemSuppliersActionPerformed(event));
+        this.menuItemOrders.addActionListener(event -> this.menuItemOrdersActionPerformed());
         this.menuItemNewOrder.addActionListener(event -> this.menuItemNewOrderActionPerformed(event));
 
 
         this.setSize(new Dimension(1000, 800));
         this.setLocationRelativeTo(null);
+    }
+
+    private void menuItemOrdersActionPerformed() {
+        new OrdersManagementDialog(this, true).setVisible(true);
     }
 
     private void menuItemNewOrderActionPerformed(ActionEvent event) {

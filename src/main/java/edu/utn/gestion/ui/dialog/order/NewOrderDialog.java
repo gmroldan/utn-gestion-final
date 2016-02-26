@@ -12,6 +12,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.LayoutStyle;
 import javax.swing.WindowConstants;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dialog;
 import java.awt.Frame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -37,15 +40,31 @@ public class NewOrderDialog extends JDialog {
      */
     public NewOrderDialog(Frame parent, boolean modal, OrderController controller) {
         super(parent, modal);
+        this.init(controller);
+    }
+
+    /**
+     * Creates new form NewOrderDialog
+     *
+     * @param parent
+     * @param modal
+     * @parm model
+     */
+    public NewOrderDialog(Dialog parent, boolean modal, OrderController controller) {
+        super(parent, modal);
+        this.init(controller);
+    }
+
+    private void init(OrderController controller) {
         this.controller = controller;
         this.model = new OrderDetailTableModel();
         this.initComponents();
         this.setTitle(WINDOW_TITLE);
-        this.setLocationRelativeTo(parent);
+        this.setLocationRelativeTo(this.getParent());
     }
 
     /**
-     * This method is called from within the constructor to initialize the form.
+        * This method is called from within the constructor to initialize the form.
      */
     private void initComponents() {
         this.jScrollPane1 = new JScrollPane();

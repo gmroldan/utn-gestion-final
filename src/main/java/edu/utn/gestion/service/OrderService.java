@@ -33,7 +33,7 @@ public class OrderService extends GenericService<Order, Long> {
 
     public long createNewOrder(List<OrderDetail> orderDetailList) throws GestionAppException {
         Order order = new Order(OrderStatusEnum.NEW_ORDER, orderDetailList);
-        return this.save(order); // TODO: Send the order to the supplier by email.
+        return this.save(order);// TODO: Send the order to the supplier by webservice.
     }
 
     @Override
