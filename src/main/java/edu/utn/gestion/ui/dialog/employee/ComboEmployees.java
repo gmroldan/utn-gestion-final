@@ -34,4 +34,9 @@ public class ComboEmployees extends JComboBox{
             this.setModel(new DefaultComboBoxModel(employees.toArray()));
         }
     }
+
+    public Employee getEmployee(){
+
+        return (Employee) this.getSelectedItem();
+    }
 }

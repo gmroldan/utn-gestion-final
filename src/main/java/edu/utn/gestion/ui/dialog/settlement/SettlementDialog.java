@@ -1,7 +1,10 @@
 package edu.utn.gestion.ui.dialog.settlement;
 
 import edu.utn.gestion.exception.GestionAppException;
+import edu.utn.gestion.model.Employee;
+import edu.utn.gestion.model.Settlement;
 import edu.utn.gestion.ui.MainFrame;
+import edu.utn.gestion.ui.controller.SettlementController;
 import edu.utn.gestion.ui.dialog.employee.ComboEmployees;
 import edu.utn.gestion.ui.dialog.generic.GenericDialog;
 import edu.utn.gestion.ui.util.FormUtils;
@@ -27,8 +30,11 @@ public class SettlementDialog extends GenericDialog{
     private JCheckBox checkPresenteeism;
     private JSpinner spinnerUnAttendance;
 
+    private SettlementController controller;
+
     public SettlementDialog(MainFrame parent, boolean modal) {
         super(parent, modal);
+        controller = new SettlementController();
     }
 
     @Override
@@ -128,6 +134,15 @@ public class SettlementDialog extends GenericDialog{
 
     @Override
     protected void btnAcceptActionPerformed(ActionEvent event) {
+
+        //controller.findOne()
+        String period = cmbYears.getSelectedItem().toString() + cmbMonths.getSelectedItem().toString();
+        Employee employee = this.cmbEmployees.getEmployee();
+        Settlement settlement = new Settlement(employee,period);
+        settlement.calculateSettlement(controller.getGrossSalary(employee));
+
+        SettlementDetailDialog detail = new SettlementDetailDialog(this,true,settlement);
+        detail.setVisible(true);
 
     }
 
