@@ -4,11 +4,13 @@ import edu.utn.gestion.model.Order;
 import edu.utn.gestion.model.OrderStatusEnum;
 import edu.utn.gestion.ui.dialog.generic.GenericTableModel;
 
+import java.util.Date;
+
 /**
  * Created by martin on 25/02/16.
  */
 public class OrderTableModel extends GenericTableModel<Order> {
-    private static final String[] COLUMN_NAMES = {"Id", "Status"};
+    private static final String[] COLUMN_NAMES = {"Id", "Creation Date", "Status"};
 
     /**
      * Class constructor.
@@ -21,7 +23,8 @@ public class OrderTableModel extends GenericTableModel<Order> {
     public Class getColumnClass(int columnIndex) {
         switch (columnIndex) {
             case 0: return Long.class;
-            case 1: return OrderStatusEnum.class;
+            case 1: return Date.class;
+            case 2: return OrderStatusEnum.class;
             default: return String.class;
         }
     }
@@ -32,7 +35,8 @@ public class OrderTableModel extends GenericTableModel<Order> {
 
         switch (columnIndex) {
             case 0: return order.getId();
-            case 1: return order.getStatus();
+            case 1: return order.getCreationDate();
+            case 2: return order.getStatus();
             default: return null;
         }
     }

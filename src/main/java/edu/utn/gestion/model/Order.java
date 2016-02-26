@@ -1,6 +1,7 @@
 package edu.utn.gestion.model;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -10,7 +11,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -22,6 +26,10 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+
+    @Column(nullable = false)
+    @Temporal(TemporalType.DATE)
+    private Date creationDate;
 
     @Enumerated(EnumType.STRING)
     private OrderStatusEnum status;
@@ -62,6 +70,7 @@ public class Order {
      * @param orderDetails
      */
     public Order(OrderStatusEnum status, List<OrderDetail> orderDetails) {
+        this.creationDate = new Date();
         this.status = status;
         this.orderDetails.addAll(orderDetails);
     }
@@ -84,5 +93,13 @@ public class Order {
 
     public List<OrderDetail> getOrderDetails() {
         return orderDetails;
+    }
+
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
     }
 }
