@@ -20,8 +20,7 @@ public class OrdersManagementDialog extends GenericManagementDialog<Order, Long>
      * @param modal
      */
     public OrdersManagementDialog(JFrame parent, boolean modal) {
-        super(parent, true, new OrderController(), new OrderTableModel());
-        this.setTitle(WINDOW_TITLE);
+        super(parent, WINDOW_TITLE, true, new OrderController(), new OrderTableModel());
     }
 
     @Override

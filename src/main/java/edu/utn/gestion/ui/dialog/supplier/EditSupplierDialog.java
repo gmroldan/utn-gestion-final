@@ -23,7 +23,7 @@ public class EditSupplierDialog extends AbstractSupplierDialog {
      * @param supplier
      */
     public EditSupplierDialog(JDialog parent, boolean modal, SupplierController controller, Supplier supplier) {
-        super(parent, modal, controller, supplier, WINDOW_TITLE);
+        super(parent, WINDOW_TITLE, modal, controller, supplier);
     }
 
     @Override

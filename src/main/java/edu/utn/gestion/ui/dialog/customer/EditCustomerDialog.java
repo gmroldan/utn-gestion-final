@@ -12,10 +12,18 @@ import java.awt.event.ActionEvent;
  * Created by martin on 08/12/15.
  */
 public class EditCustomerDialog extends AbstractCustomerDialog {
+    private static final String WINDOW_TITLE = "Edit Customer";
 
+    /**
+     * Class constructor.
+     *
+     * @param parent
+     * @param modal
+     * @param controller
+     * @param customer
+     */
     public EditCustomerDialog(JDialog parent, boolean modal, CustomerController controller, Customer customer) {
-        super(parent, modal, controller, customer);
-        this.setTitle("Edit Customer");
+        super(parent, WINDOW_TITLE, modal, controller, customer);
     }
 
     @Override

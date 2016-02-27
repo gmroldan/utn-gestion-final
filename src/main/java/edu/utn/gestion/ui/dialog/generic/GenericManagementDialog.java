@@ -50,12 +50,14 @@ public abstract class GenericManagementDialog<E, I> extends JDialog {
      * Creates new form BookManagerDialog
      * 
      * @param parent
+     * @param windowTitle
      * @param modal
      * @param controller
      * @parm model
      */
-    public GenericManagementDialog(Frame parent, boolean modal, GenericController controller, GenericTableModel model) {
-        super(parent, modal);
+    public GenericManagementDialog(Frame parent, String windowTitle
+            , boolean modal, GenericController controller, GenericTableModel model) {
+        super(parent, windowTitle, modal);
         this.controller = controller;
         this.model = model;
         this.initComponents();

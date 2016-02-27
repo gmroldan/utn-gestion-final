@@ -28,19 +28,18 @@ public abstract class AbstractOrderDialog extends GenericDialog {
      * Class constructor.
      *
      * @param parent
+     * @param windowTitle
      * @param modal
      * @param order
      * @param controller
      */
-    public AbstractOrderDialog(JDialog parent, boolean modal, String windowTitle
-            , Order order, OrderController controller) {
-        super(parent, modal);
+    public AbstractOrderDialog(JDialog parent, String windowTitle
+            , boolean modal, Order order, OrderController controller) {
+        super(parent, windowTitle, modal);
         this.controller = controller;
         this.currentOrder = order;
 
         this.initModel();
-
-        this.setTitle(windowTitle);
     }
 
     @Override

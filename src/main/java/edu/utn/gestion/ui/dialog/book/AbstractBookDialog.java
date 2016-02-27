@@ -57,11 +57,13 @@ public abstract class AbstractBookDialog extends GenericDialog {
      * Creates new form AbstractBookDialog
      * 
      * @param parent
+     * @param windowTitle
      * @param modal
      * @param book
      */
-    public AbstractBookDialog(JDialog parent, boolean modal, BookController controller, Book book) {
-        super(parent, modal);
+    public AbstractBookDialog(JDialog parent, String windowTitle
+            , boolean modal, BookController controller, Book book) {
+        super(parent, windowTitle, modal);
         this.controller = controller;
         this.currentBook = book;
         this.initModel();

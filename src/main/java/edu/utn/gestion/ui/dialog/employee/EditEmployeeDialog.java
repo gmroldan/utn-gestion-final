@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
  * Created by martin on 08/12/15.
  */
 public class EditEmployeeDialog extends AbstractEmployeeDialog {
+    private static final String WINDOW_TITLE = "Edit Employee";
 
     /**
      * Creates a new instance of EditEmployeeDialog.
@@ -22,8 +23,7 @@ public class EditEmployeeDialog extends AbstractEmployeeDialog {
      * @param employee
      */
     public EditEmployeeDialog(JDialog parent, boolean modal, EmployeeController controller, Employee employee) {
-        super(parent, modal, controller, employee);
-        this.setTitle("Edit Employee");
+        super(parent, WINDOW_TITLE, modal, controller, employee);
     }
 
     @Override

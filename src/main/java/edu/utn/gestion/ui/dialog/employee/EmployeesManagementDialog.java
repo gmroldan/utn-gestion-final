@@ -10,9 +10,16 @@ import java.awt.Frame;
  * Created by martin on 08/12/15.
  */
 public class EmployeesManagementDialog extends GenericManagementDialog<Employee, Long> {
+    private static final String WINDOW_TITLE = "Employees Management";
+
+    /**
+     * Class constructor.
+     *
+     * @param parent
+     * @param modal
+     */
     public EmployeesManagementDialog(Frame parent, boolean modal) {
-        super(parent, modal, new EmployeeController(), new EmployeeTableModel());
-        this.setTitle("Employees Management");
+        super(parent, WINDOW_TITLE, modal, new EmployeeController(), new EmployeeTableModel());
     }
 
     @Override

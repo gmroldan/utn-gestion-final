@@ -19,7 +19,7 @@ import java.awt.event.WindowEvent;
  * Created by martin on 05/02/16.
  */
 public class NewOrderDialog extends AbstractOrderDialog {
-    private static final String WINDOW_TITLE = "Send Order";
+    private static final String WINDOW_TITLE = "New Order";
 
     /**
      * Creates new form NewOrderDialog
@@ -29,7 +29,7 @@ public class NewOrderDialog extends AbstractOrderDialog {
      * @parm model
      */
     public NewOrderDialog(JDialog parent, boolean modal, OrderController controller) {
-        super(parent, modal, WINDOW_TITLE, null, controller);
+        super(parent, WINDOW_TITLE, modal, null, controller);
     }
 
     /**

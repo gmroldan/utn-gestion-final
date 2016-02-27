@@ -25,11 +25,20 @@ public abstract class AbstractSupplierDialog extends GenericDialog {
     protected SupplierController controller;
     protected Supplier currentSupplier;
 
-    public AbstractSupplierDialog(JDialog parent, boolean modal, SupplierController controller, Supplier supplier, String title) {
-        super(parent, modal);
+    /**
+     * Class constructor.
+     *
+     * @param parent
+     * @param windowTitle
+     * @param modal
+     * @param controller
+     * @param supplier
+     */
+    public AbstractSupplierDialog(JDialog parent, String windowTitle
+            , boolean modal, SupplierController controller, Supplier supplier) {
+        super(parent, windowTitle, modal);
         this.controller = controller;
         this.currentSupplier = supplier;
-        this.setTitle(title);
         this.setVisible(true);
     }
 

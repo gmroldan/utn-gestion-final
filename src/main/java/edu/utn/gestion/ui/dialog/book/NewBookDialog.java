@@ -7,10 +7,17 @@ import java.awt.event.ActionEvent;
 import javax.swing.JDialog;
 
 public class NewBookDialog extends AbstractBookDialog {
+    private static final String WINDOW_TITLE = "New Book";
 
+    /**
+     * Class constructor.
+     *
+     * @param parent
+     * @param modal
+     * @param controller
+     */
     public NewBookDialog(JDialog parent, boolean modal, BookController controller) {
-        super(parent, modal, controller, null);
-        this.setTitle("New Book");
+        super(parent, WINDOW_TITLE, modal, controller, null);
     }
 
     @Override

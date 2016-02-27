@@ -23,8 +23,16 @@ public abstract class GenericDialog extends JDialog {
     protected JButton btnAccept;
     protected JButton btnCancel;
 
-    public GenericDialog(JDialog parent, boolean modal) {
-        super(parent, modal);
+    /**
+     * Class constructor.
+     *
+     * @param parent
+     * @param windowTitle
+     * @param modal
+     * @param windowTitle
+     */
+    public GenericDialog(JDialog parent, String windowTitle, boolean modal) {
+        super(parent, windowTitle, modal);
         this.init();
     }
 

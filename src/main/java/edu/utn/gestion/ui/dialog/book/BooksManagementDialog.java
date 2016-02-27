@@ -6,10 +6,16 @@ import edu.utn.gestion.ui.dialog.generic.GenericManagementDialog;
 import java.awt.Frame;
 
 public class BooksManagementDialog extends GenericManagementDialog<Book, String> {
+    private static final String WINDOW_TITLE = "Books Management";
 
+    /**
+     * Class constructor.
+     *
+     * @param parent
+     * @param modal
+     */
     public BooksManagementDialog(Frame parent, boolean modal) {
-        super(parent, modal, new BookController(), new BookTableModel());
-        this.setTitle("Books Management");
+        super(parent, WINDOW_TITLE, modal, new BookController(), new BookTableModel());
     }
     
     @Override

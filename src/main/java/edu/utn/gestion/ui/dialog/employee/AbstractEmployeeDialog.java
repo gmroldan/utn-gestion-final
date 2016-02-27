@@ -40,8 +40,18 @@ public abstract class AbstractEmployeeDialog extends GenericDialog {
     protected EmployeeController controller;
     protected Employee currentEmployee;
 
-    public AbstractEmployeeDialog(JDialog parent, boolean modal, EmployeeController controller, Employee employee) {
-        super(parent, modal);
+    /**
+     * Class constructor.
+     *
+     * @param parent
+     * @param windowTitle
+     * @param modal
+     * @param controller
+     * @param employee
+     */
+    public AbstractEmployeeDialog(JDialog parent, String windowTitle
+            , boolean modal, EmployeeController controller, Employee employee) {
+        super(parent, windowTitle, modal);
         this.controller = controller;
         this.currentEmployee = employee;
     }

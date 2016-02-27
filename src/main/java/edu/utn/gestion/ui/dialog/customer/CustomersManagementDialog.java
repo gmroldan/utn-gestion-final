@@ -6,10 +6,16 @@ import edu.utn.gestion.ui.dialog.generic.GenericManagementDialog;
 import java.awt.Frame;
 
 public class CustomersManagementDialog extends GenericManagementDialog<Customer, Long> {
+    private static final String WINDOW_TITLE = "Customers Management";
 
+    /**
+     * Class constructor.
+     *
+     * @param parent
+     * @param modal
+     */
     public CustomersManagementDialog(Frame parent, boolean modal) {
-        super(parent, modal, new CustomerController(), new CustomerTableModel());
-        this.setTitle("Customers Management");
+        super(parent, WINDOW_TITLE, modal, new CustomerController(), new CustomerTableModel());
     }
 
     @Override

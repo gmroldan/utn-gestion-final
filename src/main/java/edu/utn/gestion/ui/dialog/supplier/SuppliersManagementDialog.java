@@ -10,6 +10,8 @@ import java.awt.Frame;
  * Created by martin on 18/12/15.
  */
 public class SuppliersManagementDialog extends GenericManagementDialog<Supplier, Long> {
+    private static final String WINDOW_TITLE = "Suppliers Management";
+
     /**
      * Creates new form BookManagerDialog.
      *
@@ -17,8 +19,7 @@ public class SuppliersManagementDialog extends GenericManagementDialog<Supplier,
      * @param modal
      */
     public SuppliersManagementDialog(Frame parent, boolean modal) {
-        super(parent, modal, new SupplierController(), new SupplierTableModel());
-        this.setTitle("Suppliers Management");
+        super(parent, WINDOW_TITLE, modal, new SupplierController(), new SupplierTableModel());
     }
 
     @Override

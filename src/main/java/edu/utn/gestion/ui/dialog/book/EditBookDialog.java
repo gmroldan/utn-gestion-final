@@ -8,10 +8,18 @@ import java.awt.event.ActionEvent;
 import javax.swing.JDialog;
 
 public class EditBookDialog extends AbstractBookDialog {
+    private static final String WINDOW_TITLE = "Edit Book";
 
+    /**
+     * Class constructor.
+     *
+     * @param parent
+     * @param modal
+     * @param controller
+     * @param book
+     */
     public EditBookDialog(JDialog parent, boolean modal, BookController controller, Book book) {
-        super(parent, modal, controller, book);
-        this.setTitle("Edit Book");
+        super(parent, WINDOW_TITLE, modal, controller, book);
     }
 
     @Override

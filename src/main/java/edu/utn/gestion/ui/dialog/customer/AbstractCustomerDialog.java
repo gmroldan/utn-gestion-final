@@ -34,8 +34,18 @@ public abstract class AbstractCustomerDialog extends GenericDialog {
     protected CustomerController controller;
     protected Customer currentCustomer;
 
-    public AbstractCustomerDialog(JDialog parent, boolean modal, CustomerController controller, Customer customer) {
-        super(parent, modal);
+    /**
+     * Class constructor.
+     *
+     * @param parent
+     * @param windowTitle
+     * @param modal
+     * @param controller
+     * @param customer
+     */
+    public AbstractCustomerDialog(JDialog parent, String windowTitle
+            , boolean modal, CustomerController controller, Customer customer) {
+        super(parent, windowTitle, modal);
         this.controller = controller;
         this.currentCustomer = customer;
         this.initModel();
