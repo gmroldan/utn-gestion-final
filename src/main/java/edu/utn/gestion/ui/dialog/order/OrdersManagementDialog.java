@@ -3,6 +3,7 @@ package edu.utn.gestion.ui.dialog.order;
 import edu.utn.gestion.model.Order;
 import edu.utn.gestion.ui.controller.OrderController;
 import edu.utn.gestion.ui.dialog.generic.GenericManagementDialog;
+import edu.utn.gestion.ui.dialog.order.table.OrderTableModel;
 
 import javax.swing.JFrame;
 

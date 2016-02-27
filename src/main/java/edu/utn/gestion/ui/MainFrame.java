@@ -1,10 +1,8 @@
 package edu.utn.gestion.ui;
 
-import edu.utn.gestion.ui.controller.OrderController;
 import edu.utn.gestion.ui.dialog.book.BooksManagementDialog;
 import edu.utn.gestion.ui.dialog.customer.CustomersManagementDialog;
 import edu.utn.gestion.ui.dialog.employee.EmployeesManagementDialog;
-import edu.utn.gestion.ui.dialog.order.NewOrderDialog;
 import edu.utn.gestion.ui.dialog.order.OrdersManagementDialog;
 import edu.utn.gestion.ui.dialog.supplier.SuppliersManagementDialog;
 import edu.utn.gestion.ui.internal.NewSaleInternalFrame;
@@ -35,7 +33,6 @@ public class MainFrame extends JFrame {
 
     private JMenu menuFile;
     private JMenu menuEdit;
-    private JMenu menuOrders;
     private JMenu menuHelp;
     private JMenu menuSales;
     private JMenuBar menuBarGestionApp;
@@ -45,7 +42,6 @@ public class MainFrame extends JFrame {
     private JMenuItem menuItemEmployees;
     private JMenuItem menuItemSuppliers;
     private JMenuItem menuItemOrders;
-    private JMenuItem menuItemNewOrder;
     private JMenuItem menuItemExit;
     private JMenuItem menuItemNewSale;
     private JDesktopPane desktopPane;
@@ -70,7 +66,6 @@ public class MainFrame extends JFrame {
         this.menuFile = new JMenu("File");
         this.menuItemExit = new JMenuItem("Exit");
         this.menuEdit = new JMenu("Edit");
-        this.menuOrders = new JMenu("Orders");
         this.menuSales = new JMenu("Sales");
         this.menuItemNewSale = new JMenuItem("New Sale");
         this.menuItemBooks = new JMenuItem("Books");
@@ -78,7 +73,6 @@ public class MainFrame extends JFrame {
         this.menuItemEmployees = new JMenuItem("Employees");
         this.menuItemSuppliers = new JMenuItem("Suppliers");
         this.menuItemOrders = new JMenuItem("Orders");
-        this.menuItemNewOrder = new JMenuItem("New Order");
         this.menuHelp = new JMenu("Help");
         this.menuItemAbout = new JMenuItem("About");
         this.desktopPane = InternalFrameManager.getDesktopPane();
@@ -92,10 +86,8 @@ public class MainFrame extends JFrame {
         this.menuEdit.add(this.menuItemCustomers);
         this.menuEdit.add(this.menuItemEmployees);
         this.menuEdit.add(this.menuItemSuppliers);
-        this.menuEdit.add(this.menuOrders);
+        this.menuEdit.add(this.menuItemOrders);
         this.menuHelp.add(this.menuItemAbout);
-        this.menuOrders.add(this.menuItemOrders);
-        this.menuOrders.add(this.menuItemNewOrder);
 
         this.menuBarGestionApp.add(this.menuFile);
         this.menuBarGestionApp.add(this.menuSales);
@@ -112,7 +104,6 @@ public class MainFrame extends JFrame {
         this.menuItemEmployees.addActionListener(event -> this.menuItemEmployeesActionPerformed(event));
         this.menuItemSuppliers.addActionListener(event -> this.menuItemSuppliersActionPerformed(event));
         this.menuItemOrders.addActionListener(event -> this.menuItemOrdersActionPerformed());
-        this.menuItemNewOrder.addActionListener(event -> this.menuItemNewOrderActionPerformed(event));
 
 
         this.setSize(new Dimension(1000, 800));
@@ -121,10 +112,6 @@ public class MainFrame extends JFrame {
 
     private void menuItemOrdersActionPerformed() {
         new OrdersManagementDialog(this, true).setVisible(true);
-    }
-
-    private void menuItemNewOrderActionPerformed(ActionEvent event) {
-        new NewOrderDialog(this, true, new OrderController()).setVisible(true);
     }
 
     private void menuItemNewSaleActionPerformed(ActionEvent event) {

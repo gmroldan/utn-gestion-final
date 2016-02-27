@@ -1,4 +1,4 @@
-package edu.utn.gestion.ui.dialog.order;
+package edu.utn.gestion.ui.dialog.order.table;
 
 import edu.utn.gestion.model.Order;
 import edu.utn.gestion.model.OrderStatusEnum;

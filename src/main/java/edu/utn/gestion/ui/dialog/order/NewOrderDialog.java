@@ -2,34 +2,24 @@ package edu.utn.gestion.ui.dialog.order;
 
 import edu.utn.gestion.exception.GestionAppException;
 import edu.utn.gestion.ui.controller.OrderController;
+import edu.utn.gestion.ui.dialog.order.table.OrderDetailTableModel;
 import edu.utn.gestion.ui.util.PopUpFactory;
 import org.apache.commons.collections4.CollectionUtils;
 
 import javax.swing.GroupLayout;
-import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.LayoutStyle;
-import javax.swing.WindowConstants;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dialog;
-import java.awt.Frame;
-import java.awt.event.WindowAdapter;
+import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowFocusListener;
 
 /**
  * Created by martin on 05/02/16.
  */
-public class NewOrderDialog extends JDialog {
+public class NewOrderDialog extends AbstractOrderDialog {
     private static final String WINDOW_TITLE = "Send Order";
-    private OrderController controller;
-    private OrderDetailTableModel model;
-    protected JButton btnNew;
-    protected JScrollPane jScrollPane1;
-    protected JTable tableBooksForOrder;
 
     /**
      * Creates new form NewOrderDialog
@@ -38,70 +28,37 @@ public class NewOrderDialog extends JDialog {
      * @param modal
      * @parm model
      */
-    public NewOrderDialog(Frame parent, boolean modal, OrderController controller) {
-        super(parent, modal);
-        this.init(controller);
+    public NewOrderDialog(JDialog parent, boolean modal, OrderController controller) {
+        super(parent, modal, WINDOW_TITLE, null, controller);
     }
 
     /**
-     * Creates new form NewOrderDialog
-     *
-     * @param parent
-     * @param modal
-     * @parm model
+     * This method is called from within the constructor to initialize the form.
      */
-    public NewOrderDialog(Dialog parent, boolean modal, OrderController controller) {
-        super(parent, modal);
-        this.init(controller);
-    }
-
-    private void init(OrderController controller) {
-        this.controller = controller;
+    @Override
+    protected void initComponents() {
         this.model = new OrderDetailTableModel();
-        this.initComponents();
-        this.setTitle(WINDOW_TITLE);
-        this.setLocationRelativeTo(this.getParent());
+        this.tblOrderDetails = new JTable(this.model);
+
+        this.scrollPane = new JScrollPane();
+        this.scrollPane.setViewportView(this.tblOrderDetails);
+
+        this.createFormPanel();
     }
 
-    /**
-        * This method is called from within the constructor to initialize the form.
-     */
-    private void initComponents() {
-        this.jScrollPane1 = new JScrollPane();
-        this.tableBooksForOrder = new JTable(this.model);
-        this.btnNew = new JButton("New Order");
+    @Override
+    protected void createFormPanel() {
+        this.formPanel = new JPanel();
 
-        this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        this.setResizable(false);
-
-        this.addWindowFocusListener(new WindowFocusListener() {
-            public void windowGainedFocus(WindowEvent event) {
-                formWindowGainedFocus(event);
-            }
-            public void windowLostFocus(WindowEvent event) {
-            }
-        });
-
-        this.addWindowListener(new WindowAdapter() {
-            public void windowOpened(WindowEvent event) {
-                formWindowOpened(event);
-            }
-        });
-
-        this.jScrollPane1.setViewportView(this.tableBooksForOrder);
-
-        this.btnNew.addActionListener(event -> this.btnNewActionPerformed());
-
-        GroupLayout layout = new GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        GroupLayout layout = new GroupLayout(this.formPanel);
+        this.formPanel.setLayout(layout);
         layout.setHorizontalGroup(
                 layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
                                 .addContainerGap()
                                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                        .addComponent(this.jScrollPane1, GroupLayout.DEFAULT_SIZE, 500, Short.MAX_VALUE)
+                                        .addComponent(this.scrollPane, GroupLayout.DEFAULT_SIZE, 500, Short.MAX_VALUE)
                                         .addGroup(layout.createSequentialGroup()
-                                                .addComponent(this.btnNew)
                                                 .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                                                 .addGap(0, 0, Short.MAX_VALUE)))
                                 .addContainerGap())
@@ -111,32 +68,36 @@ public class NewOrderDialog extends JDialog {
                 layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                        .addComponent(this.btnNew))
+                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING))
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(this.jScrollPane1, GroupLayout.PREFERRED_SIZE, 237, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(this.scrollPane, GroupLayout.PREFERRED_SIZE, 237, GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-
-        pack();
     }
 
-    private void btnNewActionPerformed() {
+    @Override
+    protected void setObjectData() throws GestionAppException {
+        // TODO: to be implemented.
+    }
+
+    @Override
+    protected void btnAcceptActionPerformed(ActionEvent event) {
         try {
             long orderId = this.controller.save(this.model.getObjectList());
             PopUpFactory.showInfoMessage(this, "A new order has been created successfully. Order Id: " + orderId);
+            this.dispose();
         } catch (GestionAppException ex) {
             PopUpFactory.showErrorMessage(this, ex.getMessage());
-        } finally {
-            this.updateObjectList();
         }
     }
 
-    private void formWindowGainedFocus(WindowEvent event) {
-        this.updateObjectList();
+    @Override
+    protected void btnCancelActionPerformed(ActionEvent event) {
+        this.dispose();
     }
 
-    private void formWindowOpened(WindowEvent event) {
+    @Override
+    protected void formWindowOpened(WindowEvent event) {
         this.updateObjectList();
     }
 
@@ -145,13 +106,15 @@ public class NewOrderDialog extends JDialog {
             this.model.setObjectList(this.controller.getBooksForNewOrder());
 
             if (CollectionUtils.isEmpty(this.model.getObjectList())) {
-                this.btnNew.setEnabled(false);
+                this.btnAccept.setEnabled(false);
             } else {
-                this.btnNew.setEnabled(true);
+                this.btnAccept.setEnabled(true);
             }
         } catch (GestionAppException ex) {
             PopUpFactory.showErrorMessage(this, ex.getMessage());
             this.dispose();
         }
     }
+
+
 }
