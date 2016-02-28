@@ -4,6 +4,7 @@ import edu.utn.gestion.ui.dialog.book.BooksManagementDialog;
 import edu.utn.gestion.ui.dialog.customer.CustomersManagementDialog;
 import edu.utn.gestion.ui.dialog.employee.EmployeesManagementDialog;
 import edu.utn.gestion.ui.dialog.order.OrdersManagementDialog;
+import edu.utn.gestion.ui.dialog.settlement.SettlementDialog;
 import edu.utn.gestion.ui.dialog.supplier.SuppliersManagementDialog;
 import edu.utn.gestion.ui.internal.NewSaleInternalFrame;
 import edu.utn.gestion.ui.util.InternalFrameManager;
@@ -35,15 +36,18 @@ public class MainFrame extends JFrame {
     private JMenu menuEdit;
     private JMenu menuHelp;
     private JMenu menuSales;
+    private JMenu menuEmployees;
     private JMenuBar menuBarGestionApp;
     private JMenuItem menuItemAbout;
     private JMenuItem menuItemBooks;
     private JMenuItem menuItemCustomers;
-    private JMenuItem menuItemEmployees;
     private JMenuItem menuItemSuppliers;
     private JMenuItem menuItemOrders;
     private JMenuItem menuItemExit;
     private JMenuItem menuItemNewSale;
+    private JMenuItem menuItemEmployees;
+    private JMenuItem menuItemAttendance;
+    private JMenuItem menuItemSettlement;
     private JDesktopPane desktopPane;
 
     /**
@@ -67,12 +71,16 @@ public class MainFrame extends JFrame {
         this.menuItemExit = new JMenuItem("Exit");
         this.menuEdit = new JMenu("Edit");
         this.menuSales = new JMenu("Sales");
+        this.menuEmployees = new JMenu("Employees");
+
         this.menuItemNewSale = new JMenuItem("New Sale");
         this.menuItemBooks = new JMenuItem("Books");
         this.menuItemCustomers = new JMenuItem("Customers");
         this.menuItemEmployees = new JMenuItem("Employees");
         this.menuItemSuppliers = new JMenuItem("Suppliers");
         this.menuItemOrders = new JMenuItem("Orders");
+        this.menuItemAttendance = new JMenuItem("Attendance");
+        this.menuItemSettlement = new JMenuItem("Settlement");
         this.menuHelp = new JMenu("Help");
         this.menuItemAbout = new JMenuItem("About");
         this.desktopPane = InternalFrameManager.getDesktopPane();
@@ -84,14 +92,17 @@ public class MainFrame extends JFrame {
         this.menuSales.add(this.menuItemNewSale);
         this.menuEdit.add(this.menuItemBooks);
         this.menuEdit.add(this.menuItemCustomers);
-        this.menuEdit.add(this.menuItemEmployees);
         this.menuEdit.add(this.menuItemSuppliers);
         this.menuEdit.add(this.menuItemOrders);
         this.menuHelp.add(this.menuItemAbout);
+        this.menuEmployees.add(this.menuItemAttendance);
+        this.menuEmployees.add(this.menuItemSettlement);
+        this.menuEmployees.add(this.menuItemEmployees);
 
         this.menuBarGestionApp.add(this.menuFile);
-        this.menuBarGestionApp.add(this.menuSales);
         this.menuBarGestionApp.add(this.menuEdit);
+        this.menuBarGestionApp.add(this.menuSales);
+        this.menuBarGestionApp.add(this.menuEmployees);
         this.menuBarGestionApp.add(this.menuHelp);
 
         this.setJMenuBar(this.menuBarGestionApp);
@@ -101,9 +112,11 @@ public class MainFrame extends JFrame {
         this.menuItemNewSale.addActionListener(event -> this.menuItemNewSaleActionPerformed(event));
         this.menuItemBooks.addActionListener(event -> this.menuItemBooksActionPerformed(event));
         this.menuItemCustomers.addActionListener(event -> this.menuItemCustomersActionPerformed(event));
-        this.menuItemEmployees.addActionListener(event -> this.menuItemEmployeesActionPerformed(event));
         this.menuItemSuppliers.addActionListener(event -> this.menuItemSuppliersActionPerformed(event));
         this.menuItemOrders.addActionListener(event -> this.menuItemOrdersActionPerformed());
+        this.menuItemEmployees.addActionListener(event -> this.menuItemEmployeesActionPerformed(event));
+        this.menuItemAttendance.addActionListener(event -> this.menuItemAttendanceActionPerformed(event));
+        this.menuItemSettlement.addActionListener(event -> this.menuItemSettlementActionPerformed(event));
 
 
         this.setSize(new Dimension(1000, 800));
@@ -132,6 +145,13 @@ public class MainFrame extends JFrame {
 
     private void menuItemSuppliersActionPerformed(ActionEvent event) {
         new SuppliersManagementDialog(this, true).setVisible(true);
+    }
+
+    private void menuItemAttendanceActionPerformed(ActionEvent event) {
+    }
+
+    private void menuItemSettlementActionPerformed(ActionEvent event) {
+        new SettlementDialog(this, true).setVisible(true);
     }
 
     /**
