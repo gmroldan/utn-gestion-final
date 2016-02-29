@@ -139,7 +139,14 @@ public class SettlementDialog extends GenericDialog{
         String period = cmbYears.getSelectedItem().toString() + cmbMonths.getSelectedItem().toString();
         Employee employee = this.cmbEmployees.getEmployee();
         Settlement settlement = new Settlement(employee,period);
-        settlement.calculateSettlement(controller.getGrossSalary(employee));
+        boolean presenteeism = this.checkPresenteeism.isSelected();
+        settlement.setPresenteeism(presenteeism);
+        if (presenteeism) {
+            settlement.calculateSettlement(employee.getCategory().getDayPay()*30);
+        } else {
+            int unAttendance = (int) this.spinnerUnAttendance.getModel().getValue();
+            settlement.calculateSettlement(employee.getCategory().getDayPay()*(30-unAttendance));
+        }
 
         SettlementDetailDialog detail = new SettlementDetailDialog(this,true,settlement);
         detail.setVisible(true);

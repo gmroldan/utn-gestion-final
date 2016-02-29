@@ -20,8 +20,8 @@ public class Settlement {
     @JoinColumn(name = "employee_id", nullable = false)
     private Employee employee;
 
-    @Enumerated(EnumType.STRING)
-    private EmployeeCategoryEnum category;
+    @Column(nullable = false)
+    private String category;
 
     @Column(nullable = false)
     private double grossSalary;
@@ -31,6 +31,9 @@ public class Settlement {
 
     @Column(nullable = false)
     private double discount;
+
+    @Column(nullable = false)
+    private boolean presenteeism;
 
     @Column(nullable = false)
     private double presenteeismAmount;
@@ -55,7 +58,7 @@ public class Settlement {
 
     public Settlement(Employee employee, String period) {
         this.employee = employee;
-        this.category = employee.getCategory();
+        this.category = employee.getCategory().getName();
         this.period = period;
     }
 
@@ -79,7 +82,7 @@ public class Settlement {
         return employee;
     }
 
-    public EmployeeCategoryEnum getCategory() {
+    public String getCategory() {
         return category;
     }
 
@@ -93,8 +96,11 @@ public class Settlement {
         this.grossSalary = grossSalary;
 
         //antiguedad 2%
-
-        this.presenteeismAmount = grossSalary * 0.083;
+        if (presenteeism) {
+            this.presenteeismAmount = grossSalary * 0.083;
+        } else {
+            this.presenteeismAmount = 0;
+        }
         remuneration = remuneration + presenteeismAmount;
 
         this.retireAmount = remuneration * 0.11;
@@ -134,5 +140,13 @@ public class Settlement {
 
     public double getSyndicate() {
         return syndicate;
+    }
+
+    public boolean isPresenteeism() {
+        return presenteeism;
+    }
+
+    public void setPresenteeism(boolean presenteeism) {
+        this.presenteeism = presenteeism;
     }
 }

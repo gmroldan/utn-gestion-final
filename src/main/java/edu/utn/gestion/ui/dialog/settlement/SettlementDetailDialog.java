@@ -16,8 +16,9 @@ import java.awt.event.WindowEvent;
  */
 public class SettlementDetailDialog extends GenericDialog {
 
-    private String period;
-    private Employee employee;
+    private JLabel period;
+    private JLabel employeeName;
+    private JLabel category;
 
     private JLabel presenteeism;
     private JLabel antiqueness;
@@ -42,12 +43,16 @@ public class SettlementDetailDialog extends GenericDialog {
     }
 
     public SettlementDetailDialog(JDialog parent, boolean modal, Settlement settlement) {
-        super(parent, modal);
+        super(parent,"", modal);
         this.currentSettlement = settlement;
     }
 
     @Override
     protected void initComponents() {
+
+        this.period = new JLabel();
+        this.employeeName = new JLabel();
+        this.category = new JLabel();
 
         this.presenteeism = new JLabel();
         this.remuneration = new JLabel();
@@ -66,6 +71,10 @@ public class SettlementDetailDialog extends GenericDialog {
     }
 
     private void calculateLabels() {
+        this.period.setText(currentSettlement.getPeriod());
+        this.employeeName.setText(currentSettlement.getEmployee().getName());
+        this.category.setText(currentSettlement.getCategory());
+
         this.grossSalary.setText(String.valueOf(currentSettlement.getGrossSalary()));
         this.presenteeism.setText(String.valueOf(currentSettlement.getPresenteeismAmount()));
         this.remuneration.setText(String.valueOf(currentSettlement.getRemunerationAmount()));
@@ -84,6 +93,16 @@ public class SettlementDetailDialog extends GenericDialog {
     protected void createFormPanel() {
 
         this.formPanel = new JPanel(new GridLayout(0,4));
+
+        formPanel.add(new JLabel("Settlement:"));
+        formPanel.add(this.employeeName);
+        formPanel.add(this.category);
+        formPanel.add(this.period);
+
+        formPanel.add(new JLabel(" "));
+        formPanel.add(new JLabel(" "));
+        formPanel.add(new JLabel(" "));
+        formPanel.add(new JLabel(" "));
 
         formPanel.add(new JLabel("Remunerations:"));
         formPanel.add(new JLabel(" "));

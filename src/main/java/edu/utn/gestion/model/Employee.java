@@ -30,8 +30,8 @@ public class Employee {
     @Column(nullable = false, unique = false, length = 30)
     private String address;
 
-    @Enumerated(EnumType.STRING)
-    private EmployeeCategoryEnum category;
+    @OneToOne
+    private SalaryCategory category;
 
     @Column(nullable = false)
     @Temporal(TemporalType.DATE)
@@ -96,11 +96,11 @@ public class Employee {
         this.gender = gender;
     }
 
-    public EmployeeCategoryEnum getCategory() {
+    public SalaryCategory getCategory() {
         return category;
     }
 
-    public void setCategory(EmployeeCategoryEnum category) {
+    public void setCategory(SalaryCategory category) {
         this.category = category;
     }
 

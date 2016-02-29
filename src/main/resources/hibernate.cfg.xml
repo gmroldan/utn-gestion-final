@@ -41,6 +41,8 @@
         <mapping class="edu.utn.gestion.model.Supplier" />
         <mapping class="edu.utn.gestion.model.Order" />
         <mapping class="edu.utn.gestion.model.OrderDetail" />
+        <mapping class="edu.utn.gestion.model.Settlement" />
+        <mapping class="edu.utn.gestion.model.SalaryCategory" />
 
     </session-factory>
 
