@@ -6,8 +6,10 @@ import edu.utn.gestion.model.Settlement;
 import edu.utn.gestion.ui.controller.SettlementController;
 import edu.utn.gestion.ui.dialog.generic.GenericDialog;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
 
@@ -42,7 +44,7 @@ public class SettlementDetailDialog extends GenericDialog {
     }
 
     public SettlementDetailDialog(JDialog parent, boolean modal, Settlement settlement) {
-        super(parent, modal);
+        super(parent, "", modal);
         this.currentSettlement = settlement;
     }
 

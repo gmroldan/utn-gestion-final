@@ -1,17 +1,16 @@
 package edu.utn.gestion.ui.dialog.generic;
 
 import edu.utn.gestion.exception.GestionAppException;
-import edu.utn.gestion.ui.MainFrame;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -30,14 +29,19 @@ public abstract class GenericDialog extends JDialog {
      * @param parent
      * @param windowTitle
      * @param modal
-     * @param windowTitle
      */
     public GenericDialog(JDialog parent, String windowTitle, boolean modal) {
         super(parent, windowTitle, modal);
         this.init();
     }
 
-    public GenericDialog(MainFrame parent, boolean modal) {
+    /**
+     * Class constructor.
+     *
+     * @param parent
+     * @param modal
+     */
+    public GenericDialog(JFrame parent, boolean modal) {
         super(parent, modal);
         this.init();
     }
