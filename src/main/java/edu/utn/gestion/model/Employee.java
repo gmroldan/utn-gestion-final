@@ -3,7 +3,7 @@ package edu.utn.gestion.model;
 import edu.utn.gestion.model.util.IConstants;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.util.*;
 
 /**
  * Created by martin on 08/12/15.
@@ -29,6 +29,10 @@ public class Employee {
 
     @Column(nullable = false, unique = false, length = 30)
     private String address;
+
+    @OneToMany(targetEntity = Attendance.class, cascade = CascadeType.ALL)
+    @JoinColumn(name = "employee_id", referencedColumnName = "id", nullable = false)
+    private final Map<String,Attendance> attendances = new HashMap<String,Attendance>();
 
     @OneToOne
     private SalaryCategory category;
@@ -110,6 +114,10 @@ public class Employee {
 
     public void setIngress(Date ingress) {
         this.ingress = ingress;
+    }
+
+    public Map<String, Attendance> getAttendances() {
+        return attendances;
     }
 
     @Override

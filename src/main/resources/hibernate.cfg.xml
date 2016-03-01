@@ -11,7 +11,7 @@
         <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
         <property name="connection.url">jdbc:mysql://localhost:3306/gestion</property>
         <property name="connection.username">root</property>
-        <property name="connection.password">password</property>
+        <property name="connection.password"></property>
 
         <!-- JDBC connection pool (use the built-in) -->
         <property name="connection.pool_size">2</property>
@@ -43,6 +43,7 @@
         <mapping class="edu.utn.gestion.model.OrderDetail" />
         <mapping class="edu.utn.gestion.model.Settlement" />
         <mapping class="edu.utn.gestion.model.SalaryCategory" />
+        <mapping class="edu.utn.gestion.model.Attendance" />
 
     </session-factory>
 

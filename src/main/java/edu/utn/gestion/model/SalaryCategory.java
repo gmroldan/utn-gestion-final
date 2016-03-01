@@ -16,7 +16,7 @@ public class SalaryCategory {
     @Column(nullable = false, unique = true, length = 32)
     private String name;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private double dayPay;
 
     public SalaryCategory() {
