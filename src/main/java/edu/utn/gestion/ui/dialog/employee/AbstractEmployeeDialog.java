@@ -4,6 +4,7 @@ import edu.utn.gestion.exception.GestionAppException;
 import edu.utn.gestion.model.Employee;
 import edu.utn.gestion.model.EmployeeCategoryEnum;
 import edu.utn.gestion.model.GenderEnum;
+import edu.utn.gestion.model.SalaryCategory;
 import edu.utn.gestion.ui.controller.EmployeeController;
 import edu.utn.gestion.ui.dialog.generic.GenericDialog;
 import edu.utn.gestion.ui.util.DateLabelFormatter;
@@ -46,7 +47,7 @@ public abstract class AbstractEmployeeDialog extends GenericDialog {
     protected JFormattedTextField txtCuit;
     protected JFormattedTextField txtPhoneNumber;
     protected JComboBox<GenderEnum> cmbGender;
-    private JComboBox<EmployeeCategoryEnum> cmbCategory;
+    private ComboCategories cmbCategory;
     private JDatePickerImpl ingressDatePicker;
 
     protected EmployeeController controller;
@@ -102,7 +103,7 @@ public abstract class AbstractEmployeeDialog extends GenericDialog {
         this.txtPhoneNumber = new JFormattedTextField(new DefaultFormatterFactory(new NumberFormatter(new DecimalFormat(IFormat.NUMERIC_FORMAT))));
         this.txtAddress = new JTextField(30);
         this.cmbGender = new JComboBox<GenderEnum>(GenderEnum.values());
-        this.cmbCategory = new JComboBox<EmployeeCategoryEnum>(EmployeeCategoryEnum.values());
+        this.cmbCategory = new ComboCategories();
         initModel();
 
         this.lblName.setLabelFor(this.txtName);
@@ -160,7 +161,7 @@ public abstract class AbstractEmployeeDialog extends GenericDialog {
         this.currentEmployee.setPhoneNumber(this.txtPhoneNumber.getText());
         this.currentEmployee.setAddress(this.txtAddress.getText());
         this.currentEmployee.setGender((GenderEnum) this.cmbGender.getSelectedItem());
-        this.currentEmployee.setCategory((EmployeeCategoryEnum) this.cmbCategory.getSelectedItem());
+        this.currentEmployee.setCategory((SalaryCategory) this.cmbCategory.getSelectedItem());
         this.currentEmployee.setIngress((Date) this.ingressDatePicker.getModel().getValue());
     }
 }

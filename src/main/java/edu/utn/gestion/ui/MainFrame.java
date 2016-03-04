@@ -4,6 +4,7 @@ import edu.utn.gestion.ui.dialog.book.BooksManagementDialog;
 import edu.utn.gestion.ui.dialog.customer.CustomersManagementDialog;
 import edu.utn.gestion.ui.dialog.employee.EmployeesManagementDialog;
 import edu.utn.gestion.ui.dialog.order.OrdersManagementDialog;
+import edu.utn.gestion.ui.dialog.settlement.AttendanceDialog;
 import edu.utn.gestion.ui.dialog.settlement.SettlementDialog;
 import edu.utn.gestion.ui.dialog.supplier.SuppliersManagementDialog;
 import edu.utn.gestion.ui.internal.NewSaleInternalFrame;
@@ -148,6 +149,7 @@ public class MainFrame extends JFrame {
     }
 
     private void menuItemAttendanceActionPerformed(ActionEvent event) {
+        new AttendanceDialog(this, true).setVisible(true);
     }
 
     private void menuItemSettlementActionPerformed(ActionEvent event) {

@@ -1,13 +1,14 @@
 package edu.utn.gestion.ui.dialog.settlement;
 
 import edu.utn.gestion.exception.GestionAppException;
+import edu.utn.gestion.model.Attendance;
 import edu.utn.gestion.model.Employee;
-import edu.utn.gestion.model.Settlement;
 import edu.utn.gestion.ui.MainFrame;
-import edu.utn.gestion.ui.controller.SettlementController;
+import edu.utn.gestion.ui.controller.EmployeeController;
 import edu.utn.gestion.ui.dialog.employee.ComboEmployees;
 import edu.utn.gestion.ui.dialog.generic.GenericDialog;
 import edu.utn.gestion.ui.util.FormUtils;
+import edu.utn.gestion.ui.util.PopUpFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,7 +19,7 @@ import java.util.Date;
 /**
  * Created by ASUS on 23/02/2016.
  */
-public class SettlementDialog extends GenericDialog{
+public class AttendanceDialog extends GenericDialog{
 
     private JLabel lblEmployee;
     private JLabel lblPeriod;
@@ -30,11 +31,11 @@ public class SettlementDialog extends GenericDialog{
     private JCheckBox checkPresenteeism;
     private JSpinner spinnerUnAttendance;
 
-    private SettlementController controller;
+    private EmployeeController controller;
 
-    public SettlementDialog(MainFrame parent, boolean modal) {
+    public AttendanceDialog(MainFrame parent, boolean modal) {
         super(parent, modal);
-        controller = new SettlementController();
+        controller = new EmployeeController();
     }
 
     @Override
@@ -100,7 +101,7 @@ public class SettlementDialog extends GenericDialog{
         FormUtils.addLabel(new JLabel("       "),this.formPanel);
         FormUtils.addLastField(new JLabel("       "),this.formPanel);
 
-        this.btnAccept.setText("Calculate");
+        this.btnAccept.setText("Save");
         this.btnCancel.setText("Go Back");
     }
 
@@ -135,21 +136,25 @@ public class SettlementDialog extends GenericDialog{
     @Override
     protected void btnAcceptActionPerformed(ActionEvent event) {
 
-        //controller.findOne()
-        String period = cmbYears.getSelectedItem().toString() + cmbMonths.getSelectedItem().toString();
+        String period = cmbYears.getSelectedItem().toString() + "-" + cmbMonths.getSelectedItem().toString();
         Employee employee = this.cmbEmployees.getEmployee();
-        Settlement settlement = new Settlement(employee,period);
+        Attendance attendance = new Attendance(period,employee.getId());
         boolean presenteeism = this.checkPresenteeism.isSelected();
-        settlement.setPresenteeism(presenteeism);
+        attendance.setPresenteeism(presenteeism);
         if (presenteeism) {
-            settlement.calculateSettlement(employee.getCategory().getDayPay()*30);
+            attendance.setAbsences(0);
         } else {
-            int unAttendance = (int) this.spinnerUnAttendance.getModel().getValue();
-            settlement.calculateSettlement(employee.getCategory().getDayPay()*(30-unAttendance));
+            int absences = (int) this.spinnerUnAttendance.getModel().getValue();
+            attendance.setAbsences(absences);
         }
 
-        SettlementDetailDialog detail = new SettlementDetailDialog(this,true,settlement);
-        detail.setVisible(true);
+        employee.getAttendances().put(attendance.getId(),attendance);
+
+        try {
+            this.controller.update(employee);
+        } catch (GestionAppException e) {
+            PopUpFactory.showErrorMessage(this, e.getMessage());
+        }
 
     }
 
