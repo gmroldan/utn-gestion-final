@@ -25,11 +25,10 @@ public class NewOrderDialog extends AbstractOrderDialog {
      * Creates new form NewOrderDialog
      *
      * @param parent
-     * @param modal
-     * @parm model
+     * @param controller
      */
-    public NewOrderDialog(JDialog parent, boolean modal, OrderController controller) {
-        super(parent, WINDOW_TITLE, modal, null, controller);
+    public NewOrderDialog(JDialog parent, OrderController controller) {
+        super(parent, WINDOW_TITLE, controller, null);
     }
 
     /**

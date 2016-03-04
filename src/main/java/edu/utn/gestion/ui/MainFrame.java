@@ -125,7 +125,7 @@ public class MainFrame extends JFrame {
     }
 
     private void menuItemOrdersActionPerformed() {
-        new OrdersManagementDialog(this, true).setVisible(true);
+        new OrdersManagementDialog(this).setVisible(true);
     }
 
     private void menuItemNewSaleActionPerformed(ActionEvent event) {

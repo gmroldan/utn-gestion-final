@@ -17,19 +17,18 @@ public class OrdersManagementDialog extends GenericManagementDialog<Order, Long>
      * Class constructor.
      *
      * @param parent
-     * @param modal
      */
-    public OrdersManagementDialog(JFrame parent, boolean modal) {
+    public OrdersManagementDialog(JFrame parent) {
         super(parent, WINDOW_TITLE, true, new OrderController(), new OrderTableModel());
     }
 
     @Override
-    protected void showEditObjectDialog(Order object) {
-        throw new UnsupportedOperationException("Not implemented yet.");
+    protected void showEditObjectDialog(Order order) {
+        new ViewOrderDialog(this, (OrderController) this.controller, order).setVisible(true);
     }
 
     @Override
     protected void showNewObjectDialog() {
-        new NewOrderDialog(this, true, (OrderController) this.controller).setVisible(true);
+        new NewOrderDialog(this, (OrderController) this.controller).setVisible(true);
     }
 }
