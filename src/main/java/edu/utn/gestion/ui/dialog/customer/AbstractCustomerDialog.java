@@ -5,7 +5,7 @@ import edu.utn.gestion.model.Customer;
 import edu.utn.gestion.ui.controller.CustomerController;
 import edu.utn.gestion.ui.dialog.generic.GenericDialog;
 import edu.utn.gestion.ui.util.FormUtils;
-import edu.utn.gestion.ui.util.IFormat;
+import edu.utn.gestion.ui.constants.UIConstants;
 
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -72,8 +72,12 @@ public abstract class AbstractCustomerDialog extends GenericDialog {
 
         this.txtName = new JTextField(40);
         this.txtEmail = new JTextField(15);
-        this.txtCuit = new JFormattedTextField(new DefaultFormatterFactory(new NumberFormatter(new DecimalFormat(IFormat.NUMERIC_FORMAT))));
-        this.txtPhoneNumber = new JFormattedTextField(new DefaultFormatterFactory(new NumberFormatter(new DecimalFormat(IFormat.NUMERIC_FORMAT))));
+        this.txtCuit = new JFormattedTextField(
+                new DefaultFormatterFactory(
+                        new NumberFormatter(new DecimalFormat(UIConstants.NUMERIC_FORMAT))));
+        this.txtPhoneNumber = new JFormattedTextField(
+                new DefaultFormatterFactory(
+                        new NumberFormatter(new DecimalFormat(UIConstants.NUMERIC_FORMAT))));
 
         this.lblName.setLabelFor(this.txtName);
         this.lblEmail.setLabelFor(this.txtEmail);

@@ -1,7 +1,6 @@
 package edu.utn.gestion.ui.dialog.settlement;
 
 import edu.utn.gestion.exception.GestionAppException;
-import edu.utn.gestion.model.Employee;
 import edu.utn.gestion.model.Settlement;
 import edu.utn.gestion.ui.controller.SettlementController;
 import edu.utn.gestion.ui.dialog.generic.GenericDialog;

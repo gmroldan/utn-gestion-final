@@ -14,7 +14,6 @@ import edu.utn.gestion.ui.util.InternalFrameManager;
 import org.apache.log4j.Logger;
 
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -22,17 +21,13 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
 import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.WindowConstants;
-import javax.swing.border.BevelBorder;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.EventQueue;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.text.DateFormat;
 import java.util.Date;
 
@@ -129,14 +124,14 @@ public class MainFrame extends JFrame {
 
         this.setJMenuBar(this.menuBarGestionApp);
 
-        this.menuItemNewSale.addActionListener(event -> this.menuItemNewSaleActionPerformed(event));
-        this.menuItemBooks.addActionListener(event -> this.menuItemBooksActionPerformed(event));
-        this.menuItemCustomers.addActionListener(event -> this.menuItemCustomersActionPerformed(event));
-        this.menuItemSuppliers.addActionListener(event -> this.menuItemSuppliersActionPerformed(event));
+        this.menuItemNewSale.addActionListener(event -> this.menuItemNewSaleActionPerformed());
+        this.menuItemBooks.addActionListener(event -> this.menuItemBooksActionPerformed());
+        this.menuItemCustomers.addActionListener(event -> this.menuItemCustomersActionPerformed());
+        this.menuItemSuppliers.addActionListener(event -> this.menuItemSuppliersActionPerformed());
         this.menuItemOrders.addActionListener(event -> this.menuItemOrdersActionPerformed());
-        this.menuItemEmployees.addActionListener(event -> this.menuItemEmployeesActionPerformed(event));
-        this.menuItemAttendance.addActionListener(event -> this.menuItemAttendanceActionPerformed(event));
-        this.menuItemSettlement.addActionListener(event -> this.menuItemSettlementActionPerformed(event));
+        this.menuItemEmployees.addActionListener(event -> this.menuItemEmployeesActionPerformed());
+        this.menuItemAttendance.addActionListener(event -> this.menuItemAttendanceActionPerformed());
+        this.menuItemSettlement.addActionListener(event -> this.menuItemSettlementActionPerformed());
 
         this.setSize(new Dimension(1000, 800));
         this.setLayout(new BorderLayout());
@@ -172,31 +167,31 @@ public class MainFrame extends JFrame {
         new OrdersManagementDialog(this).setVisible(true);
     }
 
-    private void menuItemNewSaleActionPerformed(ActionEvent event) {
+    private void menuItemNewSaleActionPerformed() {
         InternalFrameManager.addInternalFrame(new NewSaleInternalFrame());
     }
 
-    private void menuItemBooksActionPerformed(ActionEvent event) {
+    private void menuItemBooksActionPerformed() {
         new BooksManagementDialog(this, true).setVisible(true);
     }
 
-    private void menuItemCustomersActionPerformed(ActionEvent event) {
+    private void menuItemCustomersActionPerformed() {
         new CustomersManagementDialog(this, true).setVisible(true);
     }
 
-    private void menuItemEmployeesActionPerformed(ActionEvent event) {
+    private void menuItemEmployeesActionPerformed() {
         new EmployeesManagementDialog(this, true).setVisible(true);
     }
 
-    private void menuItemSuppliersActionPerformed(ActionEvent event) {
+    private void menuItemSuppliersActionPerformed() {
         new SuppliersManagementDialog(this, true).setVisible(true);
     }
 
-    private void menuItemAttendanceActionPerformed(ActionEvent event) {
+    private void menuItemAttendanceActionPerformed() {
         new AttendanceDialog(this, true).setVisible(true);
     }
 
-    private void menuItemSettlementActionPerformed(ActionEvent event) {
+    private void menuItemSettlementActionPerformed() {
         new SettlementDialog(this, true).setVisible(true);
     }
 
@@ -213,11 +208,7 @@ public class MainFrame extends JFrame {
     * @param args the command line arguments
     */
     private void main(String args[]) {
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                INSTANCE.setVisible(true);
-            }
-        });
+        EventQueue.invokeLater(() -> INSTANCE.setVisible(true));
     }
 
     /**

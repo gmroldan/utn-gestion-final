@@ -2,15 +2,13 @@ package edu.utn.gestion.ui.dialog.employee;
 
 import edu.utn.gestion.exception.GestionAppException;
 import edu.utn.gestion.model.Employee;
-import edu.utn.gestion.model.EmployeeCategoryEnum;
 import edu.utn.gestion.model.GenderEnum;
 import edu.utn.gestion.model.SalaryCategory;
+import edu.utn.gestion.ui.constants.UIConstants;
 import edu.utn.gestion.ui.controller.EmployeeController;
 import edu.utn.gestion.ui.dialog.generic.GenericDialog;
 import edu.utn.gestion.ui.util.DateLabelFormatter;
 import edu.utn.gestion.ui.util.FormUtils;
-import edu.utn.gestion.ui.util.IFormat;
-import org.jdatepicker.JDatePicker;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
@@ -99,8 +97,12 @@ public abstract class AbstractEmployeeDialog extends GenericDialog {
 
         this.txtName = new JTextField(40);
         this.txtEmail = new JTextField(15);
-        this.txtCuit = new JFormattedTextField(new DefaultFormatterFactory(new NumberFormatter(new DecimalFormat(IFormat.NUMERIC_FORMAT))));
-        this.txtPhoneNumber = new JFormattedTextField(new DefaultFormatterFactory(new NumberFormatter(new DecimalFormat(IFormat.NUMERIC_FORMAT))));
+        this.txtCuit = new JFormattedTextField(
+                new DefaultFormatterFactory(
+                        new NumberFormatter(new DecimalFormat(UIConstants.NUMERIC_FORMAT))));
+        this.txtPhoneNumber = new JFormattedTextField(
+                new DefaultFormatterFactory(
+                        new NumberFormatter(new DecimalFormat(UIConstants.NUMERIC_FORMAT))));
         this.txtAddress = new JTextField(30);
         this.cmbGender = new JComboBox<GenderEnum>(GenderEnum.values());
         this.cmbCategory = new ComboCategories();
@@ -150,7 +152,7 @@ public abstract class AbstractEmployeeDialog extends GenericDialog {
         p.put("text.month", "Month");
         p.put("text.year", "Year");
         JDatePanelImpl datePanel = new JDatePanelImpl(model, p);
-        ingressDatePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
+        this.ingressDatePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
     }
 
     @Override

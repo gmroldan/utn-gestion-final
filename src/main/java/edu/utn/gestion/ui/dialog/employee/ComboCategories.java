@@ -6,7 +6,8 @@ import edu.utn.gestion.service.SalaryCategoryService;
 import edu.utn.gestion.ui.util.PopUpFactory;
 import org.apache.commons.collections4.CollectionUtils;
 
-import javax.swing.*;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
 import java.util.List;
 
 /**
@@ -23,7 +24,7 @@ public class ComboCategories extends JComboBox {
 
         try {
             SalaryCategoryService service = SalaryCategoryService.getInstance();
-            salaryCategories = (List<SalaryCategory>) service.findAll();
+            salaryCategories = service.findAll();
 
         } catch (GestionAppException ex) {
             PopUpFactory.showErrorMessage(this, ex.getMessage());

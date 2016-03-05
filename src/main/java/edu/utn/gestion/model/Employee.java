@@ -2,8 +2,24 @@ package edu.utn.gestion.model;
 
 import edu.utn.gestion.model.util.IConstants;
 
-import javax.persistence.*;
-import java.util.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
 
 /**
  * Created by martin on 08/12/15.
@@ -32,7 +48,7 @@ public class Employee {
 
     @OneToMany(targetEntity = Attendance.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "employee_id", referencedColumnName = "id", nullable = false)
-    private final Map<String,Attendance> attendances = new HashMap<String,Attendance>();
+    private final Map<String,Attendance> attendances = new HashMap<>();
 
     @OneToOne
     private SalaryCategory category;

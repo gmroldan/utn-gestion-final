@@ -1,8 +1,9 @@
 package edu.utn.gestion.model;
 
-import edu.utn.gestion.model.util.IConstants;
-
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * Created by ASUS on 28/02/2016.

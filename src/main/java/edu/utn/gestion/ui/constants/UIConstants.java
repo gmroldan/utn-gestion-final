@@ -4,6 +4,12 @@ package edu.utn.gestion.ui.constants;
  * Created by martin on 04/03/16.
  */
 public interface UIConstants {
+    String EMPTY_STRING = "";
+
+    String DATE_FORMAT = "yyyy-MM-dd";
+    String NUMERIC_FORMAT = "0";
+    String PRICE_FORMAT = "#,##0.00";
+
     String ICON_APP_EXIT_LOCATION = "icons/app_exit.png";
     String ICON_APP_ABOUT_LOCATION = "icons/app_about.png";
     String ICON_APP_BOOKS_LOCATION = "icons/app_books.png";

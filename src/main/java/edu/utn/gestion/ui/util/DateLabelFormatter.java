@@ -1,6 +1,8 @@
 package edu.utn.gestion.ui.util;
 
-import javax.swing.*;
+import edu.utn.gestion.ui.constants.UIConstants;
+
+import javax.swing.JFormattedTextField;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -9,8 +11,7 @@ import java.util.Calendar;
  * Created by ASUS on 22/02/2016.
  */
 public class DateLabelFormatter extends JFormattedTextField.AbstractFormatter {
-    private String datePattern = "yyyy-MM-dd";
-    private SimpleDateFormat dateFormatter = new SimpleDateFormat(datePattern);
+    private SimpleDateFormat dateFormatter = new SimpleDateFormat(UIConstants.DATE_FORMAT);
 
     @Override
     public Object stringToValue(String text) throws ParseException, ParseException {
@@ -24,6 +25,6 @@ public class DateLabelFormatter extends JFormattedTextField.AbstractFormatter {
             return dateFormatter.format(cal.getTime());
         }
 
-        return "";
+        return UIConstants.EMPTY_STRING;
     }
 }

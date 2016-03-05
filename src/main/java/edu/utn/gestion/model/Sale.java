@@ -46,10 +46,10 @@ public class Sale {
 
     @OneToMany(targetEntity = SaleDetail.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "sale_detail_id", referencedColumnName = "id", nullable = false)
-    private final List<SaleDetail> saleDetails = new ArrayList<SaleDetail>();
+    private final List<SaleDetail> saleDetails = new ArrayList<>();
 
     @Transient
-    private final Map<String, SaleDetail> saleDetailMap = new HashMap<String, SaleDetail>();
+    private final Map<String, SaleDetail> saleDetailMap = new HashMap<>();
 
     /**
      * No-args constructor. Returns an instance of Sale.

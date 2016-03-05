@@ -3,10 +3,10 @@ package edu.utn.gestion.ui.dialog.book;
 import edu.utn.gestion.exception.GestionAppException;
 import edu.utn.gestion.model.Book;
 import edu.utn.gestion.model.Category;
+import edu.utn.gestion.ui.constants.UIConstants;
 import edu.utn.gestion.ui.controller.BookController;
 import edu.utn.gestion.ui.dialog.generic.GenericDialog;
 import edu.utn.gestion.ui.util.FormUtils;
-import edu.utn.gestion.ui.util.IFormat;
 import edu.utn.gestion.ui.util.PopUpFactory;
 
 import java.awt.GridBagLayout;
@@ -110,8 +110,12 @@ public abstract class AbstractBookDialog extends GenericDialog {
 
         this.jScrollPane1.setViewportView(this.txtDescription);
 
-        this.txtPrice.setFormatterFactory(new DefaultFormatterFactory(new NumberFormatter(new DecimalFormat(IFormat.PRICE_FORMAT))));
-        this.txtIsbn.setFormatterFactory(new DefaultFormatterFactory(new NumberFormatter(new DecimalFormat(IFormat.NUMERIC_FORMAT))));
+        this.txtPrice.setFormatterFactory(
+                new DefaultFormatterFactory(
+                        new NumberFormatter(new DecimalFormat(UIConstants.PRICE_FORMAT))));
+        this.txtIsbn.setFormatterFactory(
+                new DefaultFormatterFactory(
+                        new NumberFormatter(new DecimalFormat(UIConstants.NUMERIC_FORMAT))));
 
         this.createFormPanel();
     }
