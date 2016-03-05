@@ -13,17 +13,28 @@ import edu.utn.gestion.ui.util.IconFactory;
 import edu.utn.gestion.ui.util.InternalFrameManager;
 import org.apache.log4j.Logger;
 
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.WindowConstants;
+import javax.swing.border.BevelBorder;
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.DateFormat;
+import java.util.Date;
 
 /**
  *
@@ -52,6 +63,7 @@ public class MainFrame extends JFrame {
     private JMenuItem menuItemAttendance;
     private JMenuItem menuItemSettlement;
     private JDesktopPane desktopPane;
+    private JPanel statusPanel;
 
     /**
     * Creates new form MainFrame
@@ -116,8 +128,6 @@ public class MainFrame extends JFrame {
         this.menuBarGestionApp.add(this.menuHelp);
 
         this.setJMenuBar(this.menuBarGestionApp);
-        this.setContentPane(this.desktopPane);
-
 
         this.menuItemNewSale.addActionListener(event -> this.menuItemNewSaleActionPerformed(event));
         this.menuItemBooks.addActionListener(event -> this.menuItemBooksActionPerformed(event));
@@ -128,9 +138,34 @@ public class MainFrame extends JFrame {
         this.menuItemAttendance.addActionListener(event -> this.menuItemAttendanceActionPerformed(event));
         this.menuItemSettlement.addActionListener(event -> this.menuItemSettlementActionPerformed(event));
 
-
         this.setSize(new Dimension(1000, 800));
+        this.setLayout(new BorderLayout());
+        this.createStatusBar();
+        this.add(this.desktopPane, BorderLayout.CENTER);
+        this.add(this.statusPanel, BorderLayout.SOUTH);
         this.setLocationRelativeTo(null);
+    }
+
+    /**
+     * Creates a status bar that shows a welcome message and the
+     * current date-time.
+     */
+    private void createStatusBar() {
+        this.statusPanel = new JPanel();
+
+        final JLabel lblDateTime = new JLabel();
+        final JLabel lblWelcomeMessage
+                = new JLabel("Universidad Tecnológica Nacional - Facultad Regional Tucumán", JLabel.LEFT);
+
+        this.statusPanel.setLayout(new BorderLayout());
+        this.statusPanel.setBorder(BorderFactory.createEtchedBorder());
+        this.statusPanel.add(lblWelcomeMessage, BorderLayout.WEST);
+        this.statusPanel.add(lblDateTime, BorderLayout.EAST);
+
+        new Timer(1000, event -> {
+            String dateTimeString = DateFormat.getDateTimeInstance().format(new Date());
+            lblDateTime.setText(dateTimeString);
+        }).start();
     }
 
     private void menuItemOrdersActionPerformed() {
