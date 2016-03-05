@@ -1,7 +1,9 @@
 package edu.utn.gestion.ui.dialog.generic;
 
 import edu.utn.gestion.exception.GestionAppException;
+import edu.utn.gestion.ui.constants.UIConstants;
 import edu.utn.gestion.ui.controller.generic.GenericController;
+import edu.utn.gestion.ui.util.IconFactory;
 import edu.utn.gestion.ui.util.PopUpFactory;
 
 import java.awt.Component;
@@ -74,10 +76,10 @@ public abstract class GenericManagementDialog<E, I> extends JDialog {
     private void initComponents() {
         this.jScrollPane1 = new JScrollPane();
         this.tableBooks = new JTable();
-        this.btnNew = new JButton("New");
-        this.btnDelete = new JButton("Delete");
-        this.btnExport = new JButton("Export");
-        this.btnSearch = new JButton("Search");
+        this.btnNew = new JButton("New", IconFactory.getIcon(UIConstants.ICON_EDIT_ADD_LOCATION));
+        this.btnDelete = new JButton("Delete", IconFactory.getIcon(UIConstants.ICON_EDIT_DELETE_LOCATION));
+        this.btnExport = new JButton("Export", IconFactory.getIcon(UIConstants.ICON_DOCUMENT_EXPORT_LOCATION));
+        this.btnSearch = new JButton("Search", IconFactory.getIcon(UIConstants.ICON_DOCUMENT_SEARCH_LOCATION));
         this.searchPanel = new JPanel();
         this.txtSearch = new JTextField();
 

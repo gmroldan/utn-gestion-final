@@ -1,6 +1,8 @@
 package edu.utn.gestion.ui.dialog.generic;
 
 import edu.utn.gestion.exception.GestionAppException;
+import edu.utn.gestion.ui.constants.UIConstants;
+import edu.utn.gestion.ui.util.IconFactory;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -65,10 +67,10 @@ public abstract class GenericDialog extends JDialog {
      * Initializes the default GUI components.
      */
     private void initGUIComponents() {
-        this.btnCancel = new JButton("Cancel");
+        this.btnCancel = new JButton("Cancel", IconFactory.getIcon(UIConstants.ICON_BUTTON_CANCEL_LOCATION));
         this.btnCancel.addActionListener(event -> btnCancelActionPerformed(event));
 
-        this.btnAccept = new JButton("Accept");
+        this.btnAccept = new JButton("Accept", IconFactory.getIcon(UIConstants.ICON_BUTTON_ACCEPT_LOCATION));
         this.btnAccept.addActionListener(event -> btnAcceptActionPerformed(event));
 
         this.buttonPanel = new JPanel();
