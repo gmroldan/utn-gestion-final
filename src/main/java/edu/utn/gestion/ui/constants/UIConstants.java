@@ -4,8 +4,13 @@ package edu.utn.gestion.ui.constants;
  * Created by martin on 04/03/16.
  */
 public interface UIConstants {
-    String ICON_APPLICATION_EXIT_LOCATION = "icons/application_exit.png";
-    String ICON_HELP_ABOUT_LOCATION = "icons/help_about.png";
+    String ICON_APP_EXIT_LOCATION = "icons/app_exit.png";
+    String ICON_APP_ABOUT_LOCATION = "icons/app_about.png";
+    String ICON_APP_BOOKS_LOCATION = "icons/app_books.png";
+    String ICON_APP_CUSTOMERS_LOCATION = "icons/app_customers.png";
+    String ICON_APP_EMPLOYEES_LOCATION = "icons/app_employees.png";
+    String ICON_APP_ORDERS_LOCATION = "icons/app_orders.png";
+    String ICON_APP_ATTENDANCE_LOCATION = "icons/app_attendance.png";
 
     String ICON_EDIT_ADD_LOCATION = "icons/edit_add.png";
     String ICON_EDIT_DELETE_LOCATION = "icons/edit_delete.png";

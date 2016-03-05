@@ -1,5 +1,6 @@
 package edu.utn.gestion.ui;
 
+import edu.utn.gestion.ui.constants.UIConstants;
 import edu.utn.gestion.ui.dialog.book.BooksManagementDialog;
 import edu.utn.gestion.ui.dialog.customer.CustomersManagementDialog;
 import edu.utn.gestion.ui.dialog.employee.EmployeesManagementDialog;
@@ -8,6 +9,7 @@ import edu.utn.gestion.ui.dialog.settlement.AttendanceDialog;
 import edu.utn.gestion.ui.dialog.settlement.SettlementDialog;
 import edu.utn.gestion.ui.dialog.supplier.SuppliersManagementDialog;
 import edu.utn.gestion.ui.internal.NewSaleInternalFrame;
+import edu.utn.gestion.ui.util.IconFactory;
 import edu.utn.gestion.ui.util.InternalFrameManager;
 import org.apache.log4j.Logger;
 
@@ -69,21 +71,28 @@ public class MainFrame extends JFrame {
     private void initComponents() {
         this.menuBarGestionApp = new JMenuBar();
         this.menuFile = new JMenu("File");
-        this.menuItemExit = new JMenuItem("Exit");
+        this.menuItemExit = new JMenuItem("Exit"
+                , IconFactory.getIcon(UIConstants.ICON_APP_EXIT_LOCATION));
         this.menuEdit = new JMenu("Edit");
         this.menuSales = new JMenu("Sales");
         this.menuEmployees = new JMenu("Employees");
 
         this.menuItemNewSale = new JMenuItem("New Sale");
-        this.menuItemBooks = new JMenuItem("Books");
-        this.menuItemCustomers = new JMenuItem("Customers");
-        this.menuItemEmployees = new JMenuItem("Employees");
+        this.menuItemBooks = new JMenuItem("Books"
+                , IconFactory.getIcon(UIConstants.ICON_APP_BOOKS_LOCATION));
+        this.menuItemCustomers = new JMenuItem("Customers"
+                , IconFactory.getIcon(UIConstants.ICON_APP_CUSTOMERS_LOCATION));
+        this.menuItemEmployees = new JMenuItem("Employees"
+                , IconFactory.getIcon(UIConstants.ICON_APP_EMPLOYEES_LOCATION));
         this.menuItemSuppliers = new JMenuItem("Suppliers");
-        this.menuItemOrders = new JMenuItem("Orders");
-        this.menuItemAttendance = new JMenuItem("Attendance");
+        this.menuItemOrders = new JMenuItem("Orders"
+                , IconFactory.getIcon(UIConstants.ICON_APP_ORDERS_LOCATION));
+        this.menuItemAttendance = new JMenuItem("Attendance"
+                , IconFactory.getIcon(UIConstants.ICON_APP_ATTENDANCE_LOCATION));
         this.menuItemSettlement = new JMenuItem("Settlement");
         this.menuHelp = new JMenu("Help");
-        this.menuItemAbout = new JMenuItem("About");
+        this.menuItemAbout = new JMenuItem("About"
+                , IconFactory.getIcon(UIConstants.ICON_APP_ABOUT_LOCATION));
         this.desktopPane = InternalFrameManager.getDesktopPane();
 
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
