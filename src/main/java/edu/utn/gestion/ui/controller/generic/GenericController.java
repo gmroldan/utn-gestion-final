@@ -15,37 +15,34 @@ import java.util.List;
  * @param <I> Entity class's id.
  */
 public abstract class GenericController<E, I> {
-    protected final GenericService<E, I> genericService;
-
-    public GenericController(GenericService genericService) {
-        this.genericService = genericService;
-    }
     
     public I save(E book) throws GestionAppException {
-        return this.genericService.save(book);
+        return this.getService().save(book);
     }
     
     public E update(E book) throws GestionAppException {
-        return this.genericService.update(book);
+        return this.getService().update(book);
     }
     
     public void delete(E book) throws GestionAppException {
-        this.genericService.delete(book);
+        this.getService().delete(book);
     }
     
     public E findOne(I id) throws GestionAppException {
-        return this.genericService.findOne(id);
+        return this.getService().findOne(id);
     }
     
     public List<E> findAll() throws GestionAppException {
-        return this.genericService.findAll();
+        return this.getService().findAll();
     }
     
     public List<E> findBySearch(String searchString) throws GestionAppException {
-        return this.genericService.findBySearch(searchString);
+        return this.getService().findBySearch(searchString);
     }
 
     public void exportData(GenericTableModel tableModel) throws GestionAppException {
-        this.genericService.exportData(tableModel);
+        this.getService().exportData(tableModel);
     }
+
+    protected abstract GenericService<E, I> getService();
 }
