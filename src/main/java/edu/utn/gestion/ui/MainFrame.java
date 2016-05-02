@@ -20,6 +20,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 import javax.swing.UIManager;
@@ -124,6 +125,7 @@ public class MainFrame extends JFrame {
 
         this.setJMenuBar(this.menuBarGestionApp);
 
+        this.menuItemExit.addActionListener(event -> this.menuItemExitActionPerformed());
         this.menuItemNewSale.addActionListener(event -> this.menuItemNewSaleActionPerformed());
         this.menuItemBooks.addActionListener(event -> this.menuItemBooksActionPerformed());
         this.menuItemCustomers.addActionListener(event -> this.menuItemCustomersActionPerformed());
@@ -161,6 +163,21 @@ public class MainFrame extends JFrame {
             String dateTimeString = DateFormat.getDateTimeInstance().format(new Date());
             lblDateTime.setText(dateTimeString);
         }).start();
+    }
+
+    /**
+     * Shows a confirm dialog to close the app.
+     */
+    private void menuItemExitActionPerformed() {
+        int selectedOption
+                = JOptionPane.showConfirmDialog(this,
+                                                "Are you sure you want to exit?",
+                                                null,
+                                                JOptionPane.YES_NO_OPTION);
+
+        if (selectedOption == JOptionPane.YES_OPTION) {
+            System.exit(0);
+        }
     }
 
     private void menuItemOrdersActionPerformed() {
