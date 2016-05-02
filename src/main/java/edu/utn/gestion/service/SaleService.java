@@ -1,6 +1,7 @@
 package edu.utn.gestion.service;
 
 import edu.utn.gestion.dao.SaleDAO;
+import edu.utn.gestion.dao.generic.GenericDAO;
 import edu.utn.gestion.exception.FileGenerationException;
 import edu.utn.gestion.exception.GestionAppException;
 import edu.utn.gestion.model.Sale;
@@ -16,13 +17,25 @@ import java.util.List;
  */
 public class SaleService extends GenericService<Sale, Long> {
     private static final SaleService INSTANCE = new SaleService();
+    private final SaleDAO saleDAO = SaleDAO.getInstance();
 
-    private SaleService() {
-        super(SaleDAO.getInstance());
-    }
+    /**
+     * Class constructor.
+     */
+    private SaleService() {}
 
+    /**
+     * Returns the unique instance of SaleService.
+     *
+     * @return
+     */
     public static SaleService getInstance() {
         return INSTANCE;
+    }
+
+    @Override
+    protected GenericDAO<Sale, Long> getDAO() {
+        return this.saleDAO;
     }
 
     @Override

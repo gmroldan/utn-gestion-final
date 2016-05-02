@@ -1,6 +1,7 @@
 package edu.utn.gestion.service;
 
 import edu.utn.gestion.dao.SupplierDAO;
+import edu.utn.gestion.dao.generic.GenericDAO;
 import edu.utn.gestion.exception.DataAccessException;
 import edu.utn.gestion.exception.GestionAppException;
 import edu.utn.gestion.model.Supplier;
@@ -13,19 +14,30 @@ import java.util.List;
  */
 public class SupplierService extends GenericService<Supplier, Long> {
     private static final SupplierService INSTANCE = new SupplierService();
+    private final SupplierDAO supplierDAO = SupplierDAO.getInstance();
 
-    private SupplierService() {
-        super(SupplierDAO.getInstance());
-    }
+    /**
+     * Class constructor.
+     */
+    private SupplierService() {}
 
+    /**
+     * Returns the unique instance of SupplierService.
+     * @return
+     */
     public static SupplierService getInstance() {
         return INSTANCE;
     }
 
     @Override
+    protected GenericDAO<Supplier, Long> getDAO() {
+        return this.supplierDAO;
+    }
+
+    @Override
     public List<Supplier> findBySearch(String searchString) throws GestionAppException {
         try {
-            return this.genericDAO.findObjectsBySearch(searchString);
+            return this.supplierDAO.findObjectsBySearch(searchString);
         } catch (DataAccessException ex) {
             throw new GestionAppException(ex.getMessage(), ex);
         }

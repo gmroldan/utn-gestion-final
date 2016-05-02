@@ -19,15 +19,10 @@ import java.util.List;
  * @param <I> Entity class's id.
  */
 public abstract class GenericService<E, I> {
-    protected final GenericDAO<E, I> genericDAO;
 
-    public GenericService(GenericDAO genericDAO) {
-        this.genericDAO = genericDAO;
-    }
-    
     public I save(E object) throws GestionAppException {
         try {
-            return this.genericDAO.save(object);
+            return this.getDAO().save(object);
         } catch (DataAccessException ex) {
             throw new GestionAppException(ex.getMessage(), ex);
         }
@@ -35,7 +30,7 @@ public abstract class GenericService<E, I> {
     
     public E update(E object) throws GestionAppException {
         try {
-            return this.genericDAO.update(object);
+            return this.getDAO().update(object);
         } catch (DataAccessException ex) {
             throw new GestionAppException(ex.getMessage(), ex);
         }
@@ -43,7 +38,7 @@ public abstract class GenericService<E, I> {
     
     public void delete(E object) throws GestionAppException {
         try {
-            this.genericDAO.delete(object);
+            this.getDAO().delete(object);
         } catch (DataAccessException ex) {
             throw new GestionAppException(ex.getMessage(), ex);
         }
@@ -51,7 +46,7 @@ public abstract class GenericService<E, I> {
     
     public E findOne(I id) throws GestionAppException {
         try {
-            return this.genericDAO.findOne(id);
+            return this.getDAO().findOne(id);
         } catch (DataAccessException ex) {
             throw new GestionAppException(ex.getMessage(), ex);
         }
@@ -59,7 +54,7 @@ public abstract class GenericService<E, I> {
     
     public List<E> findAll() throws GestionAppException {
         try {
-            return this.genericDAO.findAll();
+            return this.getDAO().findAll();
         } catch (DataAccessException ex) {
             throw new GestionAppException(ex.getMessage(), ex);
         }
@@ -74,6 +69,7 @@ public abstract class GenericService<E, I> {
             throw new GestionAppException(ex);
         }
     }
-    
+
+    protected abstract GenericDAO<E, I> getDAO();
     public abstract List<E> findBySearch(String searchString) throws GestionAppException;
 }

@@ -12,15 +12,26 @@ import java.util.List;
  * Created by ASUS on 25/02/2016.
  */
 public class SettlementService extends GenericService<Settlement, Long> {
-
     private static final SettlementService INSTANCE = new SettlementService();
+    private final SettlementDAO settlementDAO = SettlementDAO.getInstance();
 
-    private SettlementService() {
-        super(SettlementDAO.getInstance());
-    }
+    /**
+     * Class constructor.
+     */
+    private SettlementService() {}
 
+    /**
+     * Returns the unique instance of SettlementService.
+     *
+     * @return
+     */
     public static SettlementService getInstance() {
         return INSTANCE;
+    }
+
+    @Override
+    protected GenericDAO<Settlement, Long> getDAO() {
+        return this.settlementDAO;
     }
 
     @Override

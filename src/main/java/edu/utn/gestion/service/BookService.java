@@ -2,6 +2,7 @@ package edu.utn.gestion.service;
 
 import edu.utn.gestion.dao.BookDAO;
 import edu.utn.gestion.dao.CategoryDAO;
+import edu.utn.gestion.dao.generic.GenericDAO;
 import edu.utn.gestion.exception.DataAccessException;
 import edu.utn.gestion.exception.GestionAppException;
 import edu.utn.gestion.model.Book;
@@ -17,22 +18,31 @@ import java.util.List;
  */
 public class BookService extends GenericService<Book, String> {
     private static final BookService INSTANCE = new BookService();
+    private final BookDAO bookDAO = BookDAO.getInstance();
 
     /**
      * Class constructor.
      */
-    private BookService() {
-        super(BookDAO.getInstance());
-    }
+    private BookService() {}
 
+    /**
+     * Returns the unique instance of BookService.
+     *
+     * @return
+     */
     public static BookService getInstance() {
         return INSTANCE;
     }
-    
+
+    @Override
+    protected GenericDAO<Book, String> getDAO() {
+        return this.bookDAO;
+    }
+
     @Override
     public List<Book> findBySearch(String searchString) throws GestionAppException {
         try {
-            return this.genericDAO.findObjectsBySearch(searchString);
+            return this.bookDAO.findObjectsBySearch(searchString);
         } catch (DataAccessException ex) {
             throw new GestionAppException(ex.getMessage(), ex);
         }
@@ -40,12 +50,12 @@ public class BookService extends GenericService<Book, String> {
 
     public List<Book> findBooksWithMinStock() throws GestionAppException {
         try {
-            return ((BookDAO) this.genericDAO).findBooksWithMinStock();
+            return this.bookDAO.findBooksWithMinStock();
         } catch (DataAccessException ex) {
             throw new GestionAppException(ex.getMessage(), ex);
         }
     }
-    
+
     public List<Category> findAllCategories() throws GestionAppException {
         try {
             return CategoryDAO.getInstance().findAll();
@@ -65,7 +75,7 @@ public class BookService extends GenericService<Book, String> {
         Book book = null;
 
         try {
-            book = this.genericDAO.findOne(bookId);
+            book = this.bookDAO.findOne(bookId);
         } catch (DataAccessException ex) {
             throw new GestionAppException(ex.getMessage(), ex);
         }
@@ -79,7 +89,7 @@ public class BookService extends GenericService<Book, String> {
         book.setCurrentStock(newStock);
 
         try {
-            book = this.genericDAO.update(book);
+            book = this.bookDAO.update(book);
         } catch (DataAccessException ex) {
             throw new GestionAppException(ex.getMessage(), ex);
         }

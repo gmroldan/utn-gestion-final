@@ -1,6 +1,7 @@
 package edu.utn.gestion.service;
 
 import edu.utn.gestion.dao.OrderDAO;
+import edu.utn.gestion.dao.generic.GenericDAO;
 import edu.utn.gestion.exception.DataAccessException;
 import edu.utn.gestion.exception.GestionAppException;
 import edu.utn.gestion.model.Book;
@@ -20,13 +21,18 @@ public class OrderService extends GenericService<Order, Long> {
     private static final OrderService INSTANCE = new OrderService();
     private static final int DEFAULT_QUANTITY_TO_ORDER = 10;
 
-    /**
-     * Creates a new instance of <code>OrderService</code>.
-     */
-    private OrderService() {
-        super(OrderDAO.getInstance());
-    }
+    private final OrderDAO orderDAO = OrderDAO.getInstance();
 
+    /**
+     * Class constructor.
+     */
+    private OrderService() {}
+
+    /**
+     * Returns the unique instance of OrderService.
+     *
+     * @return
+     */
     public static OrderService getInstance() {
         return INSTANCE;
     }
@@ -37,9 +43,14 @@ public class OrderService extends GenericService<Order, Long> {
     }
 
     @Override
+    protected GenericDAO<Order, Long> getDAO() {
+        return this.orderDAO;
+    }
+
+    @Override
     public List<Order> findBySearch(String searchString) throws GestionAppException {
         try {
-            return this.genericDAO.findObjectsBySearch(searchString);
+            return this.orderDAO.findObjectsBySearch(searchString);
         } catch (DataAccessException ex) {
             throw new GestionAppException(ex);
         }

@@ -1,6 +1,7 @@
 package edu.utn.gestion.service;
 
 import edu.utn.gestion.dao.EmployeeDAO;
+import edu.utn.gestion.dao.generic.GenericDAO;
 import edu.utn.gestion.exception.DataAccessException;
 import edu.utn.gestion.exception.GestionAppException;
 import edu.utn.gestion.model.Employee;
@@ -13,15 +14,25 @@ import java.util.List;
  */
 public class EmployeeService extends GenericService<Employee, Long> {
     private static final EmployeeService INSTANCE = new EmployeeService();
-    private final EmployeeDAO employeeDAO;
+    private final EmployeeDAO employeeDAO = EmployeeDAO.getInstance();
 
-    public EmployeeService() {
-        super(EmployeeDAO.getInstance());
-        this.employeeDAO = (EmployeeDAO) this.genericDAO;
-    }
+    /**
+     * Class constructor.
+     */
+    private EmployeeService() {}
 
+    /**
+     * Returns the unique instance of EmployeeService.
+     *
+     * @return
+     */
     public static EmployeeService getInstance() {
         return INSTANCE;
+    }
+
+    @Override
+    protected GenericDAO<Employee, Long> getDAO() {
+        return this.employeeDAO;
     }
 
     @Override
