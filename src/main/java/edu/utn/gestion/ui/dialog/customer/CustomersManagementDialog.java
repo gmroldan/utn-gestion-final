@@ -2,11 +2,13 @@ package edu.utn.gestion.ui.dialog.customer;
 
 import edu.utn.gestion.model.Customer;
 import edu.utn.gestion.ui.controller.CustomerController;
+import edu.utn.gestion.ui.controller.generic.GenericController;
 import edu.utn.gestion.ui.dialog.generic.GenericManagementDialog;
 import java.awt.Frame;
 
 public class CustomersManagementDialog extends GenericManagementDialog<Customer, Long> {
     private static final String WINDOW_TITLE = "Customers Management";
+    private final CustomerController controller;
 
     /**
      * Class constructor.
@@ -15,17 +17,22 @@ public class CustomersManagementDialog extends GenericManagementDialog<Customer,
      * @param modal
      */
     public CustomersManagementDialog(Frame parent, boolean modal) {
-        super(parent, WINDOW_TITLE, modal, new CustomerController(), new CustomerTableModel());
+        super(parent, WINDOW_TITLE, modal, new CustomerTableModel());
+        this.controller = new CustomerController();
     }
 
     @Override
     protected void showEditObjectDialog(Customer customer) {
-        new EditCustomerDialog(this, true, (CustomerController) this.controller, customer).setVisible(true);
+        new EditCustomerDialog(this, true, this.controller, customer).setVisible(true);
     }
 
     @Override
     protected void showNewObjectDialog() {
-        new NewCustomerDialog(this, true, (CustomerController) this.controller, null).setVisible(true);
+        new NewCustomerDialog(this, true, this.controller, null).setVisible(true);
     }
-    
+
+    @Override
+    protected GenericController<Customer, Long> getController() {
+        return this.controller;
+    }
 }

@@ -36,7 +36,6 @@ import org.apache.commons.collections4.CollectionUtils;
  * @author Gerardo Martín Roldán
  */
 public abstract class GenericManagementDialog<E, I> extends JDialog {
-    protected final GenericController<E, I> controller;
     protected final GenericTableModel model;
     protected JButton btnDelete;
     protected JButton btnExport;
@@ -53,13 +52,11 @@ public abstract class GenericManagementDialog<E, I> extends JDialog {
      * @param parent
      * @param windowTitle
      * @param modal
-     * @param controller
      * @parm model
      */
     public GenericManagementDialog(Frame parent, String windowTitle
-            , boolean modal, GenericController controller, GenericTableModel model) {
+            , boolean modal, GenericTableModel model) {
         super(parent, windowTitle, modal);
-        this.controller = controller;
         this.model = model;
         this.initComponents();
         this.setLocationRelativeTo(parent);
@@ -178,7 +175,7 @@ public abstract class GenericManagementDialog<E, I> extends JDialog {
 
     private void btnExportActionPerformed() {
         try {
-            this.controller.exportData(this.model);
+            this.getController().exportData(this.model);
         } catch (GestionAppException ex) {
             PopUpFactory.showErrorMessage(this, ex.getMessage());
         }
@@ -226,7 +223,7 @@ public abstract class GenericManagementDialog<E, I> extends JDialog {
 
     private void updateObjectList() {
         try {
-             this.model.setObjectList(this.controller.findAll());
+             this.model.setObjectList(this.getController().findAll());
         } catch (GestionAppException ex) {
             PopUpFactory.showErrorMessage(this, ex.getMessage());
             this.dispose();
@@ -237,7 +234,7 @@ public abstract class GenericManagementDialog<E, I> extends JDialog {
         I id = (I) this.model.getValueAt(rowIndex, columnIndex);
 
         try {
-            E object = this.controller.findOne(id);
+            E object = this.getController().findOne(id);
             this.showEditObjectDialog(object);            
         } catch (GestionAppException ex) {
             PopUpFactory.showErrorMessage(this, ex.getMessage());
@@ -255,7 +252,7 @@ public abstract class GenericManagementDialog<E, I> extends JDialog {
         
         for (E object : selectedBooks) {
             try {
-                this.controller.delete(object);
+                this.getController().delete(object);
             } catch (GestionAppException ex) {
                 PopUpFactory.showErrorMessage(this, ex.getMessage());
             }
@@ -266,7 +263,7 @@ public abstract class GenericManagementDialog<E, I> extends JDialog {
         List<E> searchResult = null;
         
         try {
-            searchResult = this.controller.findBySearch(this.txtSearch.getText());
+            searchResult = this.getController().findBySearch(this.txtSearch.getText());
         } catch (GestionAppException ex) {
             PopUpFactory.showErrorMessage(this, ex.getMessage());
         }
@@ -278,4 +275,5 @@ public abstract class GenericManagementDialog<E, I> extends JDialog {
     
     protected abstract void showEditObjectDialog(E object);
     protected abstract void showNewObjectDialog();
+    protected abstract GenericController<E, I> getController();
 }

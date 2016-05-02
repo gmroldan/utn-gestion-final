@@ -19,7 +19,7 @@ import java.awt.event.WindowEvent;
 /**
  * Created by martin on 05/12/15.
  */
-public abstract class GenericDialog extends JDialog {
+public abstract class GenericDialog<E, I> extends JDialog {
     protected JPanel formPanel;
     protected JPanel buttonPanel;
     protected JButton btnAccept;
