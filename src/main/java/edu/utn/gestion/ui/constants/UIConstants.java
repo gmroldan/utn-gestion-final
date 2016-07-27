@@ -25,4 +25,6 @@ public interface UIConstants {
 
     String ICON_BUTTON_ACCEPT_LOCATION = "icons/button_accept.png";
     String ICON_BUTTON_CANCEL_LOCATION = "icons/button_cancel.png";
+
+    String ICON_ABOUT_DIALOG_ICON_LOCATION = "icons/about_dialog_icon.png";
 }
