@@ -1,16 +1,21 @@
 package edu.utn.gestion.ui;
 
+import edu.utn.gestion.model.UserRole;
 import edu.utn.gestion.ui.constants.UIConstants;
 import edu.utn.gestion.ui.dialog.book.BooksManagementDialog;
 import edu.utn.gestion.ui.dialog.customer.CustomersManagementDialog;
 import edu.utn.gestion.ui.dialog.employee.EmployeesManagementDialog;
+import edu.utn.gestion.ui.dialog.help.AboutDialog;
 import edu.utn.gestion.ui.dialog.order.OrdersManagementDialog;
 import edu.utn.gestion.ui.dialog.settlement.AttendanceDialog;
 import edu.utn.gestion.ui.dialog.settlement.SettlementDialog;
 import edu.utn.gestion.ui.dialog.supplier.SuppliersManagementDialog;
+import edu.utn.gestion.ui.dialog.user.LoginDialog;
+import edu.utn.gestion.ui.dialog.user.UserManagementDialog;
 import edu.utn.gestion.ui.internal.NewSaleInternalFrame;
 import edu.utn.gestion.ui.util.IconFactory;
 import edu.utn.gestion.ui.util.InternalFrameManager;
+import edu.utn.gestion.ui.util.Session;
 import org.apache.log4j.Logger;
 
 import javax.swing.BorderFactory;
@@ -47,6 +52,7 @@ public class MainFrame extends JFrame {
     private JMenu menuHelp;
     private JMenu menuSales;
     private JMenu menuEmployees;
+    private JMenu menuAdmin;
     private JMenuBar menuBarGestionApp;
     private JMenuItem menuItemAbout;
     private JMenuItem menuItemBooks;
@@ -58,6 +64,7 @@ public class MainFrame extends JFrame {
     private JMenuItem menuItemEmployees;
     private JMenuItem menuItemAttendance;
     private JMenuItem menuItemSettlement;
+    private JMenuItem menuItemAdminUsers;
     private JDesktopPane desktopPane;
     private JPanel statusPanel;
 
@@ -66,6 +73,7 @@ public class MainFrame extends JFrame {
     */
     private MainFrame() {
         this.initLookAndFeel();
+        this.showLogin();
         this.initComponents();        
     }
     
@@ -84,6 +92,7 @@ public class MainFrame extends JFrame {
         this.menuEdit = new JMenu("Edit");
         this.menuSales = new JMenu("Sales");
         this.menuEmployees = new JMenu("Employees");
+        this.menuAdmin = new JMenu("Admin");
 
         this.menuItemNewSale = new JMenuItem("New Sale");
         this.menuItemBooks = new JMenuItem("Books"
@@ -101,6 +110,8 @@ public class MainFrame extends JFrame {
         this.menuHelp = new JMenu("Help");
         this.menuItemAbout = new JMenuItem("About"
                 , IconFactory.getIcon(UIConstants.ICON_APP_ABOUT_LOCATION));
+        this.menuItemAdminUsers = new JMenuItem("Users");
+
         this.desktopPane = InternalFrameManager.getDesktopPane();
 
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -116,11 +127,13 @@ public class MainFrame extends JFrame {
         this.menuEmployees.add(this.menuItemAttendance);
         this.menuEmployees.add(this.menuItemSettlement);
         this.menuEmployees.add(this.menuItemEmployees);
+        this.menuAdmin.add(this.menuItemAdminUsers);
 
         this.menuBarGestionApp.add(this.menuFile);
         this.menuBarGestionApp.add(this.menuEdit);
         this.menuBarGestionApp.add(this.menuSales);
         this.menuBarGestionApp.add(this.menuEmployees);
+        this.menuBarGestionApp.add(this.menuAdmin);
         this.menuBarGestionApp.add(this.menuHelp);
 
         this.setJMenuBar(this.menuBarGestionApp);
@@ -134,6 +147,7 @@ public class MainFrame extends JFrame {
         this.menuItemEmployees.addActionListener(event -> this.menuItemEmployeesActionPerformed());
         this.menuItemAttendance.addActionListener(event -> this.menuItemAttendanceActionPerformed());
         this.menuItemSettlement.addActionListener(event -> this.menuItemSettlementActionPerformed());
+        this.menuItemAdminUsers.addActionListener(event -> this.menuItemAdminUsersActionPerformed());
 
         this.setSize(new Dimension(1000, 800));
         this.setLayout(new BorderLayout());
@@ -141,6 +155,26 @@ public class MainFrame extends JFrame {
         this.add(this.desktopPane, BorderLayout.CENTER);
         this.add(this.statusPanel, BorderLayout.SOUTH);
         this.setLocationRelativeTo(null);
+
+        this.disableComponentsForNonAdminUsers();
+    }
+
+    /**
+     * Disables some UI components if the current user is not ADMIN.
+     */
+    private void disableComponentsForNonAdminUsers() {
+        if (!Session.isCurrentUserAdmin()) {
+            this.menuAdmin.setVisible(false);
+
+            if (Session.isCurrentUserVendedor()) {
+                this.menuEmployees.setVisible(false);
+                this.menuEdit.setVisible(false);
+            }
+
+            if (Session.isCurrentUserAdministrativo()) {
+                this.menuSales.setVisible(false);
+            }
+        }
     }
 
     /**
@@ -163,6 +197,10 @@ public class MainFrame extends JFrame {
             String dateTimeString = DateFormat.getDateTimeInstance().format(new Date());
             lblDateTime.setText(dateTimeString);
         }).start();
+    }
+
+    private void showLogin() {
+        new LoginDialog(this);
     }
 
     /**
@@ -210,6 +248,10 @@ public class MainFrame extends JFrame {
 
     private void menuItemSettlementActionPerformed() {
         new SettlementDialog(this, true).setVisible(true);
+    }
+
+    private void menuItemAdminUsersActionPerformed() {
+        new UserManagementDialog(this, true).setVisible(true);
     }
 
     /**

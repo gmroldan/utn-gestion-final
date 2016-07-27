@@ -44,6 +44,7 @@
         <mapping class="edu.utn.gestion.model.Settlement" />
         <mapping class="edu.utn.gestion.model.SalaryCategory" />
         <mapping class="edu.utn.gestion.model.Attendance" />
+        <mapping class="edu.utn.gestion.model.User" />
 
     </session-factory>
 
