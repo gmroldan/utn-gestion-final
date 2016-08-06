@@ -1,14 +1,8 @@
 package edu.utn.gestion.model;
 
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.sql.Blob;
 
 /**
  * Created by Benja on 22/02/2016.
@@ -32,7 +26,7 @@ public class Settlement {
     private String category;
 
     @Column(nullable = false)
-    private double grossSalary;
+    private double sueldoBasico;
 
     @Column(nullable = false)
     private double netPay;
@@ -64,14 +58,21 @@ public class Settlement {
     @Column(nullable = false)
     private double syndicate;
 
+    @Column(nullable = false)
+    private double montoPorAntiguedad;
+
+    @Column(nullable = false)
+    private int antiguedad;
+
+    private Blob recibo;
+
+    public Settlement() {
+    }
+
     public Settlement(Employee employee, String period) {
         this.employee = employee;
         this.category = employee.getCategory().getName();
         this.period = period;
-    }
-
-    public long getId() {
-        return id;
     }
 
     public double getNetPay() {
@@ -94,32 +95,8 @@ public class Settlement {
         return category;
     }
 
-    public double getGrossSalary() {
-        return grossSalary;
-    }
-
-    public void calculateSettlement(double grossSalary) {
-
-        double remuneration = grossSalary;
-        this.grossSalary = grossSalary;
-
-        //antiguedad 2%
-        if (presenteeism) {
-            this.presenteeismAmount = grossSalary * 0.083;
-        } else {
-            this.presenteeismAmount = 0;
-        }
-        remuneration = remuneration + presenteeismAmount;
-
-        this.retireAmount = remuneration * 0.11;
-        this.law19032 = remuneration * 0.03;
-        this.socialCare = remuneration * 0.03;
-        this.faecys = remuneration * 0.005;
-        this.syndicate = remuneration * 0.02;
-
-        this.discount = this.retireAmount + this.law19032 + this.socialCare + this.faecys + this.syndicate;
-        this.netPay = grossSalary - this.discount;
-        this.remunerationAmount = remuneration;
+    public double getSueldoBasico() {
+        return sueldoBasico;
     }
 
     public double getPresenteeismAmount() {
@@ -156,5 +133,85 @@ public class Settlement {
 
     public void setPresenteeism(boolean presenteeism) {
         this.presenteeism = presenteeism;
+    }
+
+    public void setSueldoBasico(double sueldoBasico) {
+        this.sueldoBasico = sueldoBasico;
+    }
+
+    public void setPeriod(String period) {
+        this.period = period;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public void setNetPay(double netPay) {
+        this.netPay = netPay;
+    }
+
+    public void setDiscount(double discount) {
+        this.discount = discount;
+    }
+
+    public void setPresenteeismAmount(double presenteeismAmount) {
+        this.presenteeismAmount = presenteeismAmount;
+    }
+
+    public void setRetireAmount(double retireAmount) {
+        this.retireAmount = retireAmount;
+    }
+
+    public void setLaw19032(double law19032) {
+        this.law19032 = law19032;
+    }
+
+    public void setSocialCare(double socialCare) {
+        this.socialCare = socialCare;
+    }
+
+    public void setFaecys(double faecys) {
+        this.faecys = faecys;
+    }
+
+    public void setRemunerationAmount(double remunerationAmount) {
+        this.remunerationAmount = remunerationAmount;
+    }
+
+    public void setSyndicate(double syndicate) {
+        this.syndicate = syndicate;
+    }
+
+    public Blob getRecibo() {
+        return recibo;
+    }
+
+    public void setRecibo(Blob recibo) {
+        this.recibo = recibo;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public double getMontoPorAntiguedad() {
+        return montoPorAntiguedad;
+    }
+
+    public void setMontoPorAntiguedad(double montoPorAntiguedad) {
+        this.montoPorAntiguedad = montoPorAntiguedad;
+    }
+
+    public int getAntiguedad() {
+        return antiguedad;
+    }
+
+    public void setAntiguedad(int antiguedad) {
+        this.antiguedad = antiguedad;
     }
 }
