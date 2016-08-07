@@ -2,23 +2,8 @@ package edu.utn.gestion.model;
 
 import edu.utn.gestion.model.util.IConstants;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import javax.persistence.*;
+import java.util.*;
 
 
 /**
@@ -46,9 +31,13 @@ public class Employee {
     @Column(nullable = false, unique = false, length = 30)
     private String address;
 
-    @OneToMany(targetEntity = Attendance.class, cascade = CascadeType.ALL)
-    @JoinColumn(name = "employee_id", referencedColumnName = "id", nullable = false)
-    private final Map<String,Attendance> attendances = new HashMap<>();
+//    @OneToMany(targetEntity = Attendance.class, cascade = CascadeType.ALL)
+//    @JoinColumn(name = "employee_id", referencedColumnName = "id", nullable = false)
+//    private final Map<String,Attendance> attendances = new HashMap<>();
+
+    @OneToMany(targetEntity = Family.class, cascade = CascadeType.ALL)
+    @JoinColumn(name = "family_id", referencedColumnName = "id", nullable = false)
+    private final List<Family> families = new ArrayList<>();
 
     @OneToOne
     private SalaryCategory category;
@@ -59,6 +48,9 @@ public class Employee {
 
     @Enumerated(EnumType.STRING)
     private GenderEnum gender;
+
+    public Employee() {
+    }
 
     public long getId() {
         return id;
@@ -132,8 +124,12 @@ public class Employee {
         this.ingress = ingress;
     }
 
-    public Map<String, Attendance> getAttendances() {
-        return attendances;
+//    public Map<String, Attendance> getAttendances() {
+//        return attendances;
+//    }
+
+    public List<Family> getFamilies() {
+        return families;
     }
 
     @Override
