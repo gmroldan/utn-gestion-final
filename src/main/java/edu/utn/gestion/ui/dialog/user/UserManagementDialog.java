@@ -8,6 +8,8 @@ import edu.utn.gestion.ui.dialog.generic.GenericManagementDialog;
 import edu.utn.gestion.ui.util.PopUpFactory;
 
 import java.awt.Frame;
+import java.awt.event.ItemEvent;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,20 +29,46 @@ public class UserManagementDialog extends GenericManagementDialog<User, Long> {
     public UserManagementDialog(Frame parent, boolean modal) {
         super(parent, WINDOW_TITLE, modal, new UserTableModel());
         this.controller = new UserController();
+        this.checkBoxShowDeletedObjects.setVisible(true);
+    }
+
+    protected void checkBoxChanged(ItemEvent event) {
+        if (ItemEvent.SELECTED == event.getStateChange()) {
+            this.model.setObjectList(this.getAllUsers());
+        } else {
+            this.updateObjectList();
+        }
     }
 
     @Override
     protected void updateObjectList() {
-        List<User> userList = null;
+        this.model.setObjectList(this.getActiveUsers());
+    }
+
+    private List<User> getActiveUsers() {
+        List<User> userList = new ArrayList<>();
 
         try {
-            userList = this.controller.findActiveUsers();
+            userList.addAll(this.controller.findActiveUsers());
         } catch (GestionAppException ex) {
             PopUpFactory.showErrorMessage(this, ex.getMessage());
             this.dispose();
         }
 
-        this.model.setObjectList(userList);
+        return userList;
+    }
+
+    private List<User> getAllUsers() {
+        List<User> userList = new ArrayList<>();
+
+        try {
+            userList.addAll(this.controller.findAll());
+        } catch (GestionAppException ex) {
+            PopUpFactory.showErrorMessage(this, ex.getMessage());
+            this.dispose();
+        }
+
+        return userList;
     }
 
     @Override

@@ -5,6 +5,7 @@ import edu.utn.gestion.ui.controller.CustomerController;
 import edu.utn.gestion.ui.controller.generic.GenericController;
 import edu.utn.gestion.ui.dialog.generic.GenericManagementDialog;
 import java.awt.Frame;
+import java.awt.event.ItemEvent;
 
 public class CustomersManagementDialog extends GenericManagementDialog<Customer, Long> {
     private static final String WINDOW_TITLE = "Customers Management";
@@ -19,6 +20,11 @@ public class CustomersManagementDialog extends GenericManagementDialog<Customer,
     public CustomersManagementDialog(Frame parent, boolean modal) {
         super(parent, WINDOW_TITLE, modal, new CustomerTableModel());
         this.controller = new CustomerController();
+    }
+
+    @Override
+    protected void checkBoxChanged(ItemEvent event) {
+        // TODO: Add implementation...
     }
 
     @Override

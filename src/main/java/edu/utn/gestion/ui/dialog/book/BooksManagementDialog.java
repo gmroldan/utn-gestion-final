@@ -5,6 +5,7 @@ import edu.utn.gestion.ui.controller.BookController;
 import edu.utn.gestion.ui.controller.generic.GenericController;
 import edu.utn.gestion.ui.dialog.generic.GenericManagementDialog;
 import java.awt.Frame;
+import java.awt.event.ItemEvent;
 
 public class BooksManagementDialog extends GenericManagementDialog<Book, String> {
     private static final String WINDOW_TITLE = "Books Management";
@@ -24,6 +25,11 @@ public class BooksManagementDialog extends GenericManagementDialog<Book, String>
     @Override
     protected void showNewObjectDialog() {
         new NewBookDialog(this, true, this.controller).setVisible(true);
+    }
+
+    @Override
+    protected void checkBoxChanged(ItemEvent event) {
+        // TODO: Add implementation...
     }
 
     @Override

@@ -7,6 +7,7 @@ import edu.utn.gestion.ui.dialog.generic.GenericManagementDialog;
 import edu.utn.gestion.ui.dialog.order.table.OrderTableModel;
 
 import javax.swing.JFrame;
+import java.awt.event.ItemEvent;
 
 /**
  * Created by martin on 25/02/16.
@@ -23,6 +24,11 @@ public class OrdersManagementDialog extends GenericManagementDialog<Order, Long>
     public OrdersManagementDialog(JFrame parent) {
         super(parent, WINDOW_TITLE, true, new OrderTableModel());
         this.controller =  new OrderController();
+    }
+
+    @Override
+    protected void checkBoxChanged(ItemEvent event) {
+        // TODO: Add implementation...
     }
 
     @Override

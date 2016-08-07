@@ -6,6 +6,7 @@ import edu.utn.gestion.ui.controller.generic.GenericController;
 import edu.utn.gestion.ui.dialog.generic.GenericManagementDialog;
 
 import java.awt.Frame;
+import java.awt.event.ItemEvent;
 
 /**
  * Created by martin on 18/12/15.
@@ -23,6 +24,11 @@ public class SuppliersManagementDialog extends GenericManagementDialog<Supplier,
     public SuppliersManagementDialog(Frame parent, boolean modal) {
         super(parent, WINDOW_TITLE, modal, new SupplierTableModel());
         this.controller = new SupplierController();
+    }
+
+    @Override
+    protected void checkBoxChanged(ItemEvent event) {
+        // TODO: Add implementation...
     }
 
     @Override

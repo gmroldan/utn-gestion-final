@@ -8,6 +8,7 @@ import edu.utn.gestion.ui.util.PopUpFactory;
 
 import java.awt.Component;
 import java.awt.Frame;
+import java.awt.event.ItemEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -20,6 +21,7 @@ import java.util.Set;
 import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -28,6 +30,7 @@ import javax.swing.JTextField;
 import javax.swing.LayoutStyle;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
+import javax.swing.event.ChangeEvent;
 
 import org.apache.commons.collections4.CollectionUtils;
 
@@ -45,6 +48,7 @@ public abstract class GenericManagementDialog<E, I> extends JDialog {
     protected JPanel searchPanel;
     protected JTable tableBooks;
     protected JTextField txtSearch;
+    protected JCheckBox checkBoxShowDeletedObjects;
 
     /**
      * Creates new form BookManagerDialog
@@ -74,6 +78,8 @@ public abstract class GenericManagementDialog<E, I> extends JDialog {
         this.btnSearch = new JButton("Search", IconFactory.getIcon(UIConstants.ICON_DOCUMENT_SEARCH_LOCATION));
         this.searchPanel = new JPanel();
         this.txtSearch = new JTextField();
+        this.checkBoxShowDeletedObjects = new JCheckBox("Show deleted objects");
+        this.checkBoxShowDeletedObjects.setVisible(false); // Ii's disabled by default.
 
         this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         this.setResizable(false);
@@ -104,6 +110,7 @@ public abstract class GenericManagementDialog<E, I> extends JDialog {
         this.btnDelete.addActionListener(event -> this.btnDeleteActionPerformed());
         this.btnExport.addActionListener(event -> this.btnExportActionPerformed());
         this.btnSearch.addActionListener(event -> this.btnSearchActionPerformed());
+        this.checkBoxShowDeletedObjects.addItemListener(event -> this.checkBoxChanged(event));
 
         this.searchPanel.setBorder(BorderFactory.createTitledBorder("Search"));
 
@@ -148,6 +155,7 @@ public abstract class GenericManagementDialog<E, I> extends JDialog {
                         .addComponent(this.btnDelete)
                         .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(this.btnExport)
+                        .addComponent(this.checkBoxShowDeletedObjects)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(this.searchPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -164,7 +172,8 @@ public abstract class GenericManagementDialog<E, I> extends JDialog {
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                     .addComponent(this.btnDelete)
                     .addComponent(this.btnNew)
-                    .addComponent(this.btnExport))
+                    .addComponent(this.btnExport)
+                    .addComponent(this.checkBoxShowDeletedObjects))
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(this.jScrollPane1, GroupLayout.PREFERRED_SIZE, 237, GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -172,6 +181,8 @@ public abstract class GenericManagementDialog<E, I> extends JDialog {
 
         pack();
     }
+
+    protected abstract void checkBoxChanged(ItemEvent event);
 
     private void btnExportActionPerformed() {
         try {
