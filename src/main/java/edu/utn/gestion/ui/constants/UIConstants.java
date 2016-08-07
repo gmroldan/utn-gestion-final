@@ -10,6 +10,8 @@ public interface UIConstants {
     String NUMERIC_FORMAT = "0";
     String PRICE_FORMAT = "#,##0.00";
 
+    String SBS_LOGO_IMAGE = "img/SBSlogo.png";
+
     String ICON_APP_EXIT_LOCATION = "icons/app_exit.png";
     String ICON_APP_ABOUT_LOCATION = "icons/app_about.png";
     String ICON_APP_BOOKS_LOCATION = "icons/app_books.png";
