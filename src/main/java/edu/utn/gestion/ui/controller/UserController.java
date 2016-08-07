@@ -42,4 +42,8 @@ public class UserController extends GenericController<User, Long> {
     public List<User> findActiveUsers() throws GestionAppException {
         return this.userService.findActiveUsers();
     }
+
+    public void enableUser(final User user) throws GestionAppException {
+        this.userService.enableUser(user);
+    }
 }

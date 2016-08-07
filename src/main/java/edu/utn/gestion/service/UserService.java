@@ -157,4 +157,33 @@ public class UserService extends GenericService<User, Long> {
             throw new GestionAppException("There was a problem trying to retrieve active users.", ex);
         }
     }
+
+    /**
+     * Enables an user account if the user was deleted.
+     *
+     * @param user
+     * @throws GestionAppException
+     */
+    public void enableUser(final User user) throws GestionAppException {
+        Validate.notNull(user, "User cannot be null.");
+
+        if (user.isActive()) {
+            String message = new StringBuilder()
+                    .append("User ")
+                    .append(user.getName())
+                    .append(" cannot be enabled because it's active.")
+                    .toString();
+            LOGGER.info(message);
+            throw new GestionAppException(message);
+        }
+
+        user.setActive(true);
+        this.update(user);
+
+        LOGGER.info(new StringBuilder()
+                .append("User ")
+                .append(user.getName())
+                .append(" was enable successfully.")
+                .toString());
+    }
 }

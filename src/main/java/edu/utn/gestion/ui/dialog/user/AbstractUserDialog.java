@@ -40,6 +40,7 @@ public abstract class AbstractUserDialog extends GenericDialog {
     protected JComboBox cmbRole;
     protected JButton btnSearchEmployee;
     protected JButton btnResetPassword;
+    protected JButton btnEnableUser;
     protected JPanel panelEmployee;
 
     protected UserController controller;
@@ -72,6 +73,8 @@ public abstract class AbstractUserDialog extends GenericDialog {
         } else {
             this.currentUser = new User();
         }
+
+        if (this.currentUser.isActive()) this.btnEnableUser.setVisible(false);
     }
 
 
@@ -95,6 +98,10 @@ public abstract class AbstractUserDialog extends GenericDialog {
                     , IconFactory.getIcon(UIConstants.ICON_BUTTON_RESET_PASS_LOCATION));
             this.lblPassword.setLabelFor(this.btnResetPassword);
             this.btnResetPassword.addActionListener(event -> this.resetPassword());
+
+            this.btnEnableUser = new JButton("Enable User"
+                    , IconFactory.getIcon(UIConstants.ICON_BUTTON_ENABLE_USER_LOCATION));
+            this.btnEnableUser.addActionListener(event -> this.enableUser());
         } else {
             this.txtPassword = new JPasswordField();
             this.lblPassword.setLabelFor(this.txtPassword);
@@ -148,6 +155,7 @@ public abstract class AbstractUserDialog extends GenericDialog {
         FormUtils.addLastField(this.cmbRole, this.formPanel);
         FormUtils.addLabel(this.lblEmployee, this.formPanel);
         FormUtils.addLastField(this.panelEmployee, this.formPanel);
+        if (this.isUpdate) FormUtils.addLastField(this.btnEnableUser, this.formPanel);
     }
 
     @Override
@@ -205,6 +213,16 @@ public abstract class AbstractUserDialog extends GenericDialog {
             this.currentUser = this.controller.resetPassword(this.currentUser);
             this.formWindowOpened(null);
             PopUpFactory.showInfoMessage(this, "Password changed successfully.");
+        } catch (GestionAppException ex) {
+            PopUpFactory.showErrorMessage(this, ex.getMessage());
+        }
+    }
+
+    private void enableUser() {
+        try {
+            this.controller.enableUser(this.currentUser);
+            PopUpFactory.showInfoMessage(this, "User enabled successfully.");
+            this.btnEnableUser.setEnabled(false);
         } catch (GestionAppException ex) {
             PopUpFactory.showErrorMessage(this, ex.getMessage());
         }
