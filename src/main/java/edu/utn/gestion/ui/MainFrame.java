@@ -108,7 +108,8 @@ public class MainFrame extends JFrame {
         this.menuHelp = new JMenu("Help");
         this.menuItemAbout = new JMenuItem("About"
                 , IconFactory.getIcon(UIConstants.ICON_APP_ABOUT_LOCATION));
-        this.menuItemAdminUsers = new JMenuItem("Users");
+        this.menuItemAdminUsers = new JMenuItem("Users"
+                , IconFactory.getIcon(UIConstants.ICON_APP_USERS_LOCATION));
 
         this.desktopPane = InternalFrameManager.getDesktopPane();
 
