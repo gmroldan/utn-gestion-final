@@ -33,7 +33,7 @@ public class UserManagementDialog extends GenericManagementDialog<User, Long> {
 
     @Override
     protected void showNewObjectDialog() {
-
+        new NewUserDialog(this, this.controller, null).setVisible(true);
     }
 
     @Override

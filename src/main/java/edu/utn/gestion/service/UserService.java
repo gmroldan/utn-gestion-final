@@ -1,9 +1,11 @@
 package edu.utn.gestion.service;
 
+import edu.utn.gestion.GestionApp;
 import edu.utn.gestion.dao.UserDAO;
 import edu.utn.gestion.dao.generic.GenericDAO;
 import edu.utn.gestion.exception.DataAccessException;
 import edu.utn.gestion.exception.GestionAppException;
+import edu.utn.gestion.model.Employee;
 import edu.utn.gestion.model.User;
 import edu.utn.gestion.service.generic.GenericService;
 import org.apache.commons.collections4.CollectionUtils;
@@ -35,6 +37,32 @@ public class UserService extends GenericService<User, Long> {
     @Override
     protected GenericDAO<User, Long> getDAO() {
         return this.userDAO;
+    }
+
+    @Override
+    public Long save(final User user) throws GestionAppException {
+        Validate.notNull(user, "User cannot be null.");
+
+        Employee employee = user.getEmployee();
+        Validate.notNull(employee, "Employee cannot be null.");
+
+        User userAux = null;
+
+        try {
+            userAux = this.userDAO.findUserByEmployee(employee);
+        } catch (DataAccessException e) {
+            throw new GestionAppException(e);
+        }
+
+        if (userAux != null) {
+            throw new GestionAppException(new StringBuilder()
+                    .append("The employee ")
+                    .append(employee.getName())
+                    .append(" already has an user account.")
+                    .toString());
+        }
+
+        return super.save(user);
     }
 
     @Override
