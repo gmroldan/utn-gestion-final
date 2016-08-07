@@ -92,7 +92,8 @@ public class MainFrame extends JFrame {
         this.menuEmployees = new JMenu("Employees");
         this.menuAdmin = new JMenu("Admin");
 
-        this.menuItemNewSale = new JMenuItem("New Sale");
+        this.menuItemNewSale = new JMenuItem("New Sale"
+                , IconFactory.getIcon(UIConstants.ICON_APP_NEW_SALE_LOCATION));
         this.menuItemBooks = new JMenuItem("Books"
                 , IconFactory.getIcon(UIConstants.ICON_APP_BOOKS_LOCATION));
         this.menuItemCustomers = new JMenuItem("Customers"
