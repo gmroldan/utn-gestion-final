@@ -100,7 +100,8 @@ public class MainFrame extends JFrame {
                 , IconFactory.getIcon(UIConstants.ICON_APP_CUSTOMERS_LOCATION));
         this.menuItemEmployees = new JMenuItem("Employees"
                 , IconFactory.getIcon(UIConstants.ICON_APP_EMPLOYEES_LOCATION));
-        this.menuItemSuppliers = new JMenuItem("Suppliers");
+        this.menuItemSuppliers = new JMenuItem("Suppliers"
+                , IconFactory.getIcon(UIConstants.ICON_APP_SUPPLIERS_LOCATION));
         this.menuItemOrders = new JMenuItem("Orders"
                 , IconFactory.getIcon(UIConstants.ICON_APP_ORDERS_LOCATION));
         this.menuItemAttendance = new JMenuItem("Attendance"

@@ -17,6 +17,7 @@ public interface UIConstants {
     String ICON_APP_BOOKS_LOCATION = "icons/app_books.png";
     String ICON_APP_CUSTOMERS_LOCATION = "icons/app_customers.png";
     String ICON_APP_EMPLOYEES_LOCATION = "icons/app_employees.png";
+    String ICON_APP_SUPPLIERS_LOCATION = "icons/app_suppliers.png";
     String ICON_APP_ORDERS_LOCATION = "icons/app_orders.png";
     String ICON_APP_ATTENDANCE_LOCATION = "icons/app_attendance.png";
     String ICON_APP_USERS_LOCATION = "icons/app_users.png";
