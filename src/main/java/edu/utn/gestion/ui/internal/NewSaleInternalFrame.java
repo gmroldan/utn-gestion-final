@@ -6,11 +6,13 @@ import edu.utn.gestion.model.Customer;
 import edu.utn.gestion.model.Employee;
 import edu.utn.gestion.model.Sale;
 import edu.utn.gestion.model.SaleDetail;
+import edu.utn.gestion.ui.constants.UIConstants;
 import edu.utn.gestion.ui.controller.BookController;
 import edu.utn.gestion.ui.controller.CustomerController;
 import edu.utn.gestion.ui.controller.EmployeeController;
 import edu.utn.gestion.ui.controller.SaleController;
 import edu.utn.gestion.ui.util.FormUtils;
+import edu.utn.gestion.ui.util.IconFactory;
 import edu.utn.gestion.ui.util.InternalFrameManager;
 import edu.utn.gestion.ui.util.PopUpFactory;
 import org.apache.commons.collections4.CollectionUtils;
@@ -80,12 +82,15 @@ public class NewSaleInternalFrame extends JInternalFrame {
         this.jScrollPane1 = new JScrollPane();
         this.tblSaleDetail = new JTable();
         this.tableModel = new SaleDetailTableModel();
-        this.btnAddSaleDetail = new JButton("Add");
+        this.btnAddSaleDetail = new JButton("Add"
+                , IconFactory.getIcon(UIConstants.ICON_EDIT_ADD_LOCATION));
         this.lblTotal = new JLabel("Total ($):");
         this.txtSaleTotal = new JTextField(10);
         this.txtSaleQuantity = new JTextField();
-        this.btnCancelSale = new JButton("Cancel");
-        this.btnSaveSale = new JButton("Save");
+        this.btnCancelSale = new JButton("Cancel"
+                , IconFactory.getIcon(UIConstants.ICON_BUTTON_CANCEL_LOCATION));
+        this.btnSaveSale = new JButton("Save"
+                , IconFactory.getIcon(UIConstants.ICON_BUTTON_ACCEPT_LOCATION));
 
         this.tblSaleDetail.setModel(this.tableModel);
         this.jScrollPane1.setViewportView(tblSaleDetail);
@@ -189,7 +194,7 @@ public class NewSaleInternalFrame extends JInternalFrame {
         this.setClosable(true);
         this.setResizable(true);
         this.setLocation(0, 0);
-        this.setSize(600, 500);
+        this.setSize(700, 500);
     }
 
     /**
