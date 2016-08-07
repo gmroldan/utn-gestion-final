@@ -65,7 +65,7 @@ public abstract class GenericManagementDialog<E, I> extends JDialog {
     /**
      * This method is called from within the constructor to initialize the form.
      */
-    private void initComponents() {
+    protected void initComponents() {
         this.jScrollPane1 = new JScrollPane();
         this.tableBooks = new JTable();
         this.btnNew = new JButton("New", IconFactory.getIcon(UIConstants.ICON_EDIT_ADD_LOCATION));
@@ -198,7 +198,7 @@ public abstract class GenericManagementDialog<E, I> extends JDialog {
         }
     }
 
-    private void btnNewActionPerformed() {
+    protected void btnNewActionPerformed() {
         this.showNewObjectDialog();
     }
 

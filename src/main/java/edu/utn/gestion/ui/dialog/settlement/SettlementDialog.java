@@ -2,47 +2,41 @@ package edu.utn.gestion.ui.dialog.settlement;
 
 import edu.utn.gestion.exception.GestionAppException;
 import edu.utn.gestion.model.Employee;
-import edu.utn.gestion.model.Settlement;
+import edu.utn.gestion.service.util.liquidacion.LiquidadorDeSueldos;
+import edu.utn.gestion.service.util.liquidacion.LiquidadorWorker;
 import edu.utn.gestion.ui.MainFrame;
-import edu.utn.gestion.ui.controller.SettlementController;
-import edu.utn.gestion.ui.dialog.employee.ComboEmployees;
+import edu.utn.gestion.ui.controller.EmployeeController;
 import edu.utn.gestion.ui.dialog.generic.GenericDialog;
+import edu.utn.gestion.ui.internal.EmployeeForSettlementTableModel;
 import edu.utn.gestion.ui.util.FormUtils;
 
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JSpinner;
-import javax.swing.SpinnerModel;
-import javax.swing.SpinnerNumberModel;
-import java.awt.GridBagLayout;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by ASUS on 23/02/2016.
  */
 public class SettlementDialog extends GenericDialog{
 
-    private JLabel lblEmployee;
     private JLabel lblPeriod;
+    private JTable table;
+    private EmployeeForSettlementTableModel tableModel;
 
-    private ComboEmployees cmbEmployees;
     private JComboBox cmbMonths;
+
     private JComboBox cmbYears;
-
-    private JCheckBox checkPresenteeism;
-    private JSpinner spinnerUnAttendance;
-
-    private SettlementController controller;
+    private EmployeeController controller;
+    private JButton buscarBtn;
 
     public SettlementDialog(MainFrame parent, boolean modal) {
         super(parent, modal);
-        controller = new SettlementController();
+//        this.setSize(800,600);
+        this.controller = new EmployeeController();
     }
 
     @Override
@@ -52,19 +46,19 @@ public class SettlementDialog extends GenericDialog{
 
     @Override
     protected void initComponents() {
-        lblEmployee = new JLabel("Employee");
         lblPeriod = new JLabel("Period");
 
-        cmbEmployees = new ComboEmployees();
-        cmbEmployees.addItemListener(e -> resetComponents());
         cmbMonths = new JComboBox();
         cmbYears = new JComboBox();
 
-        initModel();
+        buscarBtn = new JButton("Buscar");
+        this.buscarBtn.addActionListener(event -> this.buscarBtnActionPerformed());
+        this.table = new JTable();
+        this.tableModel = new EmployeeForSettlementTableModel();
+        this.table.setModel(this.tableModel);
 
-        checkPresenteeism = new JCheckBox("Presenteeism");
-        SpinnerModel model = new SpinnerNumberModel(0,0,30,1);
-        spinnerUnAttendance = new JSpinner(model);
+
+        initModel();
 
         resetComponents();
 
@@ -72,18 +66,6 @@ public class SettlementDialog extends GenericDialog{
     }
 
     private void resetComponents() {
-
-        checkPresenteeism.setSelected(true);
-        checkPresenteeism.addActionListener(e -> {
-            if (spinnerUnAttendance.isEnabled() == true) {
-                spinnerUnAttendance.setEnabled(false);
-            } else {
-                spinnerUnAttendance.setEnabled(true);
-            }
-        });
-
-        spinnerUnAttendance.getModel().setValue(0);
-        spinnerUnAttendance.setEnabled(false);
     }
 
     @Override
@@ -91,25 +73,17 @@ public class SettlementDialog extends GenericDialog{
 
         this.formPanel = new JPanel(new GridBagLayout());
 
-        FormUtils.addLabel(this.lblEmployee, this.formPanel);
-        FormUtils.addLastField(this.cmbEmployees, this.formPanel);
-
         FormUtils.addLabel(this.lblPeriod, this.formPanel);
         FormUtils.addMiddleField(this.cmbMonths, this.formPanel);
         FormUtils.addLastField(this.cmbYears, this.formPanel);
+        FormUtils.addLastField(this.buscarBtn, this.formPanel);
 
-        FormUtils.addLabel(new JLabel("       "),this.formPanel);
-        FormUtils.addLastField(new JLabel("       "),this.formPanel);
+        FormUtils.addMiddleField(table,this.formPanel);
 
-        FormUtils.addLabel(this.checkPresenteeism,this.formPanel);
-        FormUtils.addMiddleField(new JLabel("  Un Attendances"),this.formPanel);
-        FormUtils.addLastField(this.spinnerUnAttendance, this.formPanel);
+        this.btnAccept.setText("Liquidar");
+        this.btnCancel.setText("Volver");
 
-        FormUtils.addLabel(new JLabel("       "),this.formPanel);
-        FormUtils.addLastField(new JLabel("       "),this.formPanel);
-
-        this.btnAccept.setText("Calculate");
-        this.btnCancel.setText("Go Back");
+        this.setResizable(true);
     }
 
     @Override
@@ -142,27 +116,45 @@ public class SettlementDialog extends GenericDialog{
 
     @Override
     protected void btnAcceptActionPerformed(ActionEvent event) {
+        this.setEnabled(false);
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
-        //controller.findOne()
-        String period = cmbYears.getSelectedItem().toString() + cmbMonths.getSelectedItem().toString();
-        Employee employee = this.cmbEmployees.getEmployee();
-        Settlement settlement = new Settlement(employee,period);
-        boolean presenteeism = this.checkPresenteeism.isSelected();
-        settlement.setPresenteeism(presenteeism);
-        if (presenteeism) {
-            settlement.calculateSettlement(employee.getCategory().getDayPay()*30);
-        } else {
-            int unAttendance = (int) this.spinnerUnAttendance.getModel().getValue();
-            settlement.calculateSettlement(employee.getCategory().getDayPay()*(30-unAttendance));
-        }
+        List<Employee> employees = this.tableModel.getObjectList();
 
-        SettlementDetailDialog detail = new SettlementDetailDialog(this,true,settlement);
-        detail.setVisible(true);
+        String period = this.cmbYears.getSelectedItem().toString() +
+                "-" + this.cmbMonths.getSelectedItem().toString();
+
+        new LiquidadorWorker(employees,period,this).execute();
 
     }
 
     @Override
     protected void btnCancelActionPerformed(ActionEvent event) {
 
+        this.setVisible(false);
+    }
+
+    private void updateObjectList() throws GestionAppException {
+        List<Employee> employees = this.controller.findAll();
+        List<Employee> filterEmp = new ArrayList<>();
+        String period = this.cmbYears.getSelectedItem().toString() +
+                "-" + this.cmbMonths.getSelectedItem().toString();
+
+        for (Employee e : employees) {
+
+            if (LiquidadorDeSueldos.isEmployeeAvailableForPeriod(e,period)) {
+                filterEmp.add(e);
+            }
+        }
+
+        this.tableModel.setObjectList(filterEmp);
+    }
+
+    private void buscarBtnActionPerformed() {
+        try {
+            this.updateObjectList();
+        } catch (GestionAppException e) {
+            JOptionPane.showMessageDialog(this,"No se pudieron recuperar los empleados para ese periodo");
+        }
     }
 }
