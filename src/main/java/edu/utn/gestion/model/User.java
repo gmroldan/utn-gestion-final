@@ -36,6 +36,9 @@ public class User {
     @JoinColumn(name = "employee_id", referencedColumnName = "id", nullable = false, unique = true)
     private Employee employee;
 
+    @Column(nullable = false)
+    private boolean active = true;
+
     /**
      * Class constructor.
      */
@@ -92,5 +95,13 @@ public class User {
 
     public void setEmployee(Employee employee) {
         this.employee = employee;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }

@@ -1,11 +1,14 @@
 package edu.utn.gestion.ui.dialog.user;
 
+import edu.utn.gestion.exception.GestionAppException;
 import edu.utn.gestion.model.User;
 import edu.utn.gestion.ui.controller.UserController;
 import edu.utn.gestion.ui.controller.generic.GenericController;
 import edu.utn.gestion.ui.dialog.generic.GenericManagementDialog;
+import edu.utn.gestion.ui.util.PopUpFactory;
 
 import java.awt.Frame;
+import java.util.List;
 
 /**
  * Created by martin on 26/07/16.
@@ -24,6 +27,20 @@ public class UserManagementDialog extends GenericManagementDialog<User, Long> {
     public UserManagementDialog(Frame parent, boolean modal) {
         super(parent, WINDOW_TITLE, modal, new UserTableModel());
         this.controller = new UserController();
+    }
+
+    @Override
+    protected void updateObjectList() {
+        List<User> userList = null;
+
+        try {
+            userList = this.controller.findActiveUsers();
+        } catch (GestionAppException ex) {
+            PopUpFactory.showErrorMessage(this, ex.getMessage());
+            this.dispose();
+        }
+
+        this.model.setObjectList(userList);
     }
 
     @Override

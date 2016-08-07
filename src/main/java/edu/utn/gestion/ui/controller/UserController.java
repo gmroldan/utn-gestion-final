@@ -8,6 +8,8 @@ import edu.utn.gestion.service.UserService;
 import edu.utn.gestion.service.generic.GenericService;
 import edu.utn.gestion.ui.controller.generic.GenericController;
 
+import java.util.List;
+
 /**
  * Created by martin on 26/07/16.
  */
@@ -31,5 +33,13 @@ public class UserController extends GenericController<User, Long> {
 
     public User resetPassword(final User user) throws GestionAppException {
         return this.userService.resetPassword(user);
+    }
+
+    public void delete(final User user) throws GestionAppException {
+        this.userService.delete(user);
+    }
+
+    public List<User> findActiveUsers() throws GestionAppException {
+        return this.userService.findActiveUsers();
     }
 }

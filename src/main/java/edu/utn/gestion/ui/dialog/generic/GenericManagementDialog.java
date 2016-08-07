@@ -221,7 +221,7 @@ public abstract class GenericManagementDialog<E, I> extends JDialog {
         }
     }
 
-    private void updateObjectList() {
+    protected void updateObjectList() {
         try {
              this.model.setObjectList(this.getController().findAll());
         } catch (GestionAppException ex) {
