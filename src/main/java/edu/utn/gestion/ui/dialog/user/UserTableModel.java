@@ -9,7 +9,7 @@ import edu.utn.gestion.ui.dialog.generic.GenericTableModel;
  * Created by martin on 26/07/16.
  */
 public class UserTableModel extends GenericTableModel<User> {
-    private static final String[] COLUMN_NAMES = {"Id", "Name"};
+    private static final String[] COLUMN_NAMES = {"Id", "Name", "Role"};
 
     /**
      * Class constructor.
@@ -23,6 +23,7 @@ public class UserTableModel extends GenericTableModel<User> {
         switch (columnIndex) {
             case 0: return Long.class;
             case 1: return String.class;
+            case 2: return String.class;
             default: return String.class;
         }
     }
@@ -34,6 +35,7 @@ public class UserTableModel extends GenericTableModel<User> {
         switch (columnIndex) {
             case 0: return user.getId();
             case 1: return user.getName();
+            case 2: return user.getUserRole();
             default: return null;
         }
     }
