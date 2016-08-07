@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 /**
  * Created by martin on 26/07/16.
@@ -28,10 +29,11 @@ public class User {
     private String password;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private UserRole userRole;
 
     @OneToOne
-    @JoinColumn(name = "employee_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "employee_id", referencedColumnName = "id", nullable = false, unique = true)
     private Employee employee;
 
     /**
