@@ -17,7 +17,6 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JRootPane;
 import javax.swing.JTextField;
-import java.awt.BorderLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
@@ -28,8 +27,6 @@ public class LoginDialog extends JDialog {
     private final UserController controller = new UserController();
 
     private JPanel panel;
-    private JPanel formPanel;
-    private JPanel btnPanel;
     private JTextField txtUserName;
     private JPasswordField txtPassword;
     private JLabel lblLogo;
@@ -50,38 +47,36 @@ public class LoginDialog extends JDialog {
      * Initializes all the UI components.
      */
     private void init() {
-        this.panel = new JPanel(new BorderLayout());
-
-        this.formPanel = new JPanel();
-        this.formPanel.setLayout(null);
+        this.panel = new JPanel();
+        this.panel.setLayout(null);
 
         this.lblLogo = new JLabel(IconFactory.getIcon(UIConstants.SBS_LOGO_IMAGE));
         this.lblLogo.setBounds(50, 5, 220, 72);
-        this.formPanel.add(this.lblLogo);
+        this.panel.add(this.lblLogo);
 
         this.lblUserName = new JLabel("User");
         this.lblUserName.setBounds(30, 80, 80, 25);
-        this.formPanel.add(this.lblUserName);
+        this.panel.add(this.lblUserName);
 
         this.txtUserName = new JTextField(20);
         this.txtUserName.setBounds(100, 80, 160, 25);
-        this.formPanel.add(this.txtUserName);
+        this.panel.add(this.txtUserName);
 
         this.lblPassword = new JLabel("Password");
         this.lblPassword.setBounds(30, 110, 80, 25);
-        this.formPanel.add(this.lblPassword);
+        this.panel.add(this.lblPassword);
 
         this.txtPassword = new JPasswordField(20);
         this.txtPassword.setBounds(100, 110, 160, 25);
-        this.formPanel.add(this.txtPassword);
+        this.panel.add(this.txtPassword);
 
         this.btnLogin = new JButton("Login");
         this.btnLogin.setBounds(30, 150, 80, 25);
-        this.formPanel.add(this.btnLogin);
+        this.panel.add(this.btnLogin);
 
         this.btnCancel = new JButton("Cancel");
         this.btnCancel.setBounds(180, 150, 100, 25);
-        this.formPanel.add(this.btnCancel);
+        this.panel.add(this.btnCancel);
 
         this.txtUserName.addKeyListener(new KeyAdapter() {
             public void keyPressed(KeyEvent evt) {
@@ -97,8 +92,6 @@ public class LoginDialog extends JDialog {
 
         this.btnLogin.addActionListener(event -> this.btnLoginActionPerformed());
         this.btnCancel.addActionListener(event -> this.btnCancelActionPerformed());
-
-        this.panel.add(this.formPanel);
 
         this.setSize(300, 200);
         this.setContentPane(this.panel);
