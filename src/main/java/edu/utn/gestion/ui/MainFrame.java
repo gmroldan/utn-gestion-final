@@ -1,19 +1,15 @@
 package edu.utn.gestion.ui;
 
-import edu.utn.gestion.model.UserRole;
 import edu.utn.gestion.ui.constants.UIConstants;
 import edu.utn.gestion.ui.dialog.book.BooksManagementDialog;
 import edu.utn.gestion.ui.dialog.customer.CustomersManagementDialog;
 import edu.utn.gestion.ui.dialog.employee.EmployeesManagementDialog;
-//import edu.utn.gestion.ui.dialog.help.AboutDialog;
 import edu.utn.gestion.ui.dialog.order.OrdersManagementDialog;
 import edu.utn.gestion.ui.dialog.settlement.AttendanceDialog;
 import edu.utn.gestion.ui.dialog.settlement.SettlementDialog;
-import edu.utn.gestion.ui.dialog.settlement.SettlementTableModel;
 import edu.utn.gestion.ui.dialog.supplier.SuppliersManagementDialog;
 import edu.utn.gestion.ui.dialog.user.LoginDialog;
 import edu.utn.gestion.ui.dialog.user.UserManagementDialog;
-import edu.utn.gestion.ui.internal.EmployeeForSettlementTableModel;
 import edu.utn.gestion.ui.internal.NewSaleInternalFrame;
 import edu.utn.gestion.ui.util.IconFactory;
 import edu.utn.gestion.ui.util.InternalFrameManager;
@@ -46,7 +42,7 @@ import java.util.Date;
 public class MainFrame extends JFrame {
     private static final Logger LOGGER = Logger.getLogger(MainFrame.class);
     private static final String LOOK_AND_FEEL_DEFAULT_VALUE = "Nimbus";
-    private static final String WINDOW_TITLE = "GestionApp";
+    private static final String WINDOW_TITLE = "GestionApp - %s";
     private static final MainFrame INSTANCE = new MainFrame();
 
     private JMenu menuFile;
@@ -117,7 +113,7 @@ public class MainFrame extends JFrame {
         this.desktopPane = InternalFrameManager.getDesktopPane();
 
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        this.setTitle(WINDOW_TITLE);
+        this.setTitle(String.format(WINDOW_TITLE, Session.toStringCurrentUser()));
 
         this.menuFile.add(this.menuItemExit);
         this.menuSales.add(this.menuItemNewSale);

@@ -75,7 +75,7 @@ public class LoginDialog extends JDialog {
         this.panel.add(this.btnLogin);
 
         this.btnCancel = new JButton("Cancel");
-        this.btnCancel.setBounds(180, 150, 100, 25);
+        this.btnCancel.setBounds(180, 150, 80, 25);
         this.panel.add(this.btnCancel);
 
         this.txtUserName.addKeyListener(new KeyAdapter() {

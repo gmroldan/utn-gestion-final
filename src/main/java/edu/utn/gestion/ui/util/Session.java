@@ -62,4 +62,17 @@ public class Session {
     public static boolean isCurrentUserAdministrativo() {
         return UserRole.ADMINISTRATIVO.equals(CURRENT_USER.getUserRole());
     }
+
+    /**
+     * Returns a String with the user name and the employee name.
+     *
+     * @return
+     */
+    public static String toStringCurrentUser() {
+        return new StringBuilder()
+                .append(CURRENT_USER.getName())
+                .append(" - ")
+                .append(CURRENT_USER.getEmployee().getName())
+                .toString();
+    }
 }
