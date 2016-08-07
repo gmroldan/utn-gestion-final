@@ -91,7 +91,8 @@ public abstract class AbstractUserDialog extends GenericDialog {
         this.txtName = new JTextField();
 
         if (this.isUpdate) {
-            this.btnResetPassword = new JButton("Reset");
+            this.btnResetPassword = new JButton("Reset Password"
+                    , IconFactory.getIcon(UIConstants.ICON_BUTTON_RESET_PASS_LOCATION));
             this.lblPassword.setLabelFor(this.btnResetPassword);
             this.btnResetPassword.addActionListener(event -> this.resetPassword());
         } else {
