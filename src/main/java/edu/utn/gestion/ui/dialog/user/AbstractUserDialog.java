@@ -39,10 +39,13 @@ public abstract class AbstractUserDialog extends GenericDialog {
     protected JTextField txtEmployee;
     protected JComboBox cmbRole;
     protected JButton btnSearchEmployee;
+    protected JButton btnResetPassword;
     protected JPanel panelEmployee;
 
     protected UserController controller;
     protected User currentUser;
+
+    private boolean isUpdate;
 
     /**
      * Class contructor.
@@ -56,17 +59,28 @@ public abstract class AbstractUserDialog extends GenericDialog {
             , UserController controller, User user) {
         super(parent, windowTitle, true);
         this.controller = controller;
+        this.currentUser = user;
         this.initModel();
     }
 
     @Override
     protected void formWindowOpened(WindowEvent event) {
-        this.currentUser = new User();
+        if (this.currentUser != null) {
+            this.txtName.setText(this.currentUser.getName());
+            this.cmbRole.setSelectedItem(this.currentUser.getUserRole());
+            this.txtEmployee.setText(String.valueOf(this.currentUser.getEmployee().getId()));
+        } else {
+            this.currentUser = new User();
+        }
     }
 
 
     @Override
     protected void initComponents() {
+        if (this instanceof EditUserDialog) {
+            this.isUpdate = true;
+        }
+
         this.panelEmployee = new JPanel(new FlowLayout());
 
         this.lblName = new JLabel("Name");
@@ -75,18 +89,31 @@ public abstract class AbstractUserDialog extends GenericDialog {
         this.lblEmployee = new JLabel("Employee");
 
         this.txtName = new JTextField();
-        this.txtPassword = new JPasswordField();
+
+        if (this.isUpdate) {
+            this.btnResetPassword = new JButton("Reset");
+            this.lblPassword.setLabelFor(this.btnResetPassword);
+            this.btnResetPassword.addActionListener(event -> this.resetPassword());
+        } else {
+            this.txtPassword = new JPasswordField();
+            this.lblPassword.setLabelFor(this.txtPassword);
+        }
+
         this.cmbRole = new JComboBox(new DefaultComboBoxModel(UserRole.values()));
         this.txtEmployee = new JTextField(10);
 
         this.btnSearchEmployee
                 = new JButton(IconFactory.getIcon(UIConstants.ICON_DOCUMENT_SEARCH_LOCATION));
 
+        if (this.isUpdate) {
+            this.txtEmployee.setEnabled(false);
+            this.btnSearchEmployee.setEnabled(false);
+        }
+
         this.panelEmployee.add(this.txtEmployee);
         this.panelEmployee.add(this.btnSearchEmployee);
 
         this.lblName.setLabelFor(this.txtName);
-        this.lblPassword.setLabelFor(this.txtPassword);
         this.lblRole.setLabelFor(this.cmbRole);
         this.lblEmployee.setLabelFor(this.panelEmployee);
 
@@ -109,7 +136,13 @@ public abstract class AbstractUserDialog extends GenericDialog {
         FormUtils.addLabel(this.lblName, this.formPanel);
         FormUtils.addLastField(this.txtName, this.formPanel);
         FormUtils.addLabel(this.lblPassword, this.formPanel);
-        FormUtils.addLastField(this.txtPassword, this.formPanel);
+
+        if (this.isUpdate) {
+            FormUtils.addLastField(this.btnResetPassword, this.formPanel);
+        } else {
+            FormUtils.addLastField(this.txtPassword, this.formPanel);
+        }
+
         FormUtils.addLabel(this.lblRole, this.formPanel);
         FormUtils.addLastField(this.cmbRole, this.formPanel);
         FormUtils.addLabel(this.lblEmployee, this.formPanel);
@@ -125,7 +158,7 @@ public abstract class AbstractUserDialog extends GenericDialog {
     protected void setObjectData() throws GestionAppException {
         this.validateFields();
         this.currentUser.setName(this.txtName.getText());
-        this.currentUser.setPassword(this.txtPassword.getText());
+        if (!this.isUpdate) this.currentUser.setPassword(this.txtPassword.getText());
         this.currentUser.setUserRole((UserRole) this.cmbRole.getSelectedItem());
     }
 
@@ -134,7 +167,7 @@ public abstract class AbstractUserDialog extends GenericDialog {
 
         if (StringUtils.isEmpty(this.txtName.getText())) {
             message = "Name cannot be empty.";
-        } else if (StringUtils.isEmpty(this.txtPassword.getText())) {
+        } else if (!this.isUpdate && StringUtils.isEmpty(this.txtPassword.getText())) {
             message = "Password cannot be empty.";
         } else if (StringUtils.isEmpty(this.txtEmployee.getText())) {
             message = "Employee cannot be empty.";
@@ -163,6 +196,16 @@ public abstract class AbstractUserDialog extends GenericDialog {
             }
         } else {
             PopUpFactory.showInfoMessage(this, "Employee cannot be empty.");
+        }
+    }
+
+    private void resetPassword() {
+        try {
+            this.currentUser = this.controller.resetPassword(this.currentUser);
+            this.formWindowOpened(null);
+            PopUpFactory.showInfoMessage(this, "Password changed successfully.");
+        } catch (GestionAppException ex) {
+            PopUpFactory.showErrorMessage(this, ex.getMessage());
         }
     }
 

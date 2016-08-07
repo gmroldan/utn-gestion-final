@@ -28,4 +28,8 @@ public class UserController extends GenericController<User, Long> {
     public Employee getEmployee(final long employeeId) throws GestionAppException {
         return this.employeeService.findOne(employeeId);
     }
+
+    public User resetPassword(final User user) throws GestionAppException {
+        return this.userService.resetPassword(user);
+    }
 }

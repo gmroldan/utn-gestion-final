@@ -100,4 +100,25 @@ public class UserService extends GenericService<User, Long> {
 
         throw new GestionAppException("Wrong password.");
     }
+
+    /**
+     * Sets the employee's cuit as password for a given user.
+     *
+     * @param user
+     * @return The user after being updated.
+     * @throws GestionAppException
+     */
+    public User resetPassword(final User user) throws GestionAppException {
+        Validate.notNull(user, "User cannot be null.");
+
+        String newPassword = user.getEmployee().getCuit();
+        user.setPassword(newPassword);
+
+        try {
+            this.userDAO.changePassword(user);
+            return this.findOne(user.getId());
+        } catch (DataAccessException e) {
+            throw new GestionAppException("The password couldn't be restarted", e);
+        }
+    }
 }

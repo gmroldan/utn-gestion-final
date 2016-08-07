@@ -16,6 +16,7 @@ public class UserDAO extends GenericDAO<User, Long> {
     private static final  UserDAO INSTANCE = new UserDAO();
     private final String QUERY_FIND_USER_BY_SEARCH = "from User where name like :parm";
     private final String QUERY_FIND_USER_BY_EMPLOYEE = "select * from user where employee_id = :parm"; // TODO: Replace it for a HQL query.
+    private final String QUERY_CHANGE_PASSWORD = "update user set password = :parm_pass where id = :parm_id"; // TODO: Replace it for a HQL query.
 
     /**
      * Class constructor.
@@ -59,5 +60,25 @@ public class UserDAO extends GenericDAO<User, Long> {
         }
 
         return CollectionUtils.isNotEmpty(result) ? result.get(0) : null;
+    }
+
+    /**
+     * Updates the password for a given user.
+     *
+     * @param user
+     * @throws DataAccessException
+     */
+    public void changePassword(final User user) throws DataAccessException {
+        try {
+            this.startOperation();
+            SQLQuery query = this.session.createSQLQuery(QUERY_CHANGE_PASSWORD);
+            query.setString("parm_pass", user.getPassword());
+            query.setLong("parm_id", user.getId());
+            query.addEntity(User.class);
+            query.executeUpdate();
+            this.finishOperation();
+        } catch (Exception ex) {
+            this.handleException(ex);
+        }
     }
 }

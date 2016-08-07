@@ -27,8 +27,8 @@ public class UserManagementDialog extends GenericManagementDialog<User, Long> {
     }
 
     @Override
-    protected void showEditObjectDialog(User object) {
-
+    protected void showEditObjectDialog(User user) {
+        new EditUserDialog(this, this.controller, user).setVisible(true);
     }
 
     @Override
