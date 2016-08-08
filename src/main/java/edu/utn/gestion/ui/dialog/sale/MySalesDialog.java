@@ -7,6 +7,7 @@ import edu.utn.gestion.ui.constants.MonthEnum;
 import edu.utn.gestion.ui.controller.SaleController;
 import edu.utn.gestion.ui.controller.generic.GenericController;
 import edu.utn.gestion.ui.dialog.generic.GenericManagementDialog;
+import edu.utn.gestion.ui.dialog.generic.GenericTableModel;
 import edu.utn.gestion.ui.dialog.sale.table.SaleTableModel;
 import edu.utn.gestion.ui.util.PopUpFactory;
 import edu.utn.gestion.ui.util.Session;
@@ -26,10 +27,10 @@ public class MySalesDialog extends GenericManagementDialog<Sale, Long> {
     private static final String WINDOW_TITLE = "My Sales";
     private static final Integer[] yearArray = {2016, 2015, 2014, 2013, 2012, 2011, 2010};
 
-    private JComboBox cmbMonths;
-    private JComboBox cmbYears;
+    protected JComboBox cmbMonths;
+    protected JComboBox cmbYears;
 
-    private final SaleController controller;
+    protected final SaleController controller;
 
     /**
      * Class constructor.
@@ -38,6 +39,18 @@ public class MySalesDialog extends GenericManagementDialog<Sale, Long> {
      */
     public MySalesDialog(JFrame parent) {
         super(parent, WINDOW_TITLE, true, new SaleTableModel());
+        this.controller =  new SaleController();
+        this.changeUIComponents();
+    }
+
+    /**
+     * Class constructor.
+     *
+     * @param parent
+     * @param title
+     */
+    public MySalesDialog(JFrame parent, String title, GenericTableModel tableModel) {
+        super(parent, title, true, tableModel);
         this.controller =  new SaleController();
         this.changeUIComponents();
     }
@@ -84,7 +97,7 @@ public class MySalesDialog extends GenericManagementDialog<Sale, Long> {
         this.search();
     }
 
-    private void search() {
+    protected void search() {
         int month = ((MonthEnum) this.cmbMonths.getSelectedItem()).getNumVal();
         int year = (Integer) this.cmbYears.getSelectedItem();
 
@@ -92,7 +105,7 @@ public class MySalesDialog extends GenericManagementDialog<Sale, Long> {
         List<Sale> saleList = null;
 
         try {
-            saleList = this.controller.searchByPeriod(user, month, year);
+            saleList = this.controller.searchByPeriod(month, year);
         } catch (GestionAppException e) {
             PopUpFactory.showErrorMessage(this, e.getMessage());
         }
@@ -106,7 +119,7 @@ public class MySalesDialog extends GenericManagementDialog<Sale, Long> {
         this.search();
     }
 
-    private void setObjectList(List<Sale> saleList) {
+    protected void setObjectList(List<Sale> saleList) {
         this.model.setObjectList(saleList);
     }
 

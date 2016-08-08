@@ -23,4 +23,8 @@ public class SaleController extends GenericController<Sale, Long> {
     public List<Sale> searchByPeriod(User user, int month, int year) throws GestionAppException {
         return this.service.findByPeriod(user, month, year);
     }
+
+    public List<Sale> searchByPeriod(int month, int year) throws GestionAppException {
+        return this.service.findByPeriod(month, year);
+    }
 }

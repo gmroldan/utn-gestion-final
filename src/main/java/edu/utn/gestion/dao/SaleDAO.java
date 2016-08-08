@@ -20,6 +20,8 @@ public class SaleDAO extends GenericDAO<Sale, Long> {
     private static final SaleDAO INSTANCE = new SaleDAO();
     private static final String QUERY_FIND_BY_EMPLOYEE_AND_PERIOD
             = "select * from sale where employee_id = :employee_id and MONTH(date) = :month and YEAR(date) = :year";
+    private static final String QUERY_FIND_BY_PERIOD
+            = "select * from sale where MONTH(date) = :month and YEAR(date) = :year";
 
     private SaleDAO() {
         super(Sale.class);
@@ -41,6 +43,27 @@ public class SaleDAO extends GenericDAO<Sale, Long> {
             this.startOperation();
             SQLQuery query = this.session.createSQLQuery(QUERY_FIND_BY_EMPLOYEE_AND_PERIOD);
             query.setLong("employee_id", employee.getId());
+            query.setInteger("month", month);
+            query.setInteger("year", year);
+            query.addEntity(Sale.class);
+
+            LOGGER.info(query);
+
+            resultList = query.list();
+            this.finishOperation();
+        } catch (Exception ex) {
+            this.handleException(ex);
+        }
+
+        return CollectionUtils.isNotEmpty(resultList) ? resultList : new ArrayList<>();
+    }
+
+    public List<Sale> findByPeriod(int month, int year) throws DataAccessException {
+        List<Sale> resultList = null;
+
+        try {
+            this.startOperation();
+            SQLQuery query = this.session.createSQLQuery(QUERY_FIND_BY_PERIOD);
             query.setInteger("month", month);
             query.setInteger("year", year);
             query.addEntity(Sale.class);

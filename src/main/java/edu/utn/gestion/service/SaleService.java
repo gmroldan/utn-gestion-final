@@ -130,4 +130,32 @@ public class SaleService extends GenericService<Sale, Long> {
 
         return saleList;
     }
+
+    public List<Sale> findByPeriod(int month, int year) throws GestionAppException {
+        LOGGER.info(new StringBuilder()
+                .append("Searching sales for month=")
+                .append(month)
+                .append(" and year=")
+                .append(year)
+                .toString());
+
+        List<Sale> saleList = null;
+
+        try {
+            saleList = this.saleDAO.findByPeriod(month, year);
+        } catch (DataAccessException e) {
+            LOGGER.info("There was an issue retrieving the sales.", e);
+            throw new GestionAppException("There was an issue retrieving the sales.", e);
+        }
+
+        LOGGER.info(new StringBuilder()
+                .append(saleList.size())
+                .append(" sales were found for month=")
+                .append(month)
+                .append(" and year=")
+                .append(year)
+                .toString());
+
+        return saleList;
+    }
 }
