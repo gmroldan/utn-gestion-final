@@ -11,6 +11,7 @@ import edu.utn.gestion.model.SaleDetail;
 import edu.utn.gestion.model.User;
 import edu.utn.gestion.service.generic.GenericService;
 import edu.utn.gestion.service.util.InvoiceFactory;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.Validate;
 import org.apache.log4j.Logger;
 
@@ -47,9 +48,16 @@ public class SaleService extends GenericService<Sale, Long> {
     public Long save(Sale sale) throws GestionAppException {
         Validate.notNull(sale, "Cannot save a null sale.");
 
+        if (CollectionUtils.isEmpty(sale.getSaleDetails())) {
+            LOGGER.error("Cannot save an empty sale.");
+            throw new GestionAppException("Cannot save an empty sale.");
+        }
+
         this.updateBookStock(sale);
 
         Long saleId = super.save(sale);
+
+        LOGGER.info("Sale " + saleId + " saved successfully.");
 
         if (saleId != null && saleId > 0) {
             Sale currentSale = this.findOne(saleId);
