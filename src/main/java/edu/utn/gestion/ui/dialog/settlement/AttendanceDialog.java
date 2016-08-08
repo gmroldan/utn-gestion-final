@@ -189,13 +189,13 @@ public class AttendanceDialog extends GenericDialog{
             System.out.println("Done");
 
         } catch (Exception ex) {
-            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "No se pudo abrir el recibo");
         }
     }
 
     @Override
     protected void btnCancelActionPerformed(ActionEvent event) {
-
+        this.setVisible(false);
     }
 
     private void tableMouseClicked(MouseEvent event) {

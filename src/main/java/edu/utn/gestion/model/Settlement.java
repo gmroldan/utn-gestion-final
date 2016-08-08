@@ -64,6 +64,9 @@ public class Settlement {
     @Column(nullable = false)
     private int antiguedad;
 
+    @Column(nullable = false)
+    private double asignacionFamiliar;
+
     private Blob recibo;
 
     public Settlement() {
@@ -213,5 +216,13 @@ public class Settlement {
 
     public void setAntiguedad(int antiguedad) {
         this.antiguedad = antiguedad;
+    }
+
+    public double getAsignacionFamiliar() {
+        return asignacionFamiliar;
+    }
+
+    public void setAsignacionFamiliar(double asignacionFamiliar) {
+        this.asignacionFamiliar = asignacionFamiliar;
     }
 }

@@ -248,6 +248,9 @@ public class InvoiceFactoryRecibo {
         createOrderLine("Sueldo Básico"             ,"", String.valueOf(settlement.getSueldoBasico())       ,"", detailTable);
         createOrderLine("Presentismo"               ,"8.3%", String.valueOf(settlement.getPresenteeismAmount()) ,"", detailTable);
         createOrderLine("Adicional por antigüedad"  ,"2%", String.valueOf(settlement.getMontoPorAntiguedad()) ,"", detailTable);
+        if (settlement.getAsignacionFamiliar() > 0) {
+            createOrderLine("Asignacion familiar"  ," ", String.valueOf(settlement.getAsignacionFamiliar()) ,"", detailTable);
+        }
 
         createOrderLine("Aporte para jubilación", "11%", "", String.valueOf(settlement.getRetireAmount())  , detailTable);
         createOrderLine("Aporte ley 19.032"     , "3%", "", String.valueOf(settlement.getLaw19032())      , detailTable);
