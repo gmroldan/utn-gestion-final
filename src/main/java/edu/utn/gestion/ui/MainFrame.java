@@ -6,7 +6,7 @@ import edu.utn.gestion.ui.dialog.customer.CustomersManagementDialog;
 import edu.utn.gestion.ui.dialog.employee.EmployeesManagementDialog;
 import edu.utn.gestion.ui.dialog.order.OrdersManagementDialog;
 import edu.utn.gestion.ui.dialog.sale.MySalesDialog;
-import edu.utn.gestion.ui.dialog.settlement.AttendanceDialog;
+import edu.utn.gestion.ui.dialog.settlement.SettlementHistoryDialog;
 import edu.utn.gestion.ui.dialog.settlement.SettlementDialog;
 import edu.utn.gestion.ui.dialog.supplier.SuppliersManagementDialog;
 import edu.utn.gestion.ui.dialog.user.LoginDialog;
@@ -65,6 +65,7 @@ public class MainFrame extends JFrame {
     private JMenuItem menuItemAttendance;
     private JMenuItem menuItemSettlement;
     private JMenuItem menuItemAdminUsers;
+    private JMenuItem menuItemSettlementHistory;
     private JDesktopPane desktopPane;
     private JPanel statusPanel;
 
@@ -110,7 +111,10 @@ public class MainFrame extends JFrame {
                 , IconFactory.getIcon(UIConstants.ICON_APP_ORDERS_LOCATION));
         this.menuItemAttendance = new JMenuItem("Attendance"
                 , IconFactory.getIcon(UIConstants.ICON_APP_ATTENDANCE_LOCATION));
-        this.menuItemSettlement = new JMenuItem("Settlement");
+        this.menuItemSettlementHistory = new JMenuItem("Settlement History"
+                , IconFactory.getIcon(UIConstants.ICON_DOCUMENT_EXPORT_LOCATION));
+        this.menuItemSettlement = new JMenuItem("Settlement"
+                , IconFactory.getIcon(UIConstants.ICON_APP_NEW_SALE_LOCATION));
         this.menuHelp = new JMenu("Help");
         this.menuItemAbout = new JMenuItem("About"
                 , IconFactory.getIcon(UIConstants.ICON_APP_ABOUT_LOCATION));
@@ -132,6 +136,7 @@ public class MainFrame extends JFrame {
         this.menuHelp.add(this.menuItemAbout);
         this.menuEmployees.add(this.menuItemAttendance);
         this.menuEmployees.add(this.menuItemSettlement);
+        this.menuEmployees.add(this.menuItemSettlementHistory);
         this.menuEmployees.add(this.menuItemEmployees);
         this.menuAdmin.add(this.menuItemAdminUsers);
 
@@ -153,6 +158,7 @@ public class MainFrame extends JFrame {
         this.menuItemOrders.addActionListener(event -> this.menuItemOrdersActionPerformed());
         this.menuItemEmployees.addActionListener(event -> this.menuItemEmployeesActionPerformed());
         this.menuItemAttendance.addActionListener(event -> this.menuItemAttendanceActionPerformed());
+        this.menuItemSettlementHistory.addActionListener(event -> this.menuItemSettlementHistoryActionPerformed());
         this.menuItemSettlement.addActionListener(event -> this.menuItemSettlementActionPerformed());
         this.menuItemAdminUsers.addActionListener(event -> this.menuItemAdminUsersActionPerformed());
 
@@ -225,6 +231,12 @@ public class MainFrame extends JFrame {
         }
     }
 
+    private void menuItemSettlementHistoryActionPerformed() {
+        SettlementHistoryDialog view = new SettlementHistoryDialog(this, true);
+        view.setLocationRelativeTo(this);
+        view.setVisible(true);
+    }
+
     private void menuItemOrdersActionPerformed() {
         new OrdersManagementDialog(this).setVisible(true);
     }
@@ -254,11 +266,14 @@ public class MainFrame extends JFrame {
     }
 
     private void menuItemAttendanceActionPerformed() {
-        new AttendanceDialog(this, true).setVisible(true);
+
     }
 
     private void menuItemSettlementActionPerformed() {
-        new SettlementDialog(this, true).setVisible(true);
+
+        SettlementDialog view = new SettlementDialog(this, true);;
+        view.setLocationRelativeTo(this);
+        view.setVisible(true);
     }
 
     private void menuItemAdminUsersActionPerformed() {

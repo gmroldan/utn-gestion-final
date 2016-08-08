@@ -6,14 +6,20 @@ import edu.utn.gestion.service.util.liquidacion.LiquidadorDeSueldos;
 import edu.utn.gestion.service.util.liquidacion.LiquidadorWorker;
 import edu.utn.gestion.ui.MainFrame;
 import edu.utn.gestion.ui.controller.EmployeeController;
-import edu.utn.gestion.ui.dialog.generic.GenericDialog;
 import edu.utn.gestion.ui.internal.EmployeeForSettlementTableModel;
-import edu.utn.gestion.ui.util.FormUtils;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.WindowEvent;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import java.awt.BorderLayout;
+import java.awt.Cursor;
+import java.awt.FlowLayout;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -21,8 +27,10 @@ import java.util.List;
 /**
  * Created by ASUS on 23/02/2016.
  */
-public class SettlementDialog extends GenericDialog{
+public class SettlementDialog extends JDialog{
 
+    public static final String WINDOWS_TITLE = "Liquidación por lotes";
+    private JPanel panel;
     private JLabel lblPeriod;
     private JTable table;
     private EmployeeForSettlementTableModel tableModel;
@@ -33,18 +41,18 @@ public class SettlementDialog extends GenericDialog{
     private EmployeeController controller;
     private JButton buscarBtn;
 
+    private JButton liquidarBtn;
+    private JButton cancelarBtn;
+
     public SettlementDialog(MainFrame parent, boolean modal) {
         super(parent, modal);
-//        this.setSize(800,600);
         this.controller = new EmployeeController();
+        this.setSize(300,300);
+        this.setTitle(WINDOWS_TITLE);
+
+        initComponents();
     }
 
-    @Override
-    protected void formWindowOpened(WindowEvent event) {
-
-    }
-
-    @Override
     protected void initComponents() {
         lblPeriod = new JLabel("Period");
 
@@ -57,6 +65,10 @@ public class SettlementDialog extends GenericDialog{
         this.tableModel = new EmployeeForSettlementTableModel();
         this.table.setModel(this.tableModel);
 
+        this.liquidarBtn = new JButton("Liquidar");
+        this.liquidarBtn.addActionListener(event -> this.liquidarBtnActionPerformed());
+        this.cancelarBtn = new JButton("Cancelar");
+        this.cancelarBtn.addActionListener(event -> this.cancelarBtnActionPerformed());
 
         initModel();
 
@@ -68,27 +80,34 @@ public class SettlementDialog extends GenericDialog{
     private void resetComponents() {
     }
 
-    @Override
     protected void createFormPanel() {
 
-        this.formPanel = new JPanel(new GridBagLayout());
+        this.panel = new JPanel(new BorderLayout());
 
-        FormUtils.addLabel(this.lblPeriod, this.formPanel);
-        FormUtils.addMiddleField(this.cmbMonths, this.formPanel);
-        FormUtils.addLastField(this.cmbYears, this.formPanel);
-        FormUtils.addLastField(this.buscarBtn, this.formPanel);
+        JPanel startPage = new JPanel(new FlowLayout());
+        startPage.add(this.lblPeriod);
+        startPage.add(this.cmbMonths);
+        startPage.add(this.cmbYears);
+        startPage.add(this.cancelarBtn);
+        startPage.add(this.buscarBtn);
 
-        FormUtils.addMiddleField(table,this.formPanel);
+        this.panel.add(startPage,BorderLayout.PAGE_START);
 
-        this.btnAccept.setText("Liquidar");
-        this.btnCancel.setText("Volver");
+        JScrollPane scrollPane = new JScrollPane(this.table);
+        scrollPane.setSize(400,200);
+        this.panel.add(scrollPane, BorderLayout.CENTER);
+
+        JPanel endPage = new JPanel(new FlowLayout());
+        endPage.add(this.liquidarBtn);
+        endPage.add(this.cancelarBtn);
+
+        this.panel.add(endPage,BorderLayout.PAGE_END);
 
         this.setResizable(true);
+        this.setContentPane(this.panel);
     }
 
-    @Override
     protected void initModel() {
-
         Date date = new Date();
         int year = date.getYear()+1900;
 
@@ -107,31 +126,6 @@ public class SettlementDialog extends GenericDialog{
         this.cmbMonths.setModel(new DefaultComboBoxModel(months.toArray()));
         this.cmbMonths.setSelectedItem(date.getMonth()+1);
 
-    }
-
-    @Override
-    protected void setObjectData() throws GestionAppException {
-
-    }
-
-    @Override
-    protected void btnAcceptActionPerformed(ActionEvent event) {
-        this.setEnabled(false);
-        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-
-        List<Employee> employees = this.tableModel.getObjectList();
-
-        String period = this.cmbYears.getSelectedItem().toString() +
-                "-" + this.cmbMonths.getSelectedItem().toString();
-
-        new LiquidadorWorker(employees,period,this).execute();
-
-    }
-
-    @Override
-    protected void btnCancelActionPerformed(ActionEvent event) {
-
-        this.setVisible(false);
     }
 
     private void updateObjectList() throws GestionAppException {
@@ -156,5 +150,31 @@ public class SettlementDialog extends GenericDialog{
         } catch (GestionAppException e) {
             JOptionPane.showMessageDialog(this,"No se pudieron recuperar los empleados para ese periodo");
         }
+    }
+
+    private void liquidarBtnActionPerformed() {
+        String period = this.cmbYears.getSelectedItem().toString() +
+                "-" + this.cmbMonths.getSelectedItem().toString();
+
+        List<Employee> employees = this.tableModel.getObjectList();
+
+        if (employees.size() < 1) {
+            JOptionPane.showMessageDialog(this, "Seleccione un periodo con al menos un empleado");
+
+        } else {
+            int result = JOptionPane.showConfirmDialog(this, "Iniciar liquidación para el periodo: " + period);
+
+            if (result != JOptionPane.OK_OPTION) {
+                return ;
+            }
+
+            this.setEnabled(false);
+            this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+            new LiquidadorWorker(employees,period,this).execute();
+        }
+    }
+
+    private void cancelarBtnActionPerformed() {
+        this.dispose();
     }
 }

@@ -7,7 +7,7 @@ import edu.utn.gestion.ui.dialog.generic.GenericTableModel;
  * Created by Benja on 02/08/2016.
  */
 public class EmployeeForSettlementTableModel extends GenericTableModel<Employee> {
-    private static final String[] COLUMN_NAMES = {"Empleado", "Liquidar"};
+    private static final String[] COLUMN_NAMES = {"Empleado", "Categoria"};
 
     public EmployeeForSettlementTableModel() {
         super(COLUMN_NAMES);
@@ -17,7 +17,7 @@ public class EmployeeForSettlementTableModel extends GenericTableModel<Employee>
     public Class getColumnClass(int columnIndex) {
         switch (columnIndex) {
             case 0: return String.class;
-            case 1: return Boolean.class;
+            case 1: return String.class;
             default: return Object.class;
         }
     }
@@ -28,7 +28,7 @@ public class EmployeeForSettlementTableModel extends GenericTableModel<Employee>
 
         switch (columnIndex) {
             case 0: return employee.getName();
-            case 1: return true;
+            case 1: return employee.getCategory().getName();
             default: return null;
         }
     }
