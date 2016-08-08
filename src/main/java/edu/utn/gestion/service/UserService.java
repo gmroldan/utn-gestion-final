@@ -133,6 +133,16 @@ public class UserService extends GenericService<User, Long> {
     public void delete(final User user) throws GestionAppException {
         Validate.notNull(user, "User cannot be null.");
 
+        if (!user.isActive()) {
+            String message = new StringBuilder()
+                    .append("User ")
+                    .append(user.getName())
+                    .append(" cannot be deleted because it's not active.")
+                    .toString();
+            LOGGER.info(message);
+            throw new GestionAppException(message);
+        }
+
         user.setActive(false);
         this.update(user);
 
