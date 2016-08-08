@@ -67,11 +67,6 @@ public class FamilyManagementDialog extends JDialog {
         BorderLayout layout = new BorderLayout();
         this.panel = new JPanel(layout);
 
-
-//        this.panel.setBorder(BorderFactory.createTitledBorder(
-//                BorderFactory.createEtchedBorder(), "Family Group", TitledBorder.CENTER,
-//                TitledBorder.TOP));
-
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.setSize(400,200);
         this.panel.add(scrollPane, BorderLayout.CENTER);
