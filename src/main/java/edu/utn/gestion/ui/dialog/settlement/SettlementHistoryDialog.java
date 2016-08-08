@@ -3,6 +3,7 @@ package edu.utn.gestion.ui.dialog.settlement;
 import edu.utn.gestion.exception.GestionAppException;
 import edu.utn.gestion.model.Employee;
 import edu.utn.gestion.model.Settlement;
+import edu.utn.gestion.service.util.InvoiceFactory;
 import edu.utn.gestion.ui.MainFrame;
 import edu.utn.gestion.ui.controller.SettlementController;
 import edu.utn.gestion.ui.dialog.employee.ComboEmployees;
@@ -160,21 +161,8 @@ public class SettlementHistoryDialog extends JDialog{
 
     private void abrirPdf() {
         try {
-
-            String pathname = "C:\\Users\\ASUS\\Documents\\Proyectos_IntelliJ\\utn-gestion-final\\recibo_tmp.pdf";
-            if ((new File(pathname)).exists()) {
-
-                Process p = Runtime
-                        .getRuntime()
-                        .exec("rundll32 url.dll,FileProtocolHandler " + pathname);
-                p.waitFor();
-
-            } else {
-                System.out.println("File is not exists");
-
-            }
-
-            System.out.println("Done");
+            String pathname = "recibo_tmp.pdf";
+            InvoiceFactory.openInvoice(pathname);
 
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "No se pudo abrir el recibo");

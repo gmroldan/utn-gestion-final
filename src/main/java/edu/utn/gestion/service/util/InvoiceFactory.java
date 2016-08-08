@@ -12,8 +12,10 @@ import edu.utn.gestion.model.Sale;
 import com.itextpdf.text.Document;
 import edu.utn.gestion.model.SaleDetail;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.SystemUtils;
 import org.apache.log4j.Logger;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
@@ -183,9 +185,11 @@ public class InvoiceFactory {
      *
      * @param fileName
      */
-    protected static void openInvoice(String fileName) {
+    public static void openInvoice(String fileName) {
         try {
-            Runtime.getRuntime().exec("evince " + fileName);
+            if (SystemUtils.IS_OS_LINUX) {
+                Runtime.getRuntime().exec("evince " + fileName);
+            }
         } catch (Exception ex) {
             LOGGER.error("Error trying to open the invoice with evince.", ex);
         }

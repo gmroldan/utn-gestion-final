@@ -70,7 +70,7 @@ public class InvoiceFactoryRecibo {
 
         try {
 
-            Path path = Paths.get("C:\\Users\\ASUS\\Documents\\Proyectos_IntelliJ\\utn-gestion-final\\recibos\\" + settlement.getPeriod() + "\\" + fileName);
+            Path path = Paths.get("recibos/" + settlement.getPeriod() + "/" + fileName);
             byte[] byteArray = Files.readAllBytes(path);
             Blob blob = new javax.sql.rowset.serial.SerialBlob(byteArray);
             settlement.setRecibo(blob);
@@ -113,7 +113,7 @@ public class InvoiceFactoryRecibo {
             }
         }
 
-        File periodFolder = new File("recibos\\" + period);
+        File periodFolder = new File("recibos/" + period);
         if (!periodFolder.exists()) {
             if (periodFolder.mkdir()) {
                 System.out.println("Period " + period + " is created!");
@@ -157,7 +157,7 @@ public class InvoiceFactoryRecibo {
         //Cabezal: datos del empleado
         Employee employee = settlement.getEmployee();
         Date ingress = employee.getIngress();
-        Date date = new Date(ingress.getYear()-1900,ingress.getMonth()-1,ingress.getDate());
+        Date date = new Date(ingress.getYear(),ingress.getMonth()-1,ingress.getDate());
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         String formatIngress = formatter.format(date);
         String antiguedad;
