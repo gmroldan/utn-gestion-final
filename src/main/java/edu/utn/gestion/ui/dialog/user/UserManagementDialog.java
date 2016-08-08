@@ -33,42 +33,20 @@ public class UserManagementDialog extends GenericManagementDialog<User, Long> {
     }
 
     protected void checkBoxChanged(ItemEvent event) {
-        if (ItemEvent.SELECTED == event.getStateChange()) {
-            this.model.setObjectList(this.getAllUsers());
-        } else {
-            this.updateObjectList();
-        }
+        this.updateObjectList();
     }
 
     @Override
     protected void updateObjectList() {
-        this.model.setObjectList(this.getActiveUsers());
-    }
-
-    private List<User> getActiveUsers() {
-        List<User> userList = new ArrayList<>();
-
         try {
-            userList.addAll(this.controller.findActiveUsers());
+            if (this.checkBoxShowDeletedObjects.isSelected())
+                this.model.setObjectList(this.controller.findAll());
+            else
+                this.model.setObjectList(this.controller.findActiveUsers());
         } catch (GestionAppException ex) {
             PopUpFactory.showErrorMessage(this, ex.getMessage());
             this.dispose();
         }
-
-        return userList;
-    }
-
-    private List<User> getAllUsers() {
-        List<User> userList = new ArrayList<>();
-
-        try {
-            userList.addAll(this.controller.findAll());
-        } catch (GestionAppException ex) {
-            PopUpFactory.showErrorMessage(this, ex.getMessage());
-            this.dispose();
-        }
-
-        return userList;
     }
 
     @Override

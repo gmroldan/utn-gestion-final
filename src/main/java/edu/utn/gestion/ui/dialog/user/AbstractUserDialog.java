@@ -70,11 +70,10 @@ public abstract class AbstractUserDialog extends GenericDialog {
             this.txtName.setText(this.currentUser.getName());
             this.cmbRole.setSelectedItem(this.currentUser.getUserRole());
             this.txtEmployee.setText(String.valueOf(this.currentUser.getEmployee().getId()));
+            if (this.currentUser.isActive()) this.btnEnableUser.setVisible(false);
         } else {
             this.currentUser = new User();
         }
-
-        if (this.currentUser.isActive()) this.btnEnableUser.setVisible(false);
     }
 
 
