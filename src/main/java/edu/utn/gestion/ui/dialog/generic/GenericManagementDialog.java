@@ -23,6 +23,7 @@ import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -218,8 +219,17 @@ public abstract class GenericManagementDialog<E, I> extends JDialog {
     }
 
     private void btnDeleteActionPerformed() {
-        this.deleteSelectedObjects();        
-        this.updateObjectList();
+        int selectedOption
+                = JOptionPane.showConfirmDialog(this,
+                    "Are you sure you want to delete this item?",
+                    null,
+                    JOptionPane.YES_NO_OPTION);
+
+        if (selectedOption == JOptionPane.YES_OPTION) {
+            this.deleteSelectedObjects();
+            this.updateObjectList();
+        }
+
     }
 
     private void btnSearchActionPerformed() {
