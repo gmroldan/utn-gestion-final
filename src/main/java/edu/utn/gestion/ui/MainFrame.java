@@ -5,6 +5,7 @@ import edu.utn.gestion.ui.dialog.book.BooksManagementDialog;
 import edu.utn.gestion.ui.dialog.customer.CustomersManagementDialog;
 import edu.utn.gestion.ui.dialog.employee.EmployeesManagementDialog;
 import edu.utn.gestion.ui.dialog.order.OrdersManagementDialog;
+import edu.utn.gestion.ui.dialog.sale.MySalesDialog;
 import edu.utn.gestion.ui.dialog.settlement.AttendanceDialog;
 import edu.utn.gestion.ui.dialog.settlement.SettlementDialog;
 import edu.utn.gestion.ui.dialog.supplier.SuppliersManagementDialog;
@@ -59,6 +60,7 @@ public class MainFrame extends JFrame {
     private JMenuItem menuItemOrders;
     private JMenuItem menuItemExit;
     private JMenuItem menuItemNewSale;
+    private JMenuItem menuItemMySales;
     private JMenuItem menuItemEmployees;
     private JMenuItem menuItemAttendance;
     private JMenuItem menuItemSettlement;
@@ -94,6 +96,8 @@ public class MainFrame extends JFrame {
 
         this.menuItemNewSale = new JMenuItem("New Sale"
                 , IconFactory.getIcon(UIConstants.ICON_APP_NEW_SALE_LOCATION));
+        this.menuItemMySales = new JMenuItem("My Sales"
+                , IconFactory.getIcon(UIConstants.ICON_APP_MY_SALES_LOCATION));
         this.menuItemBooks = new JMenuItem("Books"
                 , IconFactory.getIcon(UIConstants.ICON_APP_BOOKS_LOCATION));
         this.menuItemCustomers = new JMenuItem("Customers"
@@ -120,6 +124,7 @@ public class MainFrame extends JFrame {
 
         this.menuFile.add(this.menuItemExit);
         this.menuSales.add(this.menuItemNewSale);
+        this.menuSales.add(this.menuItemMySales);
         this.menuEdit.add(this.menuItemBooks);
         this.menuEdit.add(this.menuItemCustomers);
         this.menuEdit.add(this.menuItemSuppliers);
@@ -141,6 +146,7 @@ public class MainFrame extends JFrame {
 
         this.menuItemExit.addActionListener(event -> this.menuItemExitActionPerformed());
         this.menuItemNewSale.addActionListener(event -> this.menuItemNewSaleActionPerformed());
+        this.menuItemMySales.addActionListener(event -> this.menuItemMySalesActionPerformed());
         this.menuItemBooks.addActionListener(event -> this.menuItemBooksActionPerformed());
         this.menuItemCustomers.addActionListener(event -> this.menuItemCustomersActionPerformed());
         this.menuItemSuppliers.addActionListener(event -> this.menuItemSuppliersActionPerformed());
@@ -225,6 +231,10 @@ public class MainFrame extends JFrame {
 
     private void menuItemNewSaleActionPerformed() {
         InternalFrameManager.addInternalFrame(new NewSaleInternalFrame());
+    }
+
+    private void menuItemMySalesActionPerformed() {
+        new MySalesDialog(this).setVisible(true);
     }
 
     private void menuItemBooksActionPerformed() {
