@@ -7,10 +7,12 @@ import edu.utn.gestion.exception.GestionAppException;
 import edu.utn.gestion.model.Employee;
 import edu.utn.gestion.model.User;
 import edu.utn.gestion.service.generic.GenericService;
+import edu.utn.gestion.service.util.security.EncrytionUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.Validate;
 import org.apache.log4j.Logger;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 /**
@@ -47,23 +49,79 @@ public class UserService extends GenericService<User, Long> {
         Employee employee = user.getEmployee();
         Validate.notNull(employee, "Employee cannot be null.");
 
+        LOGGER.info("Starting registration for new user. UserName=" + user.getName());
+
         User userAux = null;
 
         try {
+            LOGGER.info("Verifying if the employee already has a user account.");
             userAux = this.userDAO.findUserByEmployee(employee);
         } catch (DataAccessException e) {
             throw new GestionAppException(e);
         }
 
         if (userAux != null) {
-            throw new GestionAppException(new StringBuilder()
+            String message = new StringBuilder()
                     .append("The employee ")
                     .append(employee.getName())
                     .append(" already has an user account.")
-                    .toString());
+                    .toString();
+            LOGGER.error(message);
+            throw new GestionAppException(message);
         }
 
-        return super.save(user);
+        LOGGER.info("Verification OK.");
+
+        this.encryptData(user);
+
+        Long id = super.save(user);
+
+        LOGGER.info(new StringBuilder()
+                .append("User ")
+                .append(user.getName())
+                .append(" was registered successfully.")
+                .toString());
+
+        return id;
+    }
+
+    /**
+     * Encrypts some important data for a given user.
+     *
+     * @param user
+     * @throws GestionAppException
+     */
+    private void encryptData(final User user) throws GestionAppException {
+        LOGGER.info("Encrypting user data.");
+
+        String password = user.getPassword();
+        String encryptedPassword = this.encryptData(password);
+
+        user.setPassword(encryptedPassword);
+
+        LOGGER.info("Encryption successful.");
+    }
+
+    /**
+     * Returns an encrypted String for a given input.
+     *
+     * @param password
+     * @return
+     * @throws GestionAppException
+     */
+    private String encryptData(final String password) throws GestionAppException {
+        String encryptedPassword = null;
+
+        try {
+            encryptedPassword = EncrytionUtils.encrypt(password);
+        } catch (NoSuchAlgorithmException e) {
+            String message = "There was an issue during the encryption process.";
+
+            LOGGER.error(message, e);
+            throw new GestionAppException(message, e);
+        }
+
+        return encryptedPassword;
     }
 
     @Override
@@ -87,18 +145,25 @@ public class UserService extends GenericService<User, Long> {
         Validate.notNull(name, "UserName cannot be null");
         Validate.notNull(password, "Password cannot be null");
 
+        LOGGER.info("Staring login process for user=" + name);
+
         List<User> userList = this.findBySearch(name);
 
         if (CollectionUtils.isEmpty(userList)) {
-            throw new GestionAppException("The user " + name + " doesn't exist.");
+            String message = "The user " + name + " doesn't exist.";
+            LOGGER.error(message);
+            throw new GestionAppException(message);
         }
 
         User user = userList.get(0);
+        String encryptedPassword = this.encryptData(password);
 
-        if (password.equals(user.getPassword())) {
+        if (encryptedPassword.equals(user.getPassword())) {
+            LOGGER.info("Login successful for user=" + name);
             return user;
         }
 
+        LOGGER.error("Wrong password for user=" + name);
         throw new GestionAppException("Wrong password.");
     }
 
@@ -111,15 +176,23 @@ public class UserService extends GenericService<User, Long> {
      */
     public User resetPassword(final User user) throws GestionAppException {
         Validate.notNull(user, "User cannot be null.");
+        String username = user.getName();
+
+        LOGGER.info("Reset password for user=" + username);
 
         String newPassword = user.getEmployee().getCuit();
         user.setPassword(newPassword);
 
+        this.encryptData(user);
+
         try {
             this.userDAO.changePassword(user);
+            LOGGER.info("The password was reset correctly for user=" + username);
             return this.findOne(user.getId());
         } catch (DataAccessException e) {
-            throw new GestionAppException("The password couldn't be restarted", e);
+            String message = "The password couldn't be restarted for user=" + username;
+            LOGGER.error(message, e);
+            throw new GestionAppException(message, e);
         }
     }
 
