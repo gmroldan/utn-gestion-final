@@ -6,6 +6,7 @@ import edu.utn.gestion.model.GenderEnum;
 import edu.utn.gestion.model.SalaryCategory;
 import edu.utn.gestion.ui.constants.UIConstants;
 import edu.utn.gestion.ui.controller.EmployeeController;
+import edu.utn.gestion.ui.dialog.family.FamilyManagementDialog;
 import edu.utn.gestion.ui.dialog.generic.GenericDialog;
 import edu.utn.gestion.ui.util.DateLabelFormatter;
 import edu.utn.gestion.ui.util.FormUtils;
@@ -13,6 +14,7 @@ import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
 
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFormattedTextField;
@@ -21,7 +23,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.NumberFormatter;
-import java.awt.*;
+import java.awt.GridBagLayout;
 import java.awt.event.WindowEvent;
 import java.text.DecimalFormat;
 import java.util.Date;
@@ -47,6 +49,7 @@ public abstract class AbstractEmployeeDialog extends GenericDialog {
     protected JComboBox<GenderEnum> cmbGender;
     private ComboCategories cmbCategory;
     private JDatePickerImpl ingressDatePicker;
+    private JButton familyBtn;
 
     protected EmployeeController controller;
     protected Employee currentEmployee;
@@ -115,7 +118,15 @@ public abstract class AbstractEmployeeDialog extends GenericDialog {
         this.lblAddress.setLabelFor(this.txtAddress);
         this.lblGender.setLabelFor(this.cmbGender);
 
+        this.familyBtn = new JButton("Cargar grupo familiar");
+        this.familyBtn.addActionListener(event -> this.displayFamilyManagmentDialog());;
+
         this.createFormPanel();
+    }
+
+    private void displayFamilyManagmentDialog() {
+        System.out.println("Desplegar menu de gestion de familia");
+        new FamilyManagementDialog(this, true, this.currentEmployee).setVisible(true);
     }
 
     @Override
@@ -138,6 +149,10 @@ public abstract class AbstractEmployeeDialog extends GenericDialog {
         FormUtils.addLastField(this.cmbCategory, this.formPanel);
         FormUtils.addLabel(this.lblIngress, this.formPanel);
         FormUtils.addLastField(this.ingressDatePicker, this.formPanel);
+        FormUtils.addLabel(new JLabel("Grupo Familiar"), this.formPanel);
+        FormUtils.addMiddleField(this.familyBtn, this.formPanel);
+        FormUtils.addMiddleField(new JLabel("          "), this.formPanel);
+        FormUtils.addLastField(new JLabel("          "),this.formPanel);
     }
 
     @Override

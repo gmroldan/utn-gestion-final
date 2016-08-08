@@ -2,9 +2,11 @@ package edu.utn.gestion.service.util.liquidacion;
 
 import edu.utn.gestion.exception.FileGenerationException;
 import edu.utn.gestion.model.Employee;
+import edu.utn.gestion.model.Family;
 import edu.utn.gestion.model.Settlement;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by ASUS on 27/07/2016.
@@ -26,7 +28,10 @@ public class LiquidadorDeSueldos {
         double presentismo = sueldoBasico * 0.083;
         settlement.setPresenteeismAmount(presentismo);
 
-        double remunerationAmount = sueldoBasico + montoPorAntiguedad + presentismo;
+        double asignacionFamiliar = calcularAsignacion(employee, sueldoBasico);
+        settlement.setAsignacionFamiliar(asignacionFamiliar);
+
+        double remunerationAmount = sueldoBasico + montoPorAntiguedad + presentismo + asignacionFamiliar;
         settlement.setRemunerationAmount(remunerationAmount);
 
         double retireAmount = remunerationAmount * 0.11;
@@ -48,6 +53,25 @@ public class LiquidadorDeSueldos {
         }
 
         return settlement;
+    }
+
+    private static double calcularAsignacion(Employee employee, double sueldoBasico) {
+        double asignacion = 0;
+        List<Family> families = employee.getFamilies();
+        if (families.size() > 0) {
+            for (Family family : families) {
+                if (sueldoBasico < 15000) {
+                    asignacion = asignacion + 966;
+                } else if (sueldoBasico < 22000) {
+                    asignacion = asignacion + 649;
+                } else if (sueldoBasico < 25400) {
+                    asignacion = asignacion + 390;
+                } else if (asignacion < 60000) {
+                    asignacion = asignacion + 200;
+                }
+            }
+        }
+        return asignacion;
     }
 
     protected static double determinarMontoPorAntiguedad(int antiguedad, double grossSalary) {
@@ -75,8 +99,9 @@ public class LiquidadorDeSueldos {
 
     public static boolean isEmployeeAvailableForPeriod(Employee e, String period) {
 
-        //TODO filtrar solo los que entraron despues del periodo seleccionado
-
+        if (calcularAntiguedad(e.getIngress(),period) < 0) {
+            return false;
+        }
         return true;
     }
 }
