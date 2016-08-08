@@ -192,7 +192,8 @@ public class MainFrame extends JFrame {
             }
 
             if (Session.isCurrentUserAdministrativo()) {
-                this.menuSales.setVisible(false);
+                this.menuItemNewSale.setVisible(false);
+                this.menuItemMySales.setVisible(false);
             }
         }
     }
