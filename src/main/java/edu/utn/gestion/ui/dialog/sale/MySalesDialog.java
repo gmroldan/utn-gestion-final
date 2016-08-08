@@ -105,7 +105,7 @@ public class MySalesDialog extends GenericManagementDialog<Sale, Long> {
         List<Sale> saleList = null;
 
         try {
-            saleList = this.controller.searchByPeriod(month, year);
+            saleList = this.controller.searchByPeriod(user, month, year);
         } catch (GestionAppException e) {
             PopUpFactory.showErrorMessage(this, e.getMessage());
         }
