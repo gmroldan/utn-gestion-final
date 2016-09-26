@@ -3,7 +3,7 @@ package edu.utn.gestion.ui.dialog.settlement;
 import edu.utn.gestion.exception.GestionAppException;
 import edu.utn.gestion.model.Employee;
 import edu.utn.gestion.service.util.liquidacion.LiquidadorDeSueldos;
-import edu.utn.gestion.service.util.liquidacion.LiquidadorWorker;
+import edu.utn.gestion.ui.util.worker.LiquidadorWorker;
 import edu.utn.gestion.ui.MainFrame;
 import edu.utn.gestion.ui.controller.EmployeeController;
 import edu.utn.gestion.ui.internal.EmployeeForSettlementTableModel;
