@@ -89,7 +89,7 @@ public class BookService extends GenericService<Book, String> {
         book.setCurrentStock(newStock);
 
         try {
-            book = this.bookDAO.update(book);
+            this.bookDAO.update(book);
         } catch (DataAccessException ex) {
             throw new GestionAppException(ex.getMessage(), ex);
         }

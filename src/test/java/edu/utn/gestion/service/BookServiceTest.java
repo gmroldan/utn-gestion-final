@@ -29,7 +29,7 @@ public class BookServiceTest {
     public void setUp() {
         this.bookService = BookService.getInstance();
         this.bookDAOMock = mock(BookDAO.class);
-        setInternalState(this.bookService, "genericDAO", this.bookDAOMock);
+        setInternalState(this.bookService, "bookDAO", this.bookDAOMock);
     }
     
     @After
