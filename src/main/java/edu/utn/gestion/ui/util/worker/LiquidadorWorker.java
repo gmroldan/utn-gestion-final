@@ -21,6 +21,13 @@ public class LiquidadorWorker extends SwingWorker<String,Object> {
     private final SettlementController controller;
     private SettlementDialog dialog;
 
+    /**
+     * Class constuctor.
+     *
+     * @param employees
+     * @param period
+     * @param settlementDialog
+     */
     public LiquidadorWorker(final List<Employee> employees, final String period, SettlementDialog settlementDialog) {
         this.employees = employees;
         this.dialog = settlementDialog;
@@ -30,24 +37,28 @@ public class LiquidadorWorker extends SwingWorker<String,Object> {
 
     @Override
     protected String doInBackground() throws Exception {
+        Settlement settlement;
+        List<Settlement> settlementList;
+        String cuit;
+        String cuitInDB;
+        String period;
+        String periodInDB;
 
         for (Employee employee : this.employees) {
-
-            Settlement settlement = LiquidadorDeSueldos.generarLiquidacion(employee, this.period);
+            settlement = LiquidadorDeSueldos.generarLiquidacion(employee, this.period);
 
             //this is to overwrite previous settlement in case it has one
-            List<Settlement> settlements = this.controller.findAll();
+            settlementList = this.controller.findAll();
 
-            for (Settlement s : settlements) {
+            for (Settlement settlementAux : settlementList) {
+                cuit = settlement.getEmployee().getCuit();
+                cuitInDB = settlementAux.getEmployee().getCuit();
 
-                String cuit = settlement.getEmployee().getCuit();
-                String cuitInDB = s.getEmployee().getCuit();
-
-                String period = settlement.getPeriod();
-                String periodInDB = s.getPeriod();
+                period = settlement.getPeriod();
+                periodInDB = settlementAux.getPeriod();
 
                 if (cuit.equals(cuitInDB) && period.equals(periodInDB)) {
-                    this.controller.delete(s);
+                    this.controller.delete(settlementAux);
                     break;
                 }
             }
