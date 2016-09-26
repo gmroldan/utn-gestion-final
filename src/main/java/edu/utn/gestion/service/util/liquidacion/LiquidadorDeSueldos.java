@@ -2,18 +2,31 @@ package edu.utn.gestion.service.util.liquidacion;
 
 import edu.utn.gestion.exception.FileGenerationException;
 import edu.utn.gestion.model.Employee;
-import edu.utn.gestion.model.Family;
 import edu.utn.gestion.model.Settlement;
+import org.apache.commons.lang3.Validate;
+import org.apache.log4j.Logger;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by ASUS on 27/07/2016.
  */
 public class LiquidadorDeSueldos {
+    private static final Logger LOGGER = Logger.getLogger(LiquidadorDeSueldos.class);
 
-    public static Settlement generarLiquidacion(Employee employee, String period) {
+    /**
+     * Executes de Liquidacion process for a certain employee during a given period.
+     *
+     * @param employee Cannot be null.
+     * @param period Cannot be null.
+     * @return
+     */
+    public static Settlement generarLiquidacion(final Employee employee, final String period) {
+        Validate.notNull(employee, "Employee cannot be null");
+        Validate.notNull(period, "Period cannot be null");
+
+        LOGGER.info(String.format("Starting liquidación for employee with id=%d for the period=%s",
+                employee.getId(), period));
 
         Settlement settlement = new Settlement(employee, period);
 
@@ -47,7 +60,7 @@ public class LiquidadorDeSueldos {
         settlement.setNetPay(remunerationAmount - discount);
 
         try {
-            InvoiceFactoryRecibo.generarRecibo(settlement);
+            InvoiceFactoryRecibo.getInstance().generate(settlement);
         } catch (FileGenerationException e) {
             e.printStackTrace();
         }
@@ -55,22 +68,22 @@ public class LiquidadorDeSueldos {
         return settlement;
     }
 
-    private static double calcularAsignacion(Employee employee, double sueldoBasico) {
+    private static double calcularAsignacion(final Employee employee, double sueldoBasico) {
         double asignacion = 0;
-        List<Family> families = employee.getFamilies();
-        if (families.size() > 0) {
-            for (Family family : families) {
-                if (sueldoBasico < 15000) {
-                    asignacion = asignacion + 966;
-                } else if (sueldoBasico < 22000) {
-                    asignacion = asignacion + 649;
-                } else if (sueldoBasico < 25400) {
-                    asignacion = asignacion + 390;
-                } else if (asignacion < 60000) {
-                    asignacion = asignacion + 200;
-                }
+        int numberOfFamilyMembers = employee.getFamilies().size();
+
+        for (int i = 0; i < numberOfFamilyMembers; i++) {
+            if (sueldoBasico < 15000) {
+                asignacion += 966;
+            } else if (sueldoBasico < 22000) {
+                asignacion += 649;
+            } else if (sueldoBasico < 25400) {
+                asignacion += 390;
+            } else if (asignacion < 60000) {
+                asignacion += 200;
             }
         }
+
         return asignacion;
     }
 
@@ -97,11 +110,7 @@ public class LiquidadorDeSueldos {
         return totalMonths;
     }
 
-    public static boolean isEmployeeAvailableForPeriod(Employee e, String period) {
-
-        if (calcularAntiguedad(e.getIngress(),period) < 0) {
-            return false;
-        }
-        return true;
+    public static boolean isEmployeeAvailableForPeriod(final Employee employee, final String period) {
+        return (calcularAntiguedad(employee.getIngress(),period) >= 0);
     }
 }

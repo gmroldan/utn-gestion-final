@@ -162,7 +162,7 @@ public class SettlementHistoryDialog extends JDialog{
     private void abrirPdf() {
         try {
             String pathname = "recibo_tmp.pdf";
-            InvoiceFactory.openInvoice(pathname);
+            InvoiceFactory.getInstance().openInvoice(pathname);
 
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "No se pudo abrir el recibo");

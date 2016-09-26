@@ -1,17 +1,24 @@
 package edu.utn.gestion.service.util.liquidacion;
 
-import com.itextpdf.text.*;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
-import edu.utn.gestion.exception.FileGenerationException;
-import edu.utn.gestion.model.*;
-import org.apache.commons.lang3.StringUtils;
+import edu.utn.gestion.model.Employee;
+import edu.utn.gestion.model.Settlement;
+import edu.utn.gestion.service.util.AbstractPDFFactory;
 import org.apache.log4j.Logger;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.*;
+import javax.sql.rowset.serial.SerialBlob;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -23,107 +30,84 @@ import java.util.Date;
 /**
  * Created by ASUS on 28/07/2016.
  */
-public class InvoiceFactoryRecibo {
-
+public class InvoiceFactoryRecibo extends AbstractPDFFactory<Settlement> {
+    private static final InvoiceFactoryRecibo INSTANCE = new InvoiceFactoryRecibo();
     private static final Logger LOGGER = Logger.getLogger(InvoiceFactoryRecibo.class);
-    private static final String FILE_FORMAT = ".pdf";
-    private static final String NEW_LINE = "\n";
-    private static final String SEPARATOR = "\n-----------------------------------------------------" +
-            "---------------------------------------------------------------------\n\n";
-    private static final String TABULAR = "\t";
-
+    private static final String FOLDER_NAME = "recibos";
     private static final int CONCEPTO_COL_SPAN = 5;
+    private static final Font TITTLE_FONT
+            = new Font(Font.FontFamily.TIMES_ROMAN, 18, Font.BOLDITALIC);
+    private static final Font BOLD_FONT
+            = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.BOLD);
+    private static final Font NORMAL_FONT
+            = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.NORMAL);
     public static final int CANT_COL_SPAN = 1;
     public static final int HABERES_COL_SPAN = 2;
     public static final int DESCUENTO_COL_SPAN = 2;
-    public static final int DETAIL_TABLE_WIDTH = CONCEPTO_COL_SPAN + CANT_COL_SPAN + HABERES_COL_SPAN + DESCUENTO_COL_SPAN;
+    public static final int DETAIL_TABLE_WIDTH
+            = CONCEPTO_COL_SPAN + CANT_COL_SPAN + HABERES_COL_SPAN + DESCUENTO_COL_SPAN;
 
-    private static Font tittle = new Font(Font.FontFamily.TIMES_ROMAN, 18, Font.BOLDITALIC);
-    private static Font boldFont = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.BOLD);
-    private static Font normalFont = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.NORMAL);
+    /**
+     * Class constructor.
+     */
+    private InvoiceFactoryRecibo() {}
 
-    public static void generarRecibo(Settlement settlement) throws FileGenerationException {
-        if (settlement == null) {
-            throw new FileGenerationException("Cannot generate invoice for a null settlement.");
-        }
-
-        String fileName = null;
-
-        try {
-            fileName = generatePDF(settlement);
-        } catch (DocumentException | FileNotFoundException ex) {
-            String errorMessage = "Error during invoice generation for sale " + settlement.getEmployee().getName() + " " + settlement.getPeriod();
-            LOGGER.error(errorMessage, ex);
-            throw new FileGenerationException(errorMessage, ex);
-        }
-
-        if (StringUtils.isNotEmpty(fileName)) {
-            try {
-                guardarRecibo(fileName, settlement);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
+    /**
+     * Returns the unique instance of InvoiceFactoryRecibo.
+     *
+     * @return
+     */
+    public static InvoiceFactoryRecibo getInstance() {
+        return INSTANCE;
     }
 
     private static void guardarRecibo(String fileName, Settlement settlement) throws SQLException {
-
         try {
-
-            Path path = Paths.get("recibos/" + settlement.getPeriod() + "/" + fileName);
+            Path path = Paths.get(new StringBuilder()
+                    .append("recibos/")
+                    .append(settlement.getPeriod())
+                    .append("/")
+                    .append(fileName)
+                    .toString());
             byte[] byteArray = Files.readAllBytes(path);
-            Blob blob = new javax.sql.rowset.serial.SerialBlob(byteArray);
+            Blob blob = new SerialBlob(byteArray);
             settlement.setRecibo(blob);
-
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    protected static Blob convertImageToBlob(BufferedImage bufferedImage) {
-
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        try {
-            ImageIO.write(bufferedImage, "png", stream);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Blob blob = null;
-        byte[] bytes  = stream.toByteArray();
-        try {
-            blob = new javax.sql.rowset.serial.SerialBlob(bytes);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return blob;
-    }
-
-    protected static String generatePDF(Settlement settlement) throws DocumentException, FileNotFoundException {
+    @Override
+    protected String generatePDF(Settlement settlement) throws DocumentException, FileNotFoundException {
         String period = settlement.getPeriod();
-        String settlementId = settlement.getEmployee().getName().toString() + "_" + period.toString();
+        String settlementId = new StringBuilder()
+                .append(settlement.getEmployee().getName())
+                .append("_")
+                .append(period.toString())
+                .toString();
 
         LOGGER.info("Generating invoice for settlement: " + settlementId);
 
-        File recibosFolder = new File("recibos");
+        File recibosFolder = new File(FOLDER_NAME);
         if (!recibosFolder.exists()) {
             if (recibosFolder.mkdir()) {
-                System.out.println("Directory recibos is created!");
+                LOGGER.info("Directory recibos has been created!");
             } else {
-                System.out.println("Directory already exist!");
+                LOGGER.info("Directory already exists!");
             }
         }
 
         File periodFolder = new File("recibos/" + period);
         if (!periodFolder.exists()) {
             if (periodFolder.mkdir()) {
-                System.out.println("Period " + period + " is created!");
+                LOGGER.info("Period " + period + " has been created!");
             } else {
-                System.out.println("Period " + period + " already exist!");
+                LOGGER.info("Period " + period + " already exists!");
             }
         }
 
         String fileName = settlementId + FILE_FORMAT;
-        createDocument(settlement, period, fileName);
+        this.createDocument(settlement, period, fileName);
 
         LOGGER.info("Invoice generated successfully for settlement " + settlementId);
         LOGGER.info("File Name: " + fileName);
@@ -131,9 +115,22 @@ public class InvoiceFactoryRecibo {
         return fileName;
     }
 
-    private static void createDocument(Settlement settlement, String period, String fileName) throws DocumentException, FileNotFoundException {
+    @Override
+    protected void postGeneration(String fileName) {
+        // TODO Add implementation.
+        /*try {
+            guardarRecibo(fileName, settlement);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }*/
+    }
+
+    private void createDocument(Settlement settlement, String period, String fileName)
+            throws DocumentException, FileNotFoundException {
         Document document = new Document();
-        PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("recibos/" + period + "/" + fileName));
+        PdfWriter writer
+                = PdfWriter.getInstance(document,
+                                        new FileOutputStream("recibos/" + period + "/" + fileName));
 
         writer.setCompressionLevel(0);
 
@@ -142,9 +139,9 @@ public class InvoiceFactoryRecibo {
         //Breves datos de la empresa
         StringBuilder stringBuilder = new StringBuilder();
         Paragraph paragraph = new Paragraph();
-        Phrase empresa = new Phrase("GRUPO ILHSA S.A.", tittle );
-        Phrase cuit = new Phrase("C.U.I.T: 30654386192", normalFont );
-        Phrase direccion = new Phrase("25 de Mayo 182 - Provincia de Tucumán", normalFont );
+        Phrase empresa = new Phrase("GRUPO ILHSA S.A.", TITTLE_FONT);
+        Phrase cuit = new Phrase("C.U.I.T: 30654386192", NORMAL_FONT);
+        Phrase direccion = new Phrase("25 de Mayo 182 - Provincia de Tucumán", NORMAL_FONT);
         paragraph.add(empresa);
         paragraph.add(NEW_LINE);
         paragraph.add(cuit);
@@ -173,13 +170,13 @@ public class InvoiceFactoryRecibo {
         PdfPTable employeeTable = new PdfPTable(4);
         employeeTable.setWidthPercentage(100);
 
-        createHeaderLine("Apellido y nombre", "Categoría", "Fecha de ingreso", "C.U.I.L.",
+        this.createHeaderLine("Apellido y nombre", "Categoría", "Fecha de ingreso", "C.U.I.L.",
                         employee.getName(), settlement.getCategory(), formatIngress, employee.getCuit(), employeeTable);
 
-        createHeaderLine("Categoría profesional", "Sindicato", "Antigüedad", "Sueldo Básico",
+        this.createHeaderLine("Categoría profesional", "Sindicato", "Antigüedad", "Sueldo Básico",
                         "Empleados de Comercio", "S.E.O.C.", antiguedad, String.valueOf(settlement.getSueldoBasico()), employeeTable);
 
-        createHeaderLine("Periodo", "Cuenta", "Banco", "Importe",
+        this.createHeaderLine("Periodo", "Cuenta", "Banco", "Importe",
                         settlement.getPeriod(), "00013621635849", "HSBC Bank", String.valueOf(settlement.getNetPay()), employeeTable);
 
         document.add(employeeTable);
@@ -190,17 +187,15 @@ public class InvoiceFactoryRecibo {
         PdfPTable detailTable = new PdfPTable(DETAIL_TABLE_WIDTH);
         detailTable.setWidthPercentage(100);
 
-        createDetailHeader(detailTable);
-
-        createDetailBody(settlement, detailTable);
-
-        createDetailFooter(String.valueOf(settlement.getRemunerationAmount()),
+        this.createDetailHeader(detailTable);
+        this.createDetailBody(settlement, detailTable);
+        this.createDetailFooter(String.valueOf(settlement.getRemunerationAmount()),
                 String.valueOf(settlement.getDiscount()),
                 String.valueOf(settlement.getNetPay()), detailTable);
 
         document.add(detailTable);
 
-        Phrase totalPhrase = new Phrase("Neto Percibido: " + settlement.getNetPay(), boldFont);
+        Phrase totalPhrase = new Phrase("Neto Percibido: " + settlement.getNetPay(), BOLD_FONT);
         Paragraph totalParagraph = new Paragraph();
         totalParagraph.setAlignment(Element.ALIGN_RIGHT);
         totalParagraph.add(totalPhrase);
@@ -244,84 +239,75 @@ public class InvoiceFactoryRecibo {
         document.close();
     }
 
-    private static void createDetailBody(Settlement settlement, PdfPTable detailTable) {
-        createOrderLine("Sueldo Básico"             ,"", String.valueOf(settlement.getSueldoBasico())       ,"", detailTable);
-        createOrderLine("Presentismo"               ,"8.3%", String.valueOf(settlement.getPresenteeismAmount()) ,"", detailTable);
-        createOrderLine("Adicional por antigüedad"  ,"2%", String.valueOf(settlement.getMontoPorAntiguedad()) ,"", detailTable);
+    private void createDetailBody(Settlement settlement, PdfPTable detailTable) {
+        this.createOrderLine("Sueldo Básico"             ,"", String.valueOf(settlement.getSueldoBasico())       ,"", detailTable);
+        this.createOrderLine("Presentismo"               ,"8.3%", String.valueOf(settlement.getPresenteeismAmount()) ,"", detailTable);
+        this.createOrderLine("Adicional por antigüedad"  ,"2%", String.valueOf(settlement.getMontoPorAntiguedad()) ,"", detailTable);
         if (settlement.getAsignacionFamiliar() > 0) {
-            createOrderLine("Asignacion familiar"  ," ", String.valueOf(settlement.getAsignacionFamiliar()) ,"", detailTable);
+            this.createOrderLine("Asignacion familiar"  ," ", String.valueOf(settlement.getAsignacionFamiliar()) ,"", detailTable);
         }
 
-        createOrderLine("Aporte para jubilación", "11%", "", String.valueOf(settlement.getRetireAmount())  , detailTable);
-        createOrderLine("Aporte ley 19.032"     , "3%", "", String.valueOf(settlement.getLaw19032())      , detailTable);
-        createOrderLine("Aporte Obra Social"    , "3%", "", String.valueOf(settlement.getSocialCare())    , detailTable);
+        this.createOrderLine("Aporte para jubilación", "11%", "", String.valueOf(settlement.getRetireAmount())  , detailTable);
+        this.createOrderLine("Aporte ley 19.032"     , "3%", "", String.valueOf(settlement.getLaw19032())      , detailTable);
+        this.createOrderLine("Aporte Obra Social"    , "3%", "", String.valueOf(settlement.getSocialCare())    , detailTable);
 
         //unas cuantas lineas en blanco
-        createOrderLine(" ", " ", " ", " ", detailTable);
-        createOrderLine(" ", " ", " ", " ", detailTable);
-        createOrderLine(" ", " ", " ", " ", detailTable);
+        this.createOrderLine(" ", " ", " ", " ", detailTable);
+        this.createOrderLine(" ", " ", " ", " ", detailTable);
+        this.createOrderLine(" ", " ", " ", " ", detailTable);
     }
 
-    private static void createDetailHeader(PdfPTable detailTable) {
-        createDetailHeaderColumn(detailTable, "Concepto", CONCEPTO_COL_SPAN);
-        createDetailHeaderColumn(detailTable, "Cant.", CANT_COL_SPAN);
-        createDetailHeaderColumn(detailTable, "Haberes", HABERES_COL_SPAN);
-        createDetailHeaderColumn(detailTable, "Descuentos", DESCUENTO_COL_SPAN);
+    private void createDetailHeader(PdfPTable detailTable) {
+        this.createDetailHeaderColumn(detailTable, "Concepto", CONCEPTO_COL_SPAN);
+        this.createDetailHeaderColumn(detailTable, "Cant.", CANT_COL_SPAN);
+        this.createDetailHeaderColumn(detailTable, "Haberes", HABERES_COL_SPAN);
+        this.createDetailHeaderColumn(detailTable, "Descuentos", DESCUENTO_COL_SPAN);
     }
 
-    private static void createDetailHeaderColumn(PdfPTable detailTable, String titulo, int span) {
-        Phrase phrase = new Phrase(titulo, boldFont);
+    private void createDetailHeaderColumn(PdfPTable detailTable, String titulo, int span) {
+        Phrase phrase = new Phrase(titulo, BOLD_FONT);
         PdfPCell cell = new PdfPCell(phrase);
-//        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
         cell.setColspan(span);
         detailTable.addCell(cell);
     }
 
-    private static void createDetailFooter(String s1, String s2, String s3, PdfPTable detailTable) {
-
-        createDetailHeaderColumn(detailTable, "Totales" , CONCEPTO_COL_SPAN + CANT_COL_SPAN);
-        createDetailHeaderColumn(detailTable, s1        , HABERES_COL_SPAN);
-        createDetailHeaderColumn(detailTable, s2        , DESCUENTO_COL_SPAN);
-
+    private void createDetailFooter(String s1, String s2, String s3, PdfPTable detailTable) {
+        this.createDetailHeaderColumn(detailTable, "Totales" , CONCEPTO_COL_SPAN + CANT_COL_SPAN);
+        this.createDetailHeaderColumn(detailTable, s1        , HABERES_COL_SPAN);
+        this.createDetailHeaderColumn(detailTable, s2        , DESCUENTO_COL_SPAN);
     }
 
-    private static void createOrderLine(String s, String s1, String s2, String s3, PdfPTable detailTable) {
-
+    private void createOrderLine(String s, String s1, String s2, String s3, PdfPTable detailTable) {
         detailTable.addCell(createDetailBodyColumn(s,CONCEPTO_COL_SPAN));
         detailTable.addCell(createDetailBodyColumn(s1,CANT_COL_SPAN));
         detailTable.addCell(createDetailBodyColumn(s2,HABERES_COL_SPAN));
         detailTable.addCell(createDetailBodyColumn(s3,DESCUENTO_COL_SPAN));
-
     }
 
-    private static PdfPCell createDetailBodyColumn(String string, int span) {
-        Phrase phrase = new Phrase(string, normalFont);
+    private PdfPCell createDetailBodyColumn(String string, int span) {
+        Phrase phrase = new Phrase(string, NORMAL_FONT);
         PdfPCell cell = new PdfPCell(phrase);
         cell.setColspan(span);
-
         return cell;
     }
 
-    private static void createHeaderLine(String titulo1, String titulo2, String titulo3, String titulo4,
+    private void createHeaderLine(String titulo1, String titulo2, String titulo3, String titulo4,
                                               String valor1, String valor2, String valor3, String valor4, PdfPTable table) {
+        this.createCenterCell(titulo1, table, BOLD_FONT);
+        this.createCenterCell(titulo2, table, BOLD_FONT);
+        this.createCenterCell(titulo3, table, BOLD_FONT);
+        this.createCenterCell(titulo4, table, BOLD_FONT);
 
-        createCenterCell(titulo1, table, boldFont);
-        createCenterCell(titulo2, table, boldFont);
-        createCenterCell(titulo3, table, boldFont);
-        createCenterCell(titulo4, table, boldFont);
-
-        createCenterCell(valor1, table, normalFont);
-        createCenterCell(valor2, table, normalFont);
-        createCenterCell(valor3, table, normalFont);
-        createCenterCell(valor4, table, normalFont);
-
+        this.createCenterCell(valor1, table, NORMAL_FONT);
+        this.createCenterCell(valor2, table, NORMAL_FONT);
+        this.createCenterCell(valor3, table, NORMAL_FONT);
+        this.createCenterCell(valor4, table, NORMAL_FONT);
     }
 
-    private static void createCenterCell(String titulo1, PdfPTable table, Font boldFont) {
+    private void createCenterCell(String titulo1, PdfPTable table, Font boldFont) {
         Phrase phrase = new Phrase(titulo1, boldFont);
         PdfPCell cell = new PdfPCell(phrase);
         cell.setHorizontalAlignment(Element.ALIGN_CENTER);
         table.addCell(cell);
     }
-
 }

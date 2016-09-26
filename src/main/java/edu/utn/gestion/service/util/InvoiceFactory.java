@@ -5,17 +5,13 @@ import com.itextpdf.text.Element;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
-import edu.utn.gestion.exception.FileGenerationException;
 import edu.utn.gestion.model.Book;
 import edu.utn.gestion.model.Customer;
 import edu.utn.gestion.model.Sale;
 import com.itextpdf.text.Document;
 import edu.utn.gestion.model.SaleDetail;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.SystemUtils;
 import org.apache.log4j.Logger;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
@@ -23,40 +19,24 @@ import java.text.SimpleDateFormat;
 /**
  * Created by martin on 08/12/15.
  */
-public class InvoiceFactory {
+public class InvoiceFactory extends AbstractPDFFactory<Sale> {
+    private static final InvoiceFactory INSTANCE = new InvoiceFactory();
     private static final Logger LOGGER = Logger.getLogger(InvoiceFactory.class);
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
-    private static final String FILE_FORMAT = ".pdf";
     private static final String DEFAULT_INVOICE_TYPE = "FACTURA B";
-    private static final String NEW_LINE = "\n";
-    private static final String TABULAR = "\t";
-    private static final String SEPARATOR = "\n-----------------------------------------------------" +
-            "---------------------------------------------------------------------\n\n";
 
     /**
-     * Generates an invoice in PDF for a given sale. After that, shows the invoice to the user.
-     *
-     * @param sale
-     * @throws FileGenerationException If sale is null or if something goes wrong during the invoice generation.
+     * Class constructor.
      */
-    public static void generateInvoice(Sale sale) throws FileGenerationException {
-        if (sale == null) {
-            throw new FileGenerationException("Cannot generate invoice for a null sale.");
-        }
+    private InvoiceFactory() {}
 
-        String fileName = null;
-
-        try {
-            fileName = generatePDF(sale);
-        } catch (DocumentException | FileNotFoundException ex) {
-            String errorMessage = "Error during invoice generation for sale " + sale.getId();
-            LOGGER.error(errorMessage, ex);
-            throw new FileGenerationException(errorMessage, ex);
-        }
-
-        if (StringUtils.isNotEmpty(fileName)) {
-            openInvoice(fileName);
-        }
+    /**
+     * Returns the unique instance of InvoiceFactory.
+     *
+     * @return
+     */
+    public static InvoiceFactory getInstance() {
+        return INSTANCE;
     }
 
     /**
@@ -67,7 +47,7 @@ public class InvoiceFactory {
      * @throws DocumentException
      * @throws FileNotFoundException
      */
-    protected static String generatePDF(Sale sale) throws DocumentException, FileNotFoundException {
+    protected String generatePDF(final Sale sale) throws DocumentException, FileNotFoundException {
         long saleId = sale.getId();
 
         LOGGER.info("Generating invoice for sale number: " + saleId);
@@ -180,19 +160,9 @@ public class InvoiceFactory {
         return fileName;
     }
 
-    /**
-     * Opens a given PDF file with evince.
-     *
-     * @param fileName
-     */
-    public static void openInvoice(String fileName) {
-        try {
-            if (SystemUtils.IS_OS_LINUX) {
-                Runtime.getRuntime().exec("evince " + fileName);
-            }
-        } catch (Exception ex) {
-            LOGGER.error("Error trying to open the invoice with evince.", ex);
-        }
+    @Override
+    protected void postGeneration(final String fileName) {
+        this.openInvoice(fileName);
     }
 
     /**

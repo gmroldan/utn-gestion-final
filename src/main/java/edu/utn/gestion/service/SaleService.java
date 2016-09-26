@@ -45,8 +45,10 @@ public class SaleService extends GenericService<Sale, Long> {
     }
 
     @Override
-    public Long save(Sale sale) throws GestionAppException {
+    public Long save(final Sale sale) throws GestionAppException {
         Validate.notNull(sale, "Cannot save a null sale.");
+
+        LOGGER.info(String.format("Saving new sale for %s", sale.getEmployee().getName()));
 
         if (CollectionUtils.isEmpty(sale.getSaleDetails())) {
             LOGGER.error("Cannot save an empty sale.");
@@ -57,14 +59,14 @@ public class SaleService extends GenericService<Sale, Long> {
 
         Long saleId = super.save(sale);
 
-        LOGGER.info("Sale " + saleId + " saved successfully.");
+        LOGGER.info(String.format("Sale %d saved successfully.", saleId));
 
         if (saleId != null && saleId > 0) {
             Sale currentSale = this.findOne(saleId);
 
             if (currentSale != null) {
                 try {
-                    InvoiceFactory.generateInvoice(currentSale);
+                    InvoiceFactory.getInstance().generate(currentSale);
                 } catch (FileGenerationException ex) {
                     throw new GestionAppException(ex);
                 }
