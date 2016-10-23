@@ -3,9 +3,14 @@ package edu.utn.gestion.dao;
 import edu.utn.gestion.dao.generic.GenericDAO;
 import edu.utn.gestion.exception.DataAccessException;
 import edu.utn.gestion.model.Book;
+import org.hibernate.Criteria;
 import org.hibernate.SQLQuery;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Restrictions;
 
 import java.util.List;
+
+import static org.hibernate.criterion.Restrictions.like;
 
 /**
  *
@@ -13,7 +18,6 @@ import java.util.List;
  */
 public class BookDAO extends GenericDAO<Book, String> {
     private static final BookDAO INSTANCE = new BookDAO();
-    private final String QUERY_FIND_BOOKS_BY_SEARCH = "from Book where author like :parm or title like :parm or isbn like :parm or editorial like :parm";
     private final String QUERY_FIND_BOOKS_WITH_MIN_STOCK
             = "SELECT DISTINCT b.* FROM book AS b, order_to_supplier AS o, order_detail AS od WHERE\t\n" +
             "    od.book_id = b.isbn AND\n" +
@@ -33,8 +37,29 @@ public class BookDAO extends GenericDAO<Book, String> {
     }
     
     @Override
-    public List<Book> findObjectsBySearch(String searchString) throws DataAccessException {
-        return this.findObjectsBySearch(QUERY_FIND_BOOKS_BY_SEARCH, searchString);
+    public List<Book> findObjectsBySearch(final String searchString) throws DataAccessException {
+        List result = null;
+
+        try {
+            this.startOperation();
+
+            Criteria criteria = this.session.createCriteria(Book.class);
+            criteria.add(Restrictions.disjunction()
+                    .add(like("author", searchString, MatchMode.ANYWHERE))
+                    .add(like("title", searchString, MatchMode.ANYWHERE))
+                    .add(like("isbn", searchString, MatchMode.ANYWHERE))
+                    .add(like("editorial", searchString, MatchMode.ANYWHERE)));
+
+            result = criteria.list();
+
+            this.finishOperation();
+        } catch (Exception ex) {
+            this.handleException(ex);
+        } finally {
+            this.releaseSession();
+        }
+
+        return result;
     }
 
     /**
