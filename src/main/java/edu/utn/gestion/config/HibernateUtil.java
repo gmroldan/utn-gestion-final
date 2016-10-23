@@ -1,5 +1,6 @@
 package edu.utn.gestion.config;
 
+import edu.utn.gestion.exception.DataAccessException;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.cfg.AnnotationConfiguration;
@@ -38,10 +39,24 @@ public class HibernateUtil {
     }
     
     public static Session openSession() {
+        LOGGER.info("Opening new hibernate session.");
         return sessionFactory.openSession();
     }
-    
-    public static void closeSession(Session session) {
+
+    /**
+     * Closes an open session.
+     *
+     * @param session Cannot be null.
+     * @throws DataAccessException if the session is null.
+     */
+    public static void closeSession(final Session session)
+            throws DataAccessException {
+        if (session == null) {
+            throw new DataAccessException("Cannot close a null session.");
+        }
+
+        LOGGER.info("Closing current session.");
+
         session.close();
     }
     

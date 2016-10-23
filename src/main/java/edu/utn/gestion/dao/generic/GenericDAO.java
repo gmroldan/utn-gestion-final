@@ -48,8 +48,17 @@ public abstract class GenericDAO<T, I> {
     protected void finishOperation() {
         this.transaction.commit();
     }
+
+    /**
+     * Releases the current session.
+     *
+     * @throws DataAccessException
+     */
+    protected void releaseSession() throws DataAccessException {
+        HibernateUtil.closeSession(this.session);
+    }
     
-    protected void handleException(Exception ex) throws DataAccessException {
+    protected void handleException(final Exception ex) throws DataAccessException {
         if (this.transaction != null) {
             this.transaction.rollback();
             LOGGER.error("Transaction rolledback.", ex);
@@ -81,6 +90,8 @@ public abstract class GenericDAO<T, I> {
             this.finishOperation();
         } catch (Exception ex) {
             this.handleException(ex);
+        } finally {
+            this.releaseSession();
         }
         
         return result;
@@ -104,6 +115,8 @@ public abstract class GenericDAO<T, I> {
             this.finishOperation();
         } catch (Exception ex) {
             this.handleException(ex);
+        } finally {
+            this.releaseSession();
         }
         
         return result; 
@@ -124,7 +137,9 @@ public abstract class GenericDAO<T, I> {
             this.finishOperation();
         } catch (Exception ex) {
             this.handleException(ex);
-        }        
+        } finally {
+            this.releaseSession();
+        }
     }
     
     /**
@@ -143,6 +158,8 @@ public abstract class GenericDAO<T, I> {
             this.finishOperation();            
         } catch (Exception ex) {
             this.handleException(ex);
+        } finally {
+            this.releaseSession();
         }
         
         if (result == null) {
@@ -172,6 +189,8 @@ public abstract class GenericDAO<T, I> {
             this.finishOperation();
         } catch (Exception ex) {
             this.handleException(ex);
+        } finally {
+            this.releaseSession();
         }
         
         return result;
@@ -190,6 +209,8 @@ public abstract class GenericDAO<T, I> {
             this.finishOperation();
         } catch (Exception ex) {
             this.handleException(ex);
+        } finally {
+            this.releaseSession();
         }
         
         return result;
